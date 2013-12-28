@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateLessonsTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateLessonsLabel_id}" for="id" />
+                    <h:inputText id="id" value="#{lessonsController.selected.id}" title="#{bundle.CreateLessonsTitle_id}" required="true" requiredMessage="#{bundle.CreateLessonsRequiredMessage_id}"/>
+                    <h:outputLabel value="#{bundle.CreateLessonsLabel_teacherid}" for="teacherid" />
+                    <h:inputText id="teacherid" value="#{lessonsController.selected.teacherid}" title="#{bundle.CreateLessonsTitle_teacherid}" />
+                    <h:outputLabel value="#{bundle.CreateLessonsLabel_term}" for="term" />
+                    <h:inputText id="term" value="#{lessonsController.selected.term}" title="#{bundle.CreateLessonsTitle_term}" required="true" requiredMessage="#{bundle.CreateLessonsRequiredMessage_term}"/>
+                    <h:outputLabel value="#{bundle.CreateLessonsLabel_courseinfo}" for="courseinfo" />
+                    <h:selectOneMenu id="courseinfo" value="#{lessonsController.selected.courseinfo}" title="#{bundle.CreateLessonsTitle_courseinfo}" >
+                        <f:selectItems value="#{courseinfoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateLessonsLabel_classinfo}" for="classinfo" />
+                    <h:selectOneMenu id="classinfo" value="#{lessonsController.selected.classinfo}" title="#{bundle.CreateLessonsTitle_classinfo}" >
+                        <f:selectItems value="#{classinfoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{lessonsController.create}" value="#{bundle.CreateLessonsSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{lessonsController.prepareList}" value="#{bundle.CreateLessonsShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateLessonsIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

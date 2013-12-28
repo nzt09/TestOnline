@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" xml:lang="en" lang="en">
+	<head>
+		<title>更改审核状态</title>
+		<meta http-equiv="keywords" content="enter,your,keywords,here" />
+		<meta http-equiv="description"
+			content="A short description of this page." />
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+		<!--<link rel="stylesheet" type="text/css" href="styles.css">-->
+	</head>
+	<body>
+		<div align="center">
+			<h:form>
+				<table>
+					<tr align="center">
+						<td width="70px" align="right">
+							<h:outputLabel>学校</h:outputLabel>
+						</td>
+						<td>
+							<h:selectOneMenu value="#{TeacherAction.schoolId}" onchange="submit()" 
+							style="width: 120px " valueChangeListener="#{TeacherAction.changeStateSchool}">
+								<c:forEach var="school" items="#{TeacherAction.schools}">
+									<f:selectItem itemValue="#{school.id}" itemLabel="#{school.name}"/>
+								</c:forEach>					
+							</h:selectOneMenu>
+						</td>
+						<td width="70px" align="right">
+							<h:outputLabel>院系</h:outputLabel>
+						</td>
+						<td>
+							<h:selectOneMenu  value="#{TeacherAction.instituteId}" onchange="submit()" 
+							style="width: 120px " valueChangeListener="#{TeacherAction.changeStateIns}">
+								<f:selectItem itemValue="0" itemLabel="请选择"/>
+								<c:forEach var="institute" items="#{TeacherAction.institutes}">
+								<f:selectItem itemValue="#{institute.id}" itemLabel="#{institute.name}"/>
+								</c:forEach>		
+							</h:selectOneMenu>
+						</td>
+						<td width="70px" align="right">
+							<h:outputLabel>专业</h:outputLabel>
+						</td>
+						<td>
+						<h:selectOneMenu id="majorId" value="#{TeacherAction.majorId}" onchange="submit()" 
+						style="width: 120px " valueChangeListener="#{TeacherAction.changeStateMajor}">
+						    <f:selectItem itemValue="0" itemLabel="请选择"/>
+							<c:forEach var="major" items="#{TeacherAction.majors}" >
+								<f:selectItem itemValue="#{major.id}" itemLabel="#{major.name}"/>
+							</c:forEach>
+						</h:selectOneMenu>
+						</td>
+						<td width="70px">
+                                                    <h:outputLabel style="align:left">班级</h:outputLabel>
+						</td>
+						<td>
+							<h:selectOneMenu id="classId" value="#{TeacherAction.classId}" style="width: 120px "
+							 valueChangeListener="#{TeacherAction.changeStateClass}" onchange="submit()">
+								<f:selectItem itemValue="0" itemLabel="请选择"/>
+								<c:forEach var="class" items="#{TeacherAction.classes}">
+									<f:selectItem itemValue="#{class.id}" itemLabel="#{class.name}"/>
+								</c:forEach>
+							</h:selectOneMenu>	
+						</td>
+						<td width="70px" align="right">
+							<h:outputLabel>科目</h:outputLabel>
+						</td>
+						<td>
+							<h:selectOneMenu value="#{TeacherAction.courseId}" style="width: 120px ">
+								<f:selectItem itemValue="0" itemLabel="请选择"/>
+								<c:forEach var="course" items="#{TeacherAction.courses}">
+									<f:selectItem itemValue="#{course.id}" itemLabel="#{course.name}"/>
+								</c:forEach>
+							</h:selectOneMenu>
+						</td>
+					</tr>
+					<tr align="center">
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr align="center">
+						<td></td>
+						<td><h:commandLink action="#{TeacherAction.showGrades}" style="text-decoration: none;">显示成绩</h:commandLink></td>
+						<td></td>
+						<td><h:commandLink action="#{TeacherAction.checkGrades}" style="text-decoration: none;">审核成绩</h:commandLink></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</table>
+			</h:form>
+		</div>
+		<br/>
+		<div align="center">
+			<h:form>
+				<table border="1">
+					<tr style="background-color:teal;">
+						<td width="100px" align="center">行号</td>
+						<td width="100px" align="center">学号</td>
+						<td width="150px" align="center">姓名</td>
+						<td width="150px" align="center">科目</td>
+						<td width="150px" align="center">班级</td>
+						<td width="100px" align="center">得分</td>
+						<td width="100px" align="center">审核状态</td>
+					</tr>
+					<c:forEach var="paper" items="#{TeacherAction.testpapers}">
+						<tr>
+						<td>#{paper.number}</td>
+						<td>#{paper.stuid}</td>
+						<td>
+							<c:forEach var="stu" items="#{TeacherAction.students}">
+								<c:if test="${paper.stuid==stu.id}">
+									#{stu.name}
+								</c:if>
+							</c:forEach>
+						</td>
+						<td>
+							<c:forEach var="course" items="#{TeacherAction.courses}">
+								<c:if test="${TeacherAction.courseId==course.id}">
+									#{course.name}
+								</c:if>
+							</c:forEach>
+						</td>
+						<td>
+							<c:forEach var="class" items="#{TeacherAction.classes}">
+								<c:if test="${TeacherAction.classId==class.id}">
+									#{class.name}
+								</c:if>
+							</c:forEach>
+						</td>
+						<td>#{paper.score}</td>
+						<td align="center">
+							<h:selectBooleanCheckbox value="#{paper.ck}"></h:selectBooleanCheckbox>
+						</td>
+					</tr>
+					</c:forEach>
+				</table>
+			</h:form>
+		</div>
+	</body>
+</html>

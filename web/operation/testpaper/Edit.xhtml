@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditTestpaperTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditTestpaperLabel_id}" for="id" />
+                    <h:inputText id="id" value="#{testpaperController.selected.id}" title="#{bundle.EditTestpaperTitle_id}" required="true" requiredMessage="#{bundle.EditTestpaperRequiredMessage_id}"/>
+                    <h:outputLabel value="#{bundle.EditTestpaperLabel_content}" for="content" />
+                    <h:inputText id="content" value="#{testpaperController.selected.content}" title="#{bundle.EditTestpaperTitle_content}" />
+                    <h:outputLabel value="#{bundle.EditTestpaperLabel_wrongnum}" for="wrongnum" />
+                    <h:inputText id="wrongnum" value="#{testpaperController.selected.wrongnum}" title="#{bundle.EditTestpaperTitle_wrongnum}" />
+                    <h:outputLabel value="#{bundle.EditTestpaperLabel_suminterval}" for="suminterval" />
+                    <h:inputText id="suminterval" value="#{testpaperController.selected.suminterval}" title="#{bundle.EditTestpaperTitle_suminterval}" />
+                    <h:outputLabel value="#{bundle.EditTestpaperLabel_starttime}" for="starttime" />
+                    <h:inputText id="starttime" value="#{testpaperController.selected.starttime}" title="#{bundle.EditTestpaperTitle_starttime}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.EditTestpaperLabel_score}" for="score" />
+                    <h:inputText id="score" value="#{testpaperController.selected.score}" title="#{bundle.EditTestpaperTitle_score}" />
+                    <h:outputLabel value="#{bundle.EditTestpaperLabel_answer}" for="answer" />
+                    <h:inputText id="answer" value="#{testpaperController.selected.answer}" title="#{bundle.EditTestpaperTitle_answer}" />
+                    <h:outputLabel value="#{bundle.EditTestpaperLabel_checkstate}" for="checkstate" />
+                    <h:inputText id="checkstate" value="#{testpaperController.selected.checkstate}" title="#{bundle.EditTestpaperTitle_checkstate}" />
+                    <h:outputLabel value="#{bundle.EditTestpaperLabel_testassigninfom}" for="testassigninfom" />
+                    <h:selectOneMenu id="testassigninfom" value="#{testpaperController.selected.testassigninfom}" title="#{bundle.EditTestpaperTitle_testassigninfom}" >
+                        <f:selectItems value="#{testassigninfomController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.EditTestpaperLabel_studentinfo}" for="studentinfo" />
+                    <h:selectOneMenu id="studentinfo" value="#{testpaperController.selected.studentinfo}" title="#{bundle.EditTestpaperTitle_studentinfo}" >
+                        <f:selectItems value="#{studentinfoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.EditTestpaperLabel_courseinfo}" for="courseinfo" />
+                    <h:selectOneMenu id="courseinfo" value="#{testpaperController.selected.courseinfo}" title="#{bundle.EditTestpaperTitle_courseinfo}" >
+                        <f:selectItems value="#{courseinfoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink action="#{testpaperController.update}" value="#{bundle.EditTestpaperSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditTestpaperViewLink}"/>
+                <br />
+                <h:commandLink action="#{testpaperController.prepareList}" value="#{bundle.EditTestpaperShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditTestpaperIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <body>
+        <ui:composition template="./model.xhtml">
+            <ui:define name="content">
+                <h:form>
+                    <div id="tree">
+                        <h:selectOneMenu value="#{chapterinfoController.selected}" id="chapter" >
+                            <f:selectItems value="#{chapterinfoController.itemsAvailableSelectOne}" />
+
+                        </h:selectOneMenu>
+
+                    </div>
+                    <div align="center" class="divcss1">
+                        <font  class="font1">章节维护界面</font>
+                    </div>
+                    <div align="center" class="divcss2">
+                        <h:panelGrid columns="2" style="column-width: 50px;">
+                            <h:outputText value="当前选中节点信息:" ></h:outputText>
+                            <h:outputText id="myName" value="#{chapterinfoController.selected.name}" style="font-weight: bolder" ></h:outputText>
+                            <rich:inplaceInput id="cname"  defaultLabel="请输入要添加新章节名字"  value="#{chapterinfoController.cname}"/>
+                            <h:commandButton  value="添加" action="#{chapterinfoController.createNewChapter()}" />
+                            <rich:inplaceInput id="newName" value="#{chapterinfoController.selected.name}"/>
+                            <h:commandButton action="#{chapterinfoController.updateChapter()}" value="修改" />
+                        </h:panelGrid>
+                        <h:form>      
+                            <h:commandButton  action="#{chapterinfoController.delete()}" value="删除" />
+                        </h:form>
+                    </div>
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

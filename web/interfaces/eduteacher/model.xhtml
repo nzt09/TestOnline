@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:rich="http://richfaces.org/rich">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="./css/default.css"/>
+        <h:outputStylesheet name="./css/cssLayout.css"/>
+        <h:outputStylesheet name="./css/course.css"/>
+        <title>在线考试系统</title>
+    </h:head>
+
+    <h:body>
+        <div id="topmain" class="top">
+            <ui:insert name="top">
+                <rich:panel style="background-color: #9c6">
+                    <h:form >
+                        <div id="header1" >
+                            <div align="center" style="padding-top: 20px"><span id="title_1" >课程知识点的设计与实现</span></div>
+                            <div align="right" ><h:outputLink id="main" value="main.xhtml" target="main" style="padding-bottom: 40px;color: blue;">返回主页</h:outputLink></div>
+                            <div id="menu" align="center" >
+                                <h:panelGrid columns="4" >
+                                    <h:outputLink value="chapterManage.xhtml" style="text-decoration: none;color: red"  >章节管理</h:outputLink>
+                                    <h:outputLink value="knowledgeManage.xhtml" style="text-decoration: none;color: red" >知识点管理</h:outputLink>
+                                    <h:outputLink value="questionTypeManage.xhtml" style="text-decoration: none;color: red" >题型管理</h:outputLink>
+                                    <h:outputLink value="questionManage.xhtml" style="text-decoration: none;color: red" >题目管理</h:outputLink>
+                                </h:panelGrid>
+                            </div>
+                        </div>
+                    </h:form>
+                </rich:panel>
+            </ui:insert>
+        </div>
+        <div id="contentmain" class="center_content">
+            <ui:insert name="content">Content</ui:insert>
+        </div>
+    </h:body>
+</html>

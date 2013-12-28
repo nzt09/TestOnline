@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <body>
+        <ui:composition template="./../../template.xhtml">
+            <ui:define name="title">
+                学生菜单
+            </ui:define>
+
+            <ui:define name="body">
+                <h:form >
+                    学号：<h:outputText value="#{loginController.userId}"></h:outputText><br/>
+                    姓名：<h:outputText value="#{loginController.name}"></h:outputText><br/>
+                    班级：<h:outputText value="#{loginController.className}"></h:outputText><br/>
+                    <ol>
+                        <li>知识点管理
+                            <ul>
+                                <li><h:commandLink action="student_result1_1.xhtml" value="知识掌握情况"  style="text-decoration: none;"/></li>
+                                <li><h:commandLink action="student_result2_1.xhtml" value="知识弥补速递"  style="text-decoration: none;"/></li>
+                             </ul>
+                        </li>
+                        <li>成绩管理
+                            <ul>
+                                <li><a href="">所有测试成绩</a></li>
+                            </ul>
+                        </li>
+                     </ol>
+                 </h:form>
+             </ui:define>
+          </ui:composition>
+      </body>
+</html>

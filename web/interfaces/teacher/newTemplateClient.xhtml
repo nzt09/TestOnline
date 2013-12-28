@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:outputStylesheet>
+        a.no-decor>img {
+        border: none;
+        }
+    </h:outputStylesheet> 
+    <ui:define name="body">
+         
+        <a4j:status onstart="#{rich:component('statPane')}.show()" onstop="#{rich:component('statPane')}.hide()" />
+        <h:form id="form">
+              <h:panelGrid columnClasses="acent">
+            <rich:dataTable value="#{teachercourseclassController.items}" var="item" iterationStatusVar="it" id="table" rows="15">
+                <rich:column>
+                    <f:facet name="header">#</f:facet>
+                        #{it.index}
+                </rich:column>
+                <rich:column>
+                    <f:facet name="header">老师</f:facet>
+                    <h:outputText value="#{item.teacher.name}" />
+                </rich:column>
+                  <rich:column>
+                    <f:facet name="header">专业</f:facet>
+                    <h:outputText value="#{item.courseinfo.name}" />
+                </rich:column>
+                 <rich:column>
+                    <f:facet name="header">班级</f:facet>
+                    <h:outputText value="#{item.classinfo.name}" />
+                </rich:column>
+                 <rich:column>
+                    <f:facet name="header">学期</f:facet>
+                    <h:outputText value="#{item.term}" />
+                </rich:column>
+                  <rich:column>
+                <a4j:commandLink styleClass="no-decor" execute="@this" render="@none"
+                    oncomplete="#{rich:component('confirmPane')}.show()">
+                    <h:graphicImage value="../image/15.gif" alt="delete" />
+                    <a4j:param value="#{it.index}" assignTo="#{teachercourseclassController.selectedItemIndex}" />
+                </a4j:commandLink>
+                <a4j:commandLink styleClass="no-decor" render="editGrid" execute="@this"
+                    oncomplete="#{rich:component('editPane')}.show()">
+                    <h:graphicImage value="../image/edit.gif" alt="edit" />
+                    <a4j:param value="#{it.index}" assignTo="#{teachercourseclassController.selectedItemIndex}" />
+                    <f:setPropertyActionListener target="#{teachercourseclassController.update}" value="#{item}" />
+                </a4j:commandLink>
+            </rich:column>
+        <f:facet name="footer">
+            <rich:dataScroller page="#{teachercourseclassController.page}" for="table"  maxPages="5"/>
+          
+            </f:facet>
+                
+            </rich:dataTable>
+
+             
+          </h:panelGrid>
+        </h:form>
+        
+                </ui:define>
+
+                </ui:composition>

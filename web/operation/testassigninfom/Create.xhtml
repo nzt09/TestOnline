@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateTestassigninfomTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateTestassigninfomLabel_id}" for="id" />
+                    <h:inputText id="id" value="#{testassigninfomController.selected.id}" title="#{bundle.CreateTestassigninfomTitle_id}" required="true" requiredMessage="#{bundle.CreateTestassigninfomRequiredMessage_id}"/>
+                    <h:outputLabel value="#{bundle.CreateTestassigninfomLabel_testtime}" for="testtime" />
+                    <h:inputText id="testtime" value="#{testassigninfomController.selected.testtime}" title="#{bundle.CreateTestassigninfomTitle_testtime}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.CreateTestassigninfomLabel_testinterval}" for="testinterval" />
+                    <h:inputText id="testinterval" value="#{testassigninfomController.selected.testinterval}" title="#{bundle.CreateTestassigninfomTitle_testinterval}" />
+                    <h:outputLabel value="#{bundle.CreateTestassigninfomLabel_testdifficulty}" for="testdifficulty" />
+                    <h:inputText id="testdifficulty" value="#{testassigninfomController.selected.testdifficulty}" title="#{bundle.CreateTestassigninfomTitle_testdifficulty}" />
+                    <h:outputLabel value="#{bundle.CreateTestassigninfomLabel_ipstart}" for="ipstart" />
+                    <h:inputText id="ipstart" value="#{testassigninfomController.selected.ipstart}" title="#{bundle.CreateTestassigninfomTitle_ipstart}" />
+                    <h:outputLabel value="#{bundle.CreateTestassigninfomLabel_ipend}" for="ipend" />
+                    <h:inputText id="ipend" value="#{testassigninfomController.selected.ipend}" title="#{bundle.CreateTestassigninfomTitle_ipend}" />
+                    <h:outputLabel value="#{bundle.CreateTestassigninfomLabel_notice}" for="notice" />
+                    <h:inputText id="notice" value="#{testassigninfomController.selected.notice}" title="#{bundle.CreateTestassigninfomTitle_notice}" />
+                    <h:outputLabel value="#{bundle.CreateTestassigninfomLabel_noticescore}" for="noticescore" />
+                    <h:inputText id="noticescore" value="#{testassigninfomController.selected.noticescore}" title="#{bundle.CreateTestassigninfomTitle_noticescore}" />
+                    <h:outputLabel value="#{bundle.CreateTestassigninfomLabel_averagetime}" for="averagetime" />
+                    <h:inputText id="averagetime" value="#{testassigninfomController.selected.averagetime}" title="#{bundle.CreateTestassigninfomTitle_averagetime}" />
+                    <h:outputLabel value="#{bundle.CreateTestassigninfomLabel_teacher}" for="teacher" />
+                    <h:selectOneMenu id="teacher" value="#{testassigninfomController.selected.teacher}" title="#{bundle.CreateTestassigninfomTitle_teacher}" >
+                        <f:selectItems value="#{teacherController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateTestassigninfomLabel_courseinfo}" for="courseinfo" />
+                    <h:selectOneMenu id="courseinfo" value="#{testassigninfomController.selected.courseinfo}" title="#{bundle.CreateTestassigninfomTitle_courseinfo}" >
+                        <f:selectItems value="#{courseinfoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateTestassigninfomLabel_classroom}" for="classroom" />
+                    <h:selectOneMenu id="classroom" value="#{testassigninfomController.selected.classroom}" title="#{bundle.CreateTestassigninfomTitle_classroom}" >
+                        <f:selectItems value="#{classroomController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateTestassigninfomLabel_classinfo}" for="classinfo" />
+                    <h:selectOneMenu id="classinfo" value="#{testassigninfomController.selected.classinfo}" title="#{bundle.CreateTestassigninfomTitle_classinfo}" >
+                        <f:selectItems value="#{classinfoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{testassigninfomController.create}" value="#{bundle.CreateTestassigninfomSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{testassigninfomController.prepareList}" value="#{bundle.CreateTestassigninfomShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateTestassigninfomIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

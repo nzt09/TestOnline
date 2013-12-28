@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="添加任课老师信息"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="教师编号" for="personid" />
+                    <h:inputText id="personid" value="#{teacherController.selected.personid}" title="#{bundle.CreateTeacherTitle_personid}" required="true" requiredMessage="#{bundle.CreateTeacherRequiredMessage_personid}"/>
+                    <h:outputLabel value="姓名" for="name" />
+                    <h:inputText id="name" value="#{teacherController.selected.name}" title="#{bundle.CreateTeacherTitle_name}" />
+                    <h:outputLabel value="密码" for="password" />
+                    <h:inputText id="password" value="#{teacherController.selected.password}" title="#{bundle.CreateTeacherTitle_password}" />
+                    <h:outputLabel value="身份" for="rolesinfo" />
+                    <h:selectOneMenu id="rolesinfo" value="#{teacherController.selected.rolesinfo}" title="#{bundle.CreateTeacherTitle_rolesinfo}" >
+                        <f:selectItems value="#{rolesinfoController.itemsAvailableSelectM}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="学院" for="department" />
+                    <h:selectOneMenu id="department" value="#{teacherController.selected.department}" title="#{bundle.CreateTeacherTitle_department}" >
+                        <f:selectItems value="#{departmentController.itemsAvailableSelectManyD}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{teacherController.educreate()}" value="保存" />
+                <br />
+                <br />
+                <h:commandLink action="#{teacherController.prepareList}" value="显示所有任课老师信息" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="manage_user.xhtml" value="返回上一层"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

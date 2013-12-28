@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateClassquestiondifficultTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateClassquestiondifficultLabel_id}" for="id" />
+                    <h:inputText id="id" value="#{classquestiondifficultController.selected.id}" title="#{bundle.CreateClassquestiondifficultTitle_id}" required="true" requiredMessage="#{bundle.CreateClassquestiondifficultRequiredMessage_id}"/>
+                    <h:outputLabel value="#{bundle.CreateClassquestiondifficultLabel_difficulty}" for="difficulty" />
+                    <h:inputText id="difficulty" value="#{classquestiondifficultController.selected.difficulty}" title="#{bundle.CreateClassquestiondifficultTitle_difficulty}" />
+                    <h:outputLabel value="#{bundle.CreateClassquestiondifficultLabel_averagetime}" for="averagetime" />
+                    <h:inputText id="averagetime" value="#{classquestiondifficultController.selected.averagetime}" title="#{bundle.CreateClassquestiondifficultTitle_averagetime}" />
+                    <h:outputLabel value="#{bundle.CreateClassquestiondifficultLabel_questionsinfo}" for="questionsinfo" />
+                    <h:selectOneMenu id="questionsinfo" value="#{classquestiondifficultController.selected.questionsinfo}" title="#{bundle.CreateClassquestiondifficultTitle_questionsinfo}" >
+                        <f:selectItems value="#{questionsinfoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateClassquestiondifficultLabel_classinfo}" for="classinfo" />
+                    <h:selectOneMenu id="classinfo" value="#{classquestiondifficultController.selected.classinfo}" title="#{bundle.CreateClassquestiondifficultTitle_classinfo}" >
+                        <f:selectItems value="#{classinfoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{classquestiondifficultController.create}" value="#{bundle.CreateClassquestiondifficultSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{classquestiondifficultController.prepareList}" value="#{bundle.CreateClassquestiondifficultShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateClassquestiondifficultIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

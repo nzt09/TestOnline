@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateQuestionbaseinfoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateQuestionbaseinfoLabel_id}" for="id" />
+                    <h:inputText id="id" value="#{questionbaseinfoController.selected.id}" title="#{bundle.CreateQuestionbaseinfoTitle_id}" required="true" requiredMessage="#{bundle.CreateQuestionbaseinfoRequiredMessage_id}"/>
+                    <h:outputLabel value="#{bundle.CreateQuestionbaseinfoLabel_stem}" for="stem" />
+                    <h:inputText id="stem" value="#{questionbaseinfoController.selected.stem}" title="#{bundle.CreateQuestionbaseinfoTitle_stem}" />
+                    <h:outputLabel value="#{bundle.CreateQuestionbaseinfoLabel_rightanswer}" for="rightanswer" />
+                    <h:inputText id="rightanswer" value="#{questionbaseinfoController.selected.rightanswer}" title="#{bundle.CreateQuestionbaseinfoTitle_rightanswer}" />
+                    <h:outputLabel value="#{bundle.CreateQuestionbaseinfoLabel_wronganswer}" for="wronganswer" />
+                    <h:inputText id="wronganswer" value="#{questionbaseinfoController.selected.wronganswer}" title="#{bundle.CreateQuestionbaseinfoTitle_wronganswer}" />
+                    <h:outputLabel value="#{bundle.CreateQuestionbaseinfoLabel_difficulty}" for="difficulty" />
+                    <h:inputText id="difficulty" value="#{questionbaseinfoController.selected.difficulty}" title="#{bundle.CreateQuestionbaseinfoTitle_difficulty}" />
+                    <h:outputLabel value="#{bundle.CreateQuestionbaseinfoLabel_testcaseresult}" for="testcaseresult" />
+                    <h:inputText id="testcaseresult" value="#{questionbaseinfoController.selected.testcaseresult}" title="#{bundle.CreateQuestionbaseinfoTitle_testcaseresult}" />
+                    <h:outputLabel value="#{bundle.CreateQuestionbaseinfoLabel_testcasepara}" for="testcasepara" />
+                    <h:inputText id="testcasepara" value="#{questionbaseinfoController.selected.testcasepara}" title="#{bundle.CreateQuestionbaseinfoTitle_testcasepara}" />
+                    <h:outputLabel value="#{bundle.CreateQuestionbaseinfoLabel_analysis}" for="analysis" />
+                    <h:inputText id="analysis" value="#{questionbaseinfoController.selected.analysis}" title="#{bundle.CreateQuestionbaseinfoTitle_analysis}" />
+                    <h:outputLabel value="#{bundle.CreateQuestionbaseinfoLabel_questiontypeinfo}" for="questiontypeinfo" />
+                    <h:selectOneMenu id="questiontypeinfo" value="#{questionbaseinfoController.selected.questiontypeinfo}" title="#{bundle.CreateQuestionbaseinfoTitle_questiontypeinfo}" >
+                        <f:selectItems value="#{questiontypeinfoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateQuestionbaseinfoLabel_knowledge}" for="knowledge" />
+                    <h:selectOneMenu id="knowledge" value="#{questionbaseinfoController.selected.knowledge}" title="#{bundle.CreateQuestionbaseinfoTitle_knowledge}" >
+                        <f:selectItems value="#{knowledgeController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{questionbaseinfoController.create}" value="#{bundle.CreateQuestionbaseinfoSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{questionbaseinfoController.prepareList}" value="#{bundle.CreateQuestionbaseinfoShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateQuestionbaseinfoIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewRolesinfoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewRolesinfoLabel_id}"/>
+                    <h:outputText value="#{rolesinfoController.selected.id}" title="#{bundle.ViewRolesinfoTitle_id}"/>
+                    <h:outputText value="#{bundle.ViewRolesinfoLabel_resouceids}"/>
+                    <h:outputText value="#{rolesinfoController.selected.resouceids}" title="#{bundle.ViewRolesinfoTitle_resouceids}"/>
+                    <h:outputText value="#{bundle.ViewRolesinfoLabel_name}"/>
+                    <h:outputText value="#{rolesinfoController.selected.name}" title="#{bundle.ViewRolesinfoTitle_name}"/>
+                    <h:outputText value="#{bundle.ViewRolesinfoLabel_canseeall}"/>
+                    <h:outputText value="#{rolesinfoController.selected.canseeall}" title="#{bundle.ViewRolesinfoTitle_canseeall}"/>
+                    <h:outputText value="#{bundle.ViewRolesinfoLabel_privilege}"/>
+                    <h:outputText value="#{rolesinfoController.selected.privilege}" title="#{bundle.ViewRolesinfoTitle_privilege}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{rolesinfoController.destroyAndView}" value="#{bundle.ViewRolesinfoDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewRolesinfoEditLink}"/>
+                <br />
+                <h:commandLink action="#{rolesinfoController.prepareCreate}" value="#{bundle.ViewRolesinfoCreateLink}" />
+                <br />
+                <h:commandLink action="#{rolesinfoController.prepareList}" value="#{bundle.ViewRolesinfoShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewRolesinfoIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

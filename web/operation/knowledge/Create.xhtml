@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateKnowledgeTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateKnowledgeLabel_id}" for="id" />
+                    <h:inputText id="id" value="#{knowledgeController.selected.id}" title="#{bundle.CreateKnowledgeTitle_id}" required="true" requiredMessage="#{bundle.CreateKnowledgeRequiredMessage_id}"/>
+                    <h:outputLabel value="#{bundle.CreateKnowledgeLabel_name}" for="name" />
+                    <h:inputText id="name" value="#{knowledgeController.selected.name}" title="#{bundle.CreateKnowledgeTitle_name}" required="true" requiredMessage="#{bundle.CreateKnowledgeRequiredMessage_name}"/>
+                    <h:outputLabel value="#{bundle.CreateKnowledgeLabel_course}" for="course" />
+                    <h:inputText id="course" value="#{knowledgeController.selected.course}" title="#{bundle.CreateKnowledgeTitle_course}" />
+                    <h:outputLabel value="#{bundle.CreateKnowledgeLabel_knowledge}" for="knowledge" />
+                    <h:selectOneMenu id="knowledge" value="#{knowledgeController.selected.knowledge}" title="#{bundle.CreateKnowledgeTitle_knowledge}" >
+                        <f:selectItems value="#{knowledgeController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateKnowledgeLabel_chapterinfo}" for="chapterinfo" />
+                    <h:selectOneMenu id="chapterinfo" value="#{knowledgeController.selected.chapterinfo}" title="#{bundle.CreateKnowledgeTitle_chapterinfo}" required="true" requiredMessage="#{bundle.CreateKnowledgeRequiredMessage_chapterinfo}">
+                        <f:selectItems value="#{chapterinfoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{knowledgeController.create}" value="#{bundle.CreateKnowledgeSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{knowledgeController.prepareList}" value="#{bundle.CreateKnowledgeShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateKnowledgeIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

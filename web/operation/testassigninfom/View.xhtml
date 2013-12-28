@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewTestassigninfomTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewTestassigninfomLabel_id}"/>
+                    <h:outputText value="#{testassigninfomController.selected.id}" title="#{bundle.ViewTestassigninfomTitle_id}"/>
+                    <h:outputText value="#{bundle.ViewTestassigninfomLabel_testtime}"/>
+                    <h:outputText value="#{testassigninfomController.selected.testtime}" title="#{bundle.ViewTestassigninfomTitle_testtime}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewTestassigninfomLabel_testinterval}"/>
+                    <h:outputText value="#{testassigninfomController.selected.testinterval}" title="#{bundle.ViewTestassigninfomTitle_testinterval}"/>
+                    <h:outputText value="#{bundle.ViewTestassigninfomLabel_testdifficulty}"/>
+                    <h:outputText value="#{testassigninfomController.selected.testdifficulty}" title="#{bundle.ViewTestassigninfomTitle_testdifficulty}"/>
+                    <h:outputText value="#{bundle.ViewTestassigninfomLabel_ipstart}"/>
+                    <h:outputText value="#{testassigninfomController.selected.ipstart}" title="#{bundle.ViewTestassigninfomTitle_ipstart}"/>
+                    <h:outputText value="#{bundle.ViewTestassigninfomLabel_ipend}"/>
+                    <h:outputText value="#{testassigninfomController.selected.ipend}" title="#{bundle.ViewTestassigninfomTitle_ipend}"/>
+                    <h:outputText value="#{bundle.ViewTestassigninfomLabel_notice}"/>
+                    <h:outputText value="#{testassigninfomController.selected.notice}" title="#{bundle.ViewTestassigninfomTitle_notice}"/>
+                    <h:outputText value="#{bundle.ViewTestassigninfomLabel_noticescore}"/>
+                    <h:outputText value="#{testassigninfomController.selected.noticescore}" title="#{bundle.ViewTestassigninfomTitle_noticescore}"/>
+                    <h:outputText value="#{bundle.ViewTestassigninfomLabel_averagetime}"/>
+                    <h:outputText value="#{testassigninfomController.selected.averagetime}" title="#{bundle.ViewTestassigninfomTitle_averagetime}"/>
+                    <h:outputText value="#{bundle.ViewTestassigninfomLabel_teacher}"/>
+                    <h:outputText value="#{testassigninfomController.selected.teacher}" title="#{bundle.ViewTestassigninfomTitle_teacher}"/>
+                    <h:outputText value="#{bundle.ViewTestassigninfomLabel_courseinfo}"/>
+                    <h:outputText value="#{testassigninfomController.selected.courseinfo}" title="#{bundle.ViewTestassigninfomTitle_courseinfo}"/>
+                    <h:outputText value="#{bundle.ViewTestassigninfomLabel_classroom}"/>
+                    <h:outputText value="#{testassigninfomController.selected.classroom}" title="#{bundle.ViewTestassigninfomTitle_classroom}"/>
+                    <h:outputText value="#{bundle.ViewTestassigninfomLabel_classinfo}"/>
+                    <h:outputText value="#{testassigninfomController.selected.classinfo}" title="#{bundle.ViewTestassigninfomTitle_classinfo}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{testassigninfomController.destroyAndView}" value="#{bundle.ViewTestassigninfomDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewTestassigninfomEditLink}"/>
+                <br />
+                <h:commandLink action="#{testassigninfomController.prepareCreate}" value="#{bundle.ViewTestassigninfomCreateLink}" />
+                <br />
+                <h:commandLink action="#{testassigninfomController.prepareList}" value="#{bundle.ViewTestassigninfomShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewTestassigninfomIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

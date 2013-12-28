@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xml:lang="en" lang="en"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<h:head>
+		<title>My Facelets Page</title>
+		<meta http-equiv="keywords" content="enter,your,keywords,here" />
+		<meta http-equiv="description"
+			content="A short description of this page." />
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+		<!--<link rel="stylesheet" type="text/css" href="styles.css">-->
+		<link rel="stylesheet" type="text/css" href="../../css/table.css"/>
+	</h:head>
+	<body>
+	<div align="right">
+		<h:form>
+			<h:outputLink value="add_Question.xhtml?knowid=#{queryQuestion.knowId}" style="text-decoration: none;">添加题目</h:outputLink>&nbsp;&nbsp;&nbsp;
+		</h:form>
+		<hr/>
+	</div>
+	<div>
+	<h:form>
+		<h:dataTable id="questions" value="#{queryQuestion.questions}" var="question" 
+			 styleClass="tablebg" headerClass="header" footerClass="footer"
+  			 columnClasses="text,text,number,number,text,text,text,number,text,text"
+            rowClasses="graybg,whitebg" border="0" cellpadding="5">
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="content"></h:outputText>
+				</f:facet>
+				<h:outputText value="#{question.content}"></h:outputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="type"></h:outputText>
+				</f:facet>
+				<h:outputText value="#{question.typename}"></h:outputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="score"></h:outputText>
+				</f:facet>
+				<h:outputText value="#{question.score}"></h:outputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="difficulty"></h:outputText>
+				</f:facet>
+				<h:outputText value="#{question.difficulty}"></h:outputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="selections"></h:outputText>
+				</f:facet>
+				<h:outputText value="#{question.selections}"></h:outputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="answer"></h:outputText>
+				</f:facet>
+				<h:outputText value="#{question.answer}"></h:outputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="code"></h:outputText>
+				</f:facet>
+				<h:outputText value="#{question.code}"></h:outputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="averagetime"></h:outputText>
+				</f:facet>
+				<h:outputText value="#{question.averagetime}"></h:outputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="operator-1"></h:outputText>
+				</f:facet>
+				<h:outputLink value="update_Question.xhtml?qid=#{question.id}" style="text-decoration: none;">修改</h:outputLink>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="operator—2"></h:outputText>
+				</f:facet>
+				<h:commandLink action="#{queryQuestion.deleteQuestion}" value="删除" style="text-decoration: none;">
+					<f:param name="qid" value="#{question.id}"></f:param>
+				</h:commandLink>
+			</h:column>
+		</h:dataTable>
+		<h:commandLink value="首页" action="#{queryQuestion.firstPage}"></h:commandLink>
+		<h:commandLink value="上一页" action="#{queryQuestion.prePage}"></h:commandLink>
+		<h:commandLink value="下一页" action="#{queryQuestion.nextPage}">
+			<f:ajax render="questions"></f:ajax>
+		</h:commandLink>
+		<h:commandLink value="尾页" action="#{queryQuestion.lastPage}"></h:commandLink>
+		<c:if test="${queryQuestion.page.totalPage!=0}">
+		<h:outputText value="第#{queryQuestion.page.currentPage+1}页"></h:outputText>
+		</c:if>
+		<h:outputText value="共#{queryQuestion.page.totalPage}页"></h:outputText>
+		</h:form>
+		</div>
+	</body>
+</html>

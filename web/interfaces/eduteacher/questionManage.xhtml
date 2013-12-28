@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:a4j="http://richfaces.org/a4j">
+    <body>
+        <ui:composition template="./model.xhtml">
+            <ui:define name="content">
+                <h:form>
+                    <div id="tree">
+                        <rich:panel header="#{chapterinfoController.courseName}" style="height: 100%">
+                            <rich:tree var="item">
+                                <rich:treeModelRecursiveAdaptor roots="#{chapterinfoController.chapterinfoRoot}" nodes="#{item.CCParents}">
+                                    <rich:treeNode>
+                                        <h:outputText value="#{item.cc.name}"/>
+                                    </rich:treeNode>
+                                    <rich:treeModelAdaptor  nodes="#{item.CCChildren}">
+                                        <rich:treeNode>
+                                            <h:commandLink value="#{item.cc.name}" action="#{knowledgeController.setSelected(item.cc)}">
+                                                <a4j:ajax render="knowledgename point"/>
+                                            </h:commandLink>
+                                        </rich:treeNode>      
+                                    </rich:treeModelAdaptor>
+                                </rich:treeModelRecursiveAdaptor>
+                            </rich:tree>
+                        </rich:panel>
+                    </div>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

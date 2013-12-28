@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListCourseinfoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListCourseinfoEmpty}" rendered="#{courseinfoController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{courseinfoController.items.rowCount > 0}">
+                    <h:outputText value="#{courseinfoController.pagination.pageFirstItem + 1}..#{courseinfoController.pagination.pageLastItem + 1}/#{courseinfoController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{courseinfoController.previous}" value="#{bundle.Previous} #{courseinfoController.pagination.pageSize}" rendered="#{courseinfoController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{courseinfoController.next}" value="#{bundle.Next} #{courseinfoController.pagination.pageSize}" rendered="#{courseinfoController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{courseinfoController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListCourseinfoTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListCourseinfoTitle_name}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.name}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListCourseinfoTitle_major}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.major}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{courseinfoController.prepareView}" value="#{bundle.ListCourseinfoViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{courseinfoController.prepareEdit}" value="#{bundle.ListCourseinfoEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{courseinfoController.destroy}" value="#{bundle.ListCourseinfoDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{courseinfoController.prepareCreate}" value="#{bundle.ListCourseinfoCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListCourseinfoIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

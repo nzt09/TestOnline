@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewQuestionsinfoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewQuestionsinfoLabel_id}"/>
+                    <h:outputText value="#{questionsinfoController.selected.id}" title="#{bundle.ViewQuestionsinfoTitle_id}"/>
+                    <h:outputText value="#{bundle.ViewQuestionsinfoLabel_content}"/>
+                    <h:outputText value="#{questionsinfoController.selected.content}" title="#{bundle.ViewQuestionsinfoTitle_content}"/>
+                    <h:outputText value="#{bundle.ViewQuestionsinfoLabel_score}"/>
+                    <h:outputText value="#{questionsinfoController.selected.score}" title="#{bundle.ViewQuestionsinfoTitle_score}"/>
+                    <h:outputText value="#{bundle.ViewQuestionsinfoLabel_difficulty}"/>
+                    <h:outputText value="#{questionsinfoController.selected.difficulty}" title="#{bundle.ViewQuestionsinfoTitle_difficulty}"/>
+                    <h:outputText value="#{bundle.ViewQuestionsinfoLabel_selections}"/>
+                    <h:outputText value="#{questionsinfoController.selected.selections}" title="#{bundle.ViewQuestionsinfoTitle_selections}"/>
+                    <h:outputText value="#{bundle.ViewQuestionsinfoLabel_answer}"/>
+                    <h:outputText value="#{questionsinfoController.selected.answer}" title="#{bundle.ViewQuestionsinfoTitle_answer}"/>
+                    <h:outputText value="#{bundle.ViewQuestionsinfoLabel_averagetime}"/>
+                    <h:outputText value="#{questionsinfoController.selected.averagetime}" title="#{bundle.ViewQuestionsinfoTitle_averagetime}"/>
+                    <h:outputText value="#{bundle.ViewQuestionsinfoLabel_code}"/>
+                    <h:outputText value="#{questionsinfoController.selected.code}" title="#{bundle.ViewQuestionsinfoTitle_code}"/>
+                    <h:outputText value="#{bundle.ViewQuestionsinfoLabel_insequence}"/>
+                    <h:outputText value="#{questionsinfoController.selected.insequence}" title="#{bundle.ViewQuestionsinfoTitle_insequence}"/>
+                    <h:outputText value="#{bundle.ViewQuestionsinfoLabel_count}"/>
+                    <h:outputText value="#{questionsinfoController.selected.count}" title="#{bundle.ViewQuestionsinfoTitle_count}"/>
+                    <h:outputText value="#{bundle.ViewQuestionsinfoLabel_testcasepara}"/>
+                    <h:outputText value="#{questionsinfoController.selected.testcasepara}" title="#{bundle.ViewQuestionsinfoTitle_testcasepara}"/>
+                    <h:outputText value="#{bundle.ViewQuestionsinfoLabel_testcaseresult}"/>
+                    <h:outputText value="#{questionsinfoController.selected.testcaseresult}" title="#{bundle.ViewQuestionsinfoTitle_testcaseresult}"/>
+                    <h:outputText value="#{bundle.ViewQuestionsinfoLabel_analysis}"/>
+                    <h:outputText value="#{questionsinfoController.selected.analysis}" title="#{bundle.ViewQuestionsinfoTitle_analysis}"/>
+                    <h:outputText value="#{bundle.ViewQuestionsinfoLabel_questiontypeinfo}"/>
+                    <h:outputText value="#{questionsinfoController.selected.questiontypeinfo}" title="#{bundle.ViewQuestionsinfoTitle_questiontypeinfo}"/>
+                    <h:outputText value="#{bundle.ViewQuestionsinfoLabel_knowledge}"/>
+                    <h:outputText value="#{questionsinfoController.selected.knowledge}" title="#{bundle.ViewQuestionsinfoTitle_knowledge}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{questionsinfoController.destroyAndView}" value="#{bundle.ViewQuestionsinfoDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewQuestionsinfoEditLink}"/>
+                <br />
+                <h:commandLink action="#{questionsinfoController.prepareCreate}" value="#{bundle.ViewQuestionsinfoCreateLink}" />
+                <br />
+                <h:commandLink action="#{questionsinfoController.prepareList}" value="#{bundle.ViewQuestionsinfoShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewQuestionsinfoIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
