@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import sessionBean.StudentinfoFacadeLocal;
 import sessionBean.TeacherFacadeLocal;
+import tools.Publicfields;
 
 
 /**
@@ -86,19 +87,19 @@ public class LoginController implements java.io.Serializable {
             //管理员登陆
                   name=currentTea.getName();
                   teaCon.setCurrent(currentTea);
-            if(currentTea.getRolesinfo().getId()==1)
+            if(currentTea.getRolesinfo().getId()==Publicfields.ADMINISTRATOR_ROLE)
             {
                 
                 
                 return "/interfaces/administrator/main";
             }
             //教务老师登陆
-            else if(currentTea.getRolesinfo().getId()==2){
+            else if(currentTea.getRolesinfo().getId()==Publicfields.TEACHER_ROLE){
                 
                 return "/interfaces/teacher/main";
             }
             //任课老师登陆
-            else if(currentTea.getRolesinfo().getId()==3){
+            else if(currentTea.getRolesinfo().getId()==Publicfields.EDUTEACHER_ROLE){
                 teaCon.setCurrent(currentTea);
                 return "/interfaces/eduteacher/eduMain.xhtml";
             }

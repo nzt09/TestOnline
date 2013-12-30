@@ -73,18 +73,6 @@ public class ChapterinfoController implements Serializable {
         this.cname = cname;
     }
 
-    private List<WrappedChapterinfo> ChapterinfoRoot;//只指向最高层结点
-
-    public List<WrappedChapterinfo> getChapterinfoRoot() {
-        this.ChapterinfoRoot = new LinkedList<>();
-        List<Chapterinfo> paretTem = ejbFacade.findByCourseId(courseId);
-        chapterTotalNum = paretTem.size();
-        for (int i = 0; i < paretTem.size(); i++) {
-            this.ChapterinfoRoot.add(new WrappedChapterinfo(paretTem.get(i)));
-        }
-        return this.ChapterinfoRoot;
-    }
-
     public void typeChapterListenner(ValueChangeEvent event) {
         chapterId = Integer.parseInt((String) event.getNewValue());
         this.current = ejbFacade.find(chapterId);
@@ -183,10 +171,11 @@ public class ChapterinfoController implements Serializable {
     //添加新的章节信息
     public void createNewChapter() {
         try {
-            current.setName(cname);
-            current.setCourseinfo(this.current.getCourseinfo());
-            current.setChapternum(this.current.getChapternum() + 1);
-            getFacade().create(current);
+            Chapterinfo cinfo=new Chapterinfo();
+            cinfo.setName(cname);
+            cinfo.setCourseinfo(this.current.getCourseinfo());
+            cinfo.setChapternum(this.current.getChapternum() + 1);
+            getFacade().create(cinfo);
             //一定要重新赋值一下吗？
             this.selectAllChapter();
 
@@ -210,7 +199,8 @@ public class ChapterinfoController implements Serializable {
     }
     
     //删除章节信息
-    public void delete() {
+    public void delete() { 
+        System.out.println("ddd");
         performDestroy();
         this.cname = null;
         this.current = null;

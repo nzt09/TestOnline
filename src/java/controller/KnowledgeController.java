@@ -37,6 +37,28 @@ public class KnowledgeController implements Serializable {
     private int selectedItemIndex;
     private List<WrappedKnowledge> knowledgeRoot;//只指向最高层结点
     private String chapterId;
+    //新的父知识点名字
+    private String newPname;
+    //新的子知识点名字
+    private String newName;
+    //显示或隐藏标志位
+    private boolean chapterIdSelected=false;
+
+    public String getNewPname() {
+        return newPname;
+    }
+
+    public void setNewPname(String newPname) {
+        this.newPname = newPname;
+    }
+
+    public String getNewName() {
+        return newName;
+    }
+
+    public void setNewName(String newName) {
+        this.newName = newName;
+    }
 
     public String getChapterId() {
         return chapterId;
@@ -44,8 +66,8 @@ public class KnowledgeController implements Serializable {
 
     public void setChapterId(String chapterId) {
         this.chapterId = chapterId;
+        
     }
-    
 
     public KnowledgeController() {
     }
@@ -53,12 +75,15 @@ public class KnowledgeController implements Serializable {
     public Knowledge getSelected() {
         if (current == null) {
             current = new Knowledge();
+            current.setName("------");
             selectedItemIndex = -1;
         }
         return current;
     }
+    
 
     public void setSelected(Knowledge kl) {
+        this.chapterIdSelected=true;
         this.current = kl;
     }
 
@@ -103,16 +128,21 @@ public class KnowledgeController implements Serializable {
 
     //添加子知识点
     public void createChildrenKnowledge() {
-        System.out.println(current.getId());
+        Knowledge myknow = new Knowledge();
+        myknow.setKnowledge(current);
+        myknow.setName(newName);
+        myknow.setChapterinfo(current.getChapterinfo());
+        getFacade().create(myknow);
+        current = null;
     }
 
     //添加父知识点
-    public String createParentKnowledge() {
-        current.setChapterinfo(this.current.getChapterinfo());
-        current.setName(this.getSelected().getName());
-        current.setCourse(this.current.getCourse());
-        getFacade().create(current);
-        return null;
+    public void createParentKnowledge() {
+        Knowledge myknow = new Knowledge();
+        myknow.setName(newPname);
+        myknow.setChapterinfo(chapterController.getSelected());
+        getFacade().create(myknow);
+        current = null;
     }
 
     public String create() {
@@ -147,7 +177,7 @@ public class KnowledgeController implements Serializable {
     public String delete() {
         performDestroy();
         this.current = null;
-        return "";
+        return null;
     }
 
     public String destroy() {
@@ -234,10 +264,8 @@ public class KnowledgeController implements Serializable {
     public Knowledge getKnowledge(java.lang.Integer id) {
         return ejbFacade.find(id);
     }
-    public String hh(){
-        return "";
-    }
 
+//树形结构的遍历（1）
     public List<WrappedKnowledge> getKnowledgeRoot() {
         if (chapterId == null) {
             System.out.println("kkkkkkkkkkkkkkk");
@@ -245,16 +273,72 @@ public class KnowledgeController implements Serializable {
         } else {
             this.knowledgeRoot = new LinkedList<>();
             List<Knowledge> paretTem = ejbFacade.findByChapterId(Integer.parseInt(chapterId));
-            for (int i = 0; i < paretTem.size(); i++) {
-                this.knowledgeRoot.add(new WrappedKnowledge(paretTem.get(i)));
-            }
-            return knowledgeRoot;
-        }
+            if (paretTem.isEmpty()) {
 
+            } else {
+                for (int i = 0; i < paretTem.size(); i++) {
+                    Knowledge pcTem = paretTem.get(i);
+                    WrappedKnowledge tem = new WrappedKnowledge(pcTem);
+                    List<WrappedKnowledge> KParent = new LinkedList<>(), KChildren = new LinkedList<>();
+                    List<Knowledge> kList = getFacade().nativeQuery(" parentid=" + pcTem.getId());
+                    if (kList.size() > 0) {
+                        for (Knowledge kl1 : kList) {
+                            if (getFacade().nativeQuery(" parentid=" + kl1.getId()).size() > 0) {
+                                WrappedKnowledge continueNode = new WrappedKnowledge(kl1);
+                                this.addTreeNode(continueNode);
+                                KParent.add(continueNode);
+                            } else {
+                                KChildren.add(new WrappedKnowledge(kl1));
+                            }
+                        }
+                    }
+                    tem.setKChildren(KChildren);
+                    tem.setKParents(KParent);
+                    this.knowledgeRoot.add(tem);
+                }
+            }
+        }
+        return this.knowledgeRoot;
     }
 
     public void setKnowledgeRoot(List<WrappedKnowledge> knowledgeRoot) {
         this.knowledgeRoot = knowledgeRoot;
+    }
+
+//树形结构的遍历（2）
+    private void addTreeNode(WrappedKnowledge node) {
+        List<Knowledge> kList = getFacade().nativeQuery(" parentid=" + node.getKl().getId());
+        if (kList.size() > 0) {
+            List<WrappedKnowledge> KParents = new LinkedList<>();
+            List<WrappedKnowledge> KChildren = new LinkedList<>();
+            for (Knowledge kl1 : kList) {
+                if (getFacade().nativeQuery(" parentid=" + kl1.getId()).size() > 0) {
+                    WrappedKnowledge continueNode = new WrappedKnowledge(kl1);
+                    this.addTreeNode(continueNode);
+                    KParents.add(continueNode);
+
+                } else {
+                    KChildren.add(new WrappedKnowledge(kl1));
+                }
+            }
+            node.setKChildren(KChildren);
+            node.setKParents(KParents);
+        }
+
+    }
+
+    /**
+     * @return the chapterIdSelected
+     */
+    public boolean isChapterIdSelected() {
+        return chapterIdSelected;
+    }
+
+    /**
+     * @param chapterIdSelected the chapterIdSelected to set
+     */
+    public void setChapterIdSelected(boolean chapterIdSelected) {
+        this.chapterIdSelected = chapterIdSelected;
     }
 
     @FacesConverter(forClass = Knowledge.class)

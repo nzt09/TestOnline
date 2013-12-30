@@ -48,7 +48,7 @@ public class TestassigninfomController implements Serializable {
     private Testassigninfom current;
     private DataModel items = null;
     @EJB
-    private sessionBean.TestassigninfomFacade ejbFacade;
+    private sessionBean.TestassigninfomFacadeLocal ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private int courseId;
