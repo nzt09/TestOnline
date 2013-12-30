@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a4j="http://richfaces.org/a4j">
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
@@ -14,61 +15,61 @@
                 <h:panelGroup id="messagePanel" layout="block">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
-                <h:outputText escape="false" value="#{bundle.ListTestassigninfomEmpty}" rendered="#{testassigninfomController.items.rowCount == 0}"/>
-                <h:panelGroup rendered="#{testassigninfomController.items.rowCount > 0}">
-                    <h:outputText value="#{testassigninfomController.pagination.pageFirstItem + 1}..#{testassigninfomController.pagination.pageLastItem + 1}/#{testassigninfomController.pagination.itemsCount}"/>&nbsp;
-                    <h:commandLink action="#{testassigninfomController.previous}" value="#{bundle.Previous} #{testassigninfomController.pagination.pageSize}" rendered="#{testassigninfomController.pagination.hasPreviousPage}"/>&nbsp;
-                    <h:commandLink action="#{testassigninfomController.next}" value="#{bundle.Next} #{testassigninfomController.pagination.pageSize}" rendered="#{testassigninfomController.pagination.hasNextPage}"/>&nbsp;
-                    <h:dataTable value="#{testassigninfomController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                <h:outputText escape="false" value="#{bundle.ListTestassigninfomEmpty}" rendered="#{testassigninfomController.items1.rowCount == 0}"/>
+                <h:panelGroup rendered="#{testassigninfomController.items1.rowCount > 0}">
+                    <h:outputText value="#{testassigninfomController.pagination1.pageFirstItem + 1}..#{testassigninfomController.pagination1.pageLastItem + 1}/#{testassigninfomController.pagination1.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{testassigninfomController.previous}" value="#{bundle.Previous} #{testassigninfomController.pagination1.pageSize}" rendered="#{testassigninfomController.pagination1.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{testassigninfomController.next}" value="#{bundle.Next} #{testassigninfomController.pagination1.pageSize}" rendered="#{testassigninfomController.pagination1.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{testassigninfomController.items1}" var="item1" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTestassigninfomTitle_id}"/>
                             </f:facet>
-                            <h:outputText value="#{item.id}"/>
+                            <h:outputText value="#{item1.id}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTestassigninfomTitle_testtime}"/>
                             </f:facet>
-                            <h:outputText value="#{item.testtime}">
-                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            <h:outputText value="#{item1.testtime}">
+                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" timeZone="GMT+8"/>
                             </h:outputText>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTestassigninfomTitle_testinterval}"/>
                             </f:facet>
-                            <h:outputText value="#{item.testinterval}"/>
+                            <h:outputText value="#{item1.testinterval}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTestassigninfomTitle_notice}"/>
                             </f:facet>
-                            <h:outputText value="#{item.notice}"/>
+                            <h:outputText value="#{item1.notice}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTestassigninfomTitle_teacher}"/>
                             </f:facet>
-                            <h:outputText value="#{item.teacher.name}"/>
+                            <h:outputText value="#{item1.teacher.name}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTestassigninfomTitle_courseinfo}"/>
                             </f:facet>
-                            <h:outputText value="#{item.courseinfo.name}"/>
+                            <h:outputText value="#{item1.courseinfo.name}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTestassigninfomTitle_classroom}"/>
                             </f:facet>
-                            <h:outputText value="#{item.classroom.name}"/>
+                            <h:outputText value="#{item1.classroom.name}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListTestassigninfomTitle_classinfo}"/>
                             </f:facet>
-                            <h:outputText value="#{item.classinfo.name}"/>
+                            <h:outputText value="#{item1.classinfo.name}"/>
                         </h:column>
 <!--                        <h:column>
                             <f:facet name="header">
@@ -81,12 +82,15 @@
                                 <h:outputText value="当前"/>
                             </f:facet>
                            <h:outputText value="#{testassigninfomController.isTesting()}"/>
+                           
                         </h:column>
                      
                     </h:dataTable>
                 </h:panelGroup>
+                
+                <h:commandLink action="main.xhtml"    value="开始考试" rendered="#{testassigninfomController.isTesting()}"></h:commandLink>
                
-                <h:link outcome="/index" value="#{bundle.ListTestassigninfomIndexLink}"/>
+                <h:link outcome="list.xhtml" value="返回上一层"/>
             </h:form>
         </ui:define>
     </ui:composition>

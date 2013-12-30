@@ -17,10 +17,23 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
+import sessionBean.MajorFacadeLocal;
+import sessionBean.StudentinfoFacadeLocal;
 
 @Named("courseinfoController")
 @SessionScoped
 public class CourseinfoController implements Serializable {
+
+    @EJB
+    private StudentinfoFacadeLocal studentFacade;
+
+    @Inject
+    private StudentinfoController stuCon;
+    @EJB
+    private MajorFacadeLocal majorFacade;
+    @Inject
+    private MajorController majcon;
 
     private Courseinfo current;
     private DataModel items = null;
@@ -28,6 +41,8 @@ public class CourseinfoController implements Serializable {
     private sessionBean.CourseinfoFacadeLocal ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    private int classId;
+    private int MajorId;
 
     public CourseinfoController() {
     }
@@ -189,12 +204,16 @@ public class CourseinfoController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectA() {
-        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        classId = stuCon.getCurrent().getClassinfo().getId();
+        MajorId = stuCon.getCurrent().getClassinfo().getMajor().getId();
+        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByMajor(MajorId), false);
+//        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
         for (int i = 0; i < item.length; i++) {
             item[i].setLabel(((Courseinfo) item[i].getValue()).getName());
             item[i].setValue(((Courseinfo) item[i].getValue()).getId());
         }
         return item;
+
     }
 
     public SelectItem[] getItemsAvailableSelectM() {

@@ -11,7 +11,7 @@
         <ui:composition template="./../../template.xhtml">
 
             <ui:define name="title">
-                title
+                
             </ui:define>
 
             <ui:define name="body">
@@ -51,7 +51,7 @@
                     <h:commandLink target="context" action="#{departclassController.myview()}" value="查看"  style="text-decoration: none;"/>
 <!--                    <h:commandLink target="context" action="#{teacherController.action1()}" value="添加" style="text-decoration: none;"/>-->
                   
-                    
+                     <h:link outcome="main.xhtml" value="返回上一层"/>
                 </h:form>
             </ui:define>
 

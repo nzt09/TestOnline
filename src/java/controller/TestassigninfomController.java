@@ -1,14 +1,12 @@
 package controller;
 
-
-
-
 import entities.Testassigninfom;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
 import sessionBean.TestassigninfomFacadeLocal;
 import java.lang.String;
 import java.io.Serializable;
+import static java.lang.Thread.sleep;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -44,9 +42,10 @@ public class TestassigninfomController implements Serializable {
     private StudentinfoFacadeLocal studentFacade;
     @Inject
     private StudentinfoController stuCon;
-    
+
     private Testassigninfom current;
     private DataModel items = null;
+    private DataModel items1 = null;
     @EJB
     private sessionBean.TestassigninfomFacadeLocal ejbFacade;
     private PaginationHelper pagination;
@@ -59,20 +58,26 @@ public class TestassigninfomController implements Serializable {
     private int month;
     private int day;
     private int year;
+    private boolean isReady=false;
     
-    public String isTesting(){
+
+    public boolean isTesting() {
         Calendar c = Calendar.getInstance();
-        Calendar beginTime=Calendar.getInstance();
-         Calendar endTime = Calendar.getInstance();
-        for(Testassigninfom testa:testAssignList){
-           
-        beginTime.setTime(testa.getTesttime());
-         endTime.setTime(testa.getTesttime());
+        Calendar beginTime = Calendar.getInstance();
+        Calendar endTime = Calendar.getInstance();
+        if (testAssignList == null || testAssignList.isEmpty()) {
+            return false;
+        } else {
+            for (Testassigninfom testa : testAssignList) {
+                beginTime.setTime(testa.getTesttime());
+                endTime.setTime(testa.getTesttime());
+                System.out.println(testa.getTesttime());
             }
-        
+        }
+
 //        beginTime.add(Calendar.YEAR,-1900);
 //        beginTime.add(Calendar.MONTH,-1);
-        endTime.add(Calendar.MINUTE,120);
+        endTime.add(Calendar.MINUTE, 120);
 //        endTime.add(Calendar.YEAR,-1900);
 //        endTime.add(Calendar.MONTH,-1);
         System.out.println(beginTime.get(Calendar.MINUTE));
@@ -80,21 +85,60 @@ public class TestassigninfomController implements Serializable {
         System.out.println(endTime.get(Calendar.MINUTE));
         System.out.println(c.toString());
         System.out.println(endTime.toString());
-        if(c.before(endTime)&&c.after(beginTime)){
-           return "开始考试";
-        }else
-            return "不在考试时间";
-        
-          
+        if (c.before(endTime) && c.after(beginTime)) {
+            isReady=true;
+
+        } 
+        return isReady;
     }
+//    public String leftTime(){
+//    int minute = 0;
+//        int second = 0;
+//        int hour = 0;
+//        String lefttime = null;
+//        for (Testassigninfom testa : testAssignList) {
+//            minute = testa.getTestinterval();
+//            if(minute>60){
+//                minute = minute - 60;
+//                hour = hour + 1;
+//            }
+//        }
+//            while (hour * minute * second >= 0) {
+////            System.out.println(hour + ":" + minute + ":" + second);
+//             lefttime = "hour + \":\" + minute + \":\" + second)";
+//            try {
+//                sleep(1000);
+//            } catch (InterruptedException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
+//            if (second != 0) {
+//                second--;
+//
+//            } else {
+//                second = 59;
+//                if (minute > 0) {
+//                    minute--;
+//
+//                } else {
+//                    minute = 59;
+//                    if (hour > 0) {
+//                        hour--;
+//
+//                    } else {
+//
+//                        
+//                    }
+//                }
+//            }
+//        }
+//    return lefttime;
+//    }
 
     public void getBanjiId() {
         classId = stuCon.getCurrent().getClassinfo().getId();
         System.out.print(classId);
     }
-
-    
-    
 
     public int getCourseId() {
         return courseId;
@@ -102,10 +146,9 @@ public class TestassigninfomController implements Serializable {
 
     public void setCourseId(int courseId) {
         this.courseId = courseId;
-       testAssignList=getFacade().findConstrainRange(new int[]{0,10}, courseId, classId);
+        testAssignList = getFacade().findConstrainRange(new int[]{0, 10}, courseId, classId);
+        
     }
-
-   
 
     public TestassigninfomController() {
     }
@@ -122,10 +165,10 @@ public class TestassigninfomController implements Serializable {
         return ejbFacade;
     }
 
-    public PaginationHelper getPagination() {
-          classId = stuCon.getCurrent().getClassinfo().getId();
+    public PaginationHelper getPagination1() {
+        classId = stuCon.getCurrent().getClassinfo().getId();
         System.out.print(courseId);
-        System.out.print(classId);
+      System.out.print(classId);
         if (pagination == null) {
             pagination = new PaginationHelper(10) {
 
@@ -137,6 +180,24 @@ public class TestassigninfomController implements Serializable {
                 @Override
                 public DataModel createPageDataModel() {
                     return new ListDataModel(getFacade().findConstrainRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}, courseId, classId));
+                }
+            };
+        }
+        return pagination;
+    }
+
+    public PaginationHelper getPagination() {
+        if (pagination == null) {
+            pagination = new PaginationHelper(10) {
+
+                @Override
+                public int getItemsCount() {
+                    return getFacade().count();
+                }
+
+                @Override
+                public DataModel createPageDataModel() {
+                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
                 }
             };
         }
@@ -241,6 +302,13 @@ public class TestassigninfomController implements Serializable {
         return items;
     }
 
+    public DataModel getItems1() {
+        if (items1 == null) {
+            items1 = getPagination1().createPageDataModel();
+        }
+        return items1;
+    }
+
     private void recreateModel() {
         items = null;
     }
@@ -272,8 +340,6 @@ public class TestassigninfomController implements Serializable {
     public Testassigninfom getTestassigninfom(java.lang.Integer id) {
         return ejbFacade.find(id);
     }
-
-   
 
     private Date Date(String time) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
