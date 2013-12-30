@@ -32,4 +32,5 @@ public interface CourseinfoFacadeLocal {
     
     public List<Courseinfo> findByCourseId(int id);
     
+   List<Courseinfo> findByMajor(int Major);
 }

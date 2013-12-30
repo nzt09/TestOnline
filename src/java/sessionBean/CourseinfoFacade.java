@@ -33,4 +33,8 @@ public class CourseinfoFacade extends AbstractFacade<Courseinfo> implements Cour
         List<Courseinfo> tem = em.createNativeQuery("select * from courseinfo where id=" + id + "", Courseinfo.class).getResultList();
         return tem;     
     }  
+     public List<Courseinfo> findByMajor(int Major) {
+        List<Courseinfo> tem = em.createNativeQuery("select * from courseinfo where Major=" + Major + "", Courseinfo.class).getResultList();
+        return tem;     
+    }  
 }
