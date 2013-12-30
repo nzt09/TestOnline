@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewTeachercourseclassTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewTeachercourseclassLabel_id}"/>
+                    <h:outputText value="#{teachercourseclassController.selected.id}" title="#{bundle.ViewTeachercourseclassTitle_id}"/>
+                    <h:outputText value="#{bundle.ViewTeachercourseclassLabel_teacher}"/>
+                    <h:outputText value="#{teachercourseclassController.selected.teacher}" title="#{bundle.ViewTeachercourseclassTitle_teacher}"/>
+                    <h:outputText value="#{bundle.ViewTeachercourseclassLabel_courseinfo}"/>
+                    <h:outputText value="#{teachercourseclassController.selected.courseinfo}" title="#{bundle.ViewTeachercourseclassTitle_courseinfo}"/>
+                    <h:outputText value="#{bundle.ViewTeachercourseclassLabel_classinfo}"/>
+                    <h:outputText value="#{teachercourseclassController.selected.classinfo}" title="#{bundle.ViewTeachercourseclassTitle_classinfo}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{teachercourseclassController.destroyAndView}" value="#{bundle.ViewTeachercourseclassDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewTeachercourseclassEditLink}"/>
+                <br />
+                <h:commandLink action="#{teachercourseclassController.prepareCreate}" value="#{bundle.ViewTeachercourseclassCreateLink}" />
+                <br />
+                <h:commandLink action="#{teachercourseclassController.prepareList}" value="#{bundle.ViewTeachercourseclassShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewTeachercourseclassIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

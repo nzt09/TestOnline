@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListChapterinfoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListChapterinfoEmpty}" rendered="#{chapterinfoController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{chapterinfoController.items.rowCount > 0}">
+                    <h:outputText value="#{chapterinfoController.pagination.pageFirstItem + 1}..#{chapterinfoController.pagination.pageLastItem + 1}/#{chapterinfoController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{chapterinfoController.previous}" value="#{bundle.Previous} #{chapterinfoController.pagination.pageSize}" rendered="#{chapterinfoController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{chapterinfoController.next}" value="#{bundle.Next} #{chapterinfoController.pagination.pageSize}" rendered="#{chapterinfoController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{chapterinfoController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListChapterinfoTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListChapterinfoTitle_chapternum}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.chapternum}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListChapterinfoTitle_chaptername}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.chaptername}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListChapterinfoTitle_courseinfo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.courseinfo}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{chapterinfoController.prepareView}" value="#{bundle.ListChapterinfoViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{chapterinfoController.prepareEdit}" value="#{bundle.ListChapterinfoEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{chapterinfoController.destroy}" value="#{bundle.ListChapterinfoDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{chapterinfoController.prepareCreate}" value="#{bundle.ListChapterinfoCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListChapterinfoIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

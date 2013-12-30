@@ -1,0 +1,85 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 2013-12-18, 16:27:06
+    Author     : Administrator
+*/
+
+body, td
+{
+    font-family: 宋体;
+    font-size: 12px;
+}
+A:LINK, A:VISITED, A:ACTIVE, A:HOVER
+{
+    color: #800080;
+    font-size: 13px;
+    padding-left: 3px;
+    text-decoration: NONE;
+}
+a:link
+{
+    color: #000000;
+}
+a:visited
+{
+    color: #000000;
+}
+#main:hover
+{
+    color: red;
+}
+a:active
+{
+    color: #000000;
+}
+
+BODY
+{
+    background-image: url();
+    margin-left: 0px;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    background-color: #f2f9ff;
+    scrollbar-face-color: #99D1F7;
+    scrollbar-highlight-color: #99D1F7;
+    scrollbar-shadow-color: #65A2EA;
+    scrollbar-3dlight-color: #65A2EA;
+    scrollbar-arrow-color: #E0F7FC;
+    scrollbar-track-color: #E0F7FC;
+    scrollbar-darkshadow-color: #FFFFFF;
+}
+.style6
+{
+    font-weight: bold;
+    font-size: 16px;
+    color: #FFFFFF;
+}
+
+body { font-family:Verdana; font-size:14px; margin:0;}
+
+#container {margin:0 auto; width:100%;}
+#header { height:100px; background-image:url("../images/top_bg00.gif"); margin-bottom:5px; float: inherit;}
+#mainContent { height:500px; margin-bottom:5px;}
+#tree{ float:left; width:250px; height:500px; background:#cf9;}
+#sidebar { float:left; width:100%;height: 100%; background:#cf9;}
+#content { margin-left:250px;margin-right:205px !important; margin-left:202px; height:500px; background:#9c6 ;border-style: none;}
+
+#header1 { height:100px; background:#9c6; margin-bottom:5px; float: inherit;}
+
+#mainContent { height:500px; margin-bottom:5px;margin-top: 30px;}
+
+
+.bold{
+    font-weight: bold;
+}
+.font1{FONT-SIZE: 50px; FILTER: DropShadow(Color = #213C63, OffX = 1, OffY = 1); WIDTH: 100%; COLOR: #e1e4ec;}
+.divcss1{width: 100%; height: 100px; background-color: graytext; padding-top: 20px}
+.divcss2{ height: 250px; width: 500px; margin-left: 300px; margin-top: 10px; border: 1px solid black;}
+.divmain{width: 100%; height: 200px;}
+.divcss3{float: left; height: 250px; width: 200px; margin-left: 300px; margin-top: 10px;}
+.divcss4{height: 20px; width: 600px; margin-left: 400px; margin-top: 10px;}

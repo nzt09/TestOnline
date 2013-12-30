@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditDepartclassTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditDepartclassLabel_stuno}" for="stuno" />
+                    <h:inputText id="stuno" value="#{departclassController.selected.stuno}" title="#{bundle.EditDepartclassTitle_stuno}" />
+                    <h:outputLabel value="#{bundle.EditDepartclassLabel_name}" for="name" />
+                    <h:inputText id="name" value="#{departclassController.selected.name}" title="#{bundle.EditDepartclassTitle_name}" />
+                    <h:outputLabel value="#{bundle.EditDepartclassLabel_password}" for="password" />
+                    <h:inputText id="password" value="#{departclassController.selected.password}" title="#{bundle.EditDepartclassTitle_password}" />
+                    <h:outputLabel value="#{bundle.EditDepartclassLabel_classid}" for="classid" />
+                    <h:inputText id="classid" value="#{departclassController.selected.classid}" title="#{bundle.EditDepartclassTitle_classid}" />
+                    <h:outputLabel value="#{bundle.EditDepartclassLabel_department}" for="department" />
+                    <h:inputText id="department" value="#{departclassController.selected.department}" title="#{bundle.EditDepartclassTitle_department}" />
+                </h:panelGrid>
+                <h:commandLink action="#{departclassController.update}" value="#{bundle.EditDepartclassSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditDepartclassViewLink}"/>
+                <br />
+                <h:commandLink action="#{departclassController.prepareList}" value="#{bundle.EditDepartclassShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditDepartclassIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

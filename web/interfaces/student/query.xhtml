@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" xml:lang="en" lang="en">
+	<head>
+		<title>My Facelets Page</title>
+		<meta http-equiv="keywords" content="enter,your,keywords,here" />
+		<meta http-equiv="description"
+			content="A short description of this page." />
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+		<!--<link rel="stylesheet" type="text/css" href="styles.css">-->
+	</head>
+	<body>
+		<div align="center" style="background-color: #C9C9C9">
+		
+			<ui:insert name="body">考试成绩查询</ui:insert>
+		
+		</div>
+		<div align="center">
+			<h:form>
+			<table>
+				<tr>
+					<td>科目</td>
+					<td>
+						<h:selectOneMenu value="#{QueryAction.courseId}" valueChangeListener="#{QueryAction.changeStateIns}"
+						onchange="submit()" style="width: 150px ">
+							<f:selectItem itemValue="0" itemLabel="请选择"/>
+							<c:forEach var="tp" items="#{QueryAction.testPapers}">
+								<c:forEach var="c" items="#{QueryAction.courses}">
+									<c:if test="${tp.course==c.id}">
+										<f:selectItem itemValue="#{tp.course}" itemLabel="#{c.name}"></f:selectItem>
+									</c:if>
+								</c:forEach>
+							</c:forEach>
+						</h:selectOneMenu>
+					</td>
+					<td>
+						考试日期
+					</td>
+					<td>
+						<h:selectOneMenu value="#{QueryAction.assignId}" style="width: 150px " valueChangeListener="#{QueryAction.dateChanged}">
+						<f:selectItem itemValue="0" itemLabel="请选择"/>
+							<c:forEach var="assign" items="#{QueryAction.assigns}">
+								<f:selectItem itemValue="#{assign.id}" itemLabel="#{assign.testtime}"></f:selectItem>
+							</c:forEach>
+						</h:selectOneMenu>
+					</td>
+					<td><h:commandLink style="text-decoration: none" action="#{QueryAction.examResult}">查询</h:commandLink> </td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td style="font-size: 20px;">得分&nbsp;&nbsp;&nbsp;#{QueryAction.testPaper.score}</td>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
+		</h:form>
+		</div>
+		<div>
+			<c:if test="${QueryAction.assignId>0}">
+			<c:forEach var="questype" items="#{QueryAction.listQuestionType}">
+				<div style="background-color: #C9C9C9">
+					<c:if test="${QueryAction.s1==1}">
+						<c:if test="${questype.id==1}">
+							<h1>#{questype.name}。</h1><br/>
+						</c:if>
+					</c:if>	
+					<c:if test="${QueryAction.s2==1}">
+						<c:if test="${questype.id==2}">
+							<h1>#{questype.name}。</h1><br/>
+						</c:if>
+					</c:if>	
+					<c:if test="${QueryAction.s3==1}">
+						<c:if test="${questype.id==3}">
+							<h1>#{questype.name}。</h1><br/>
+						</c:if>
+					</c:if>	
+					<c:if test="${QueryAction.s4==1}">
+						<c:if test="${questype.id==4}">
+							<h1>#{questype.name}。</h1><br/>
+						</c:if>
+					</c:if>	
+					<c:if test="${QueryAction.s5==1}">
+						<c:if test="${questype.id==5}">
+							<h1>#{questype.name}。</h1><br/>
+						</c:if>
+					</c:if>	
+					<c:if test="${QueryAction.s6==1}">
+						<c:if test="${questype.id==6}">
+							<h1>#{questype.name}。</h1><br/>
+						</c:if>
+					</c:if>	
+					<c:if test="${QueryAction.s7==1}">
+						<c:if test="${questype.id==7}">
+							<h1>#{questype.name}。</h1><br/>
+						</c:if>
+					</c:if>	
+					<c:if test="${QueryAction.s8==1}">
+						<c:if test="${questype.id==8}">
+							<h1>#{questype.name}。</h1><br/>
+						</c:if>
+					</c:if>		
+				</div>
+					
+						<c:forEach var="ques" items="#{QueryAction.questioninfo}">
+							<div style="background-color: yellow;">
+								<c:if test="${ques.questiontype==questype.id}">
+									
+									#{ques.number} . &nbsp;
+									<c:if test="${ques.questiontype==1}">
+											#{ques.content} &nbsp;( #{ques.score}分)<br/>
+											<h:selectOneRadio value="#{ques.pageanswer}" layout="pageDirection">
+												<c:forEach items="#{ques.pagecontent}" var="s">
+													<f:selectItem itemLabel="#{s.contentstring}" itemValue="#{s.boxvalue}"></f:selectItem>
+												</c:forEach>
+											</h:selectOneRadio>
+									</c:if>
+									<c:if test="${ques.questiontype==2}">
+											#{ques.content} &nbsp;( #{ques.score}分)<br/>
+											<h:selectManyCheckbox value="#{ques.pageanswers}" layout="pageDirection" >
+												<c:forEach items="#{ques.pagecontent}" var="s">
+													<f:selectItem itemLabel="#{s.contentstring}" itemValue="#{s.boxvalue}"></f:selectItem>
+												</c:forEach>
+											</h:selectManyCheckbox>
+									</c:if>
+									<c:if test="${ques.questiontype==3}">
+										<c:forEach items="#{ques.pagecontent}" var="s" end="0">
+													#{s.contentstring}
+												</c:forEach>
+										<c:forEach items="#{ques.pagecontent}" var="s" begin="1">
+													<h:inputText value="#{s.boxvalue}"></h:inputText>#{s.contentstring}
+												</c:forEach>
+										&nbsp;( #{ques.score}分)<br/>
+									</c:if>
+									<c:if test="${ques.questiontype==4}">
+										#{ques.content} &nbsp;( #{ques.score}分)<br/>
+										<h:inputTextarea rows="10" cols="50" value="#{ques.pageanswer}">
+										</h:inputTextarea>
+									</c:if>
+									<c:if test="${ques.questiontype==5}">
+										#{ques.content} &nbsp;( #{ques.score}分)<br/>
+										<h:inputTextarea rows="10" cols="50" value="#{ques.pageanswer}">
+										</h:inputTextarea>
+									</c:if>
+									<c:if test="${ques.questiontype==6}">
+										<c:forEach items="#{ques.pagecontent}" var="s">
+													<br/>#{s.contentstring}
+												</c:forEach>
+										&nbsp;( #{ques.score}分)<br/>
+										<h:inputTextarea rows="30" cols="50" value="#{ques.pageanswer}"/>
+									</c:if>
+									<c:if test="${ques.questiontype==7}">
+										<c:forEach items="#{ques.pagecontent}" var="s" end="0">
+													#{s.contentstring}
+												</c:forEach>
+										<c:forEach items="#{ques.pagecontent}" var="s" begin="1">
+													<h:inputText value="#{s.boxvalue}"></h:inputText>#{s.contentstring}
+												</c:forEach>
+										&nbsp;( #{ques.score}分)<br/>
+									</c:if>
+									<c:if test="${ques.questiontype==8}">
+										#{ques.content} &nbsp;( #{ques.score}分)<br/>
+										<h:selectOneRadio value="#{ques.pageanswer}" layout="pageDirection">
+												<c:forEach items="#{ques.selectionlist}" var="s">
+													<f:selectItem itemLabel="#{s}"></f:selectItem>
+												</c:forEach>
+											</h:selectOneRadio>
+									</c:if>
+									<br />
+									&nbsp;&nbsp;&nbsp;<h:outputLabel style="background-color: white;">个人答案 #{ques.pageanswer}</h:outputLabel>
+									<br/>
+									&nbsp;&nbsp;&nbsp;<h:outputLabel style="background-color: white;">参考答案 #{ques.answer}</h:outputLabel>
+									<br/><br/>
+								</c:if>
+								</div>
+							</c:forEach>
+					</c:forEach>
+			</c:if>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:rich="http://richfaces.org/rich">
+    <body>   
+        <ui:composition template="./../../template.xhtml">
+            <ui:define name="title">
+                任课老师登陆
+            </ui:define>
+            <ui:define name="body">
+                <rich:panel>
+                    <h:form onclick="#{teacherController.showTeachercourseclass()}" >
+                        编号：<h:outputText value="#{loginController.userId}" ></h:outputText><br/>
+                        用户名：<h:outputText value=" #{loginController.name}"></h:outputText><br/>
+                        <h:commandLink action="#{loginController.loginout()}" style="text-decoration: none;">退出</h:commandLink><br/>
+                        所教课程：
+                        <h:selectOneMenu valueChangeListener="#{chapterinfoController.typeCourseListener}" >
+                            <f:selectItems value="#{teacherController.teacherCourseList}"></f:selectItems>
+                        </h:selectOneMenu>
+                        <a href="../../teacher/teacher_main.jsp">查看个性化知识点</a>
+                        <h:commandLink action="chapterManage.xhtml" value="课程知识点管理"></h:commandLink>
+                    </h:form>
+                </rich:panel>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

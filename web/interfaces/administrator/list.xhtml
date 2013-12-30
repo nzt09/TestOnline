@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:rich="http://richfaces.org/rich">
+    <body>  
+        <ui:composition template="/template.xhtml">
+            <ui:define name="title">
+                <h:outputText value="教师信息"></h:outputText>
+            </ui:define>
+            <ui:define name="body">
+                <h:form styleClass="jsfcrud_list_form">
+                    <h:panelGroup id="messagePanel" layout="block">
+                        <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                    </h:panelGroup>
+                    <h:outputText escape="false" />
+                    <h:panelGroup rendered="#{teacherController.items.rowCount > 0}">
+                        <h:outputText value="#{teacherController.pagination.pageFirstItem + 1}..#{teacherController.pagination.pageLastItem + 1}/#{teacherController.pagination.itemsCount}"/>&nbsp;
+                        <h:commandLink action="#{teacherController.previous}" value="上一页 " rendered="#{teacherController.pagination.hasPreviousPage}"/>&nbsp;
+                        <h:commandLink action="#{teacherController.next}" value="下一页 " rendered="#{teacherController.pagination.hasNextPage}"/>&nbsp;
+                        <rich:dataTable value="#{teacherController.items}" var="item"  rowClasses="jsfcrud_odd_row,jsfcrud_even_row"  style="border:solid 1px">
+                            <rich:column>
+                                <f:facet name="header">
+                                    <h:outputText value="ID"/>
+                                </f:facet>
+                                <h:outputText value="#{item.personid}"/>
+                            </rich:column>
+                            <rich:column>
+                                <f:facet name="header">
+                                    <h:outputText value="姓名"/>
+                                </f:facet>
+                                <h:outputText value="#{item.name}"/>
+                            </rich:column>
+                            <rich:column>
+                                <f:facet name="header">
+                                    <h:outputText value="密码"/>
+                                </f:facet>
+
+                                <h:outputText value="******"/>
+                            </rich:column>
+                            <rich:column>
+                                <f:facet name="header">
+                                    <h:outputText value="教师类型"/>
+                                </f:facet>
+                                <h:outputText value="#{item.rolesinfo.name}"/>
+                            </rich:column>
+                            <rich:column>
+                                <f:facet name="header">
+                                    <h:outputText value="学院"/>
+                                </f:facet>
+                                <h:outputText value="#{item.department.name}"/>
+                            </rich:column>
+                            <rich:column>
+                                <f:facet name="header">
+                                    <h:outputText value="&nbsp;"/>
+                                </f:facet>   
+                                <h:commandButton action="#{teacherController.prepareEdit}" value="修改"/>
+                                <h:outputText value=" "/>
+                                <h:commandButton action="#{teacherController.destroy}" value="删除"/>
+                            </rich:column>
+                        </rich:dataTable>
+                    </h:panelGroup>
+                    <br />
+                    <h:commandLink action="main.xhtml" value="返回上一层"/>
+                    <br />
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

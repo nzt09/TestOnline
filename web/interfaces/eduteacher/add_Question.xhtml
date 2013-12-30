@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" xml:lang="en" lang="en"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+	<head>
+		<title>My Facelets Page</title>
+		<meta http-equiv="keywords" content="enter,your,keywords,here" />
+		<meta http-equiv="description"
+			content="A short description of this page." />
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<script language="JavaScript" src="./d.js">
+		</script>
+		<!--<link rel="stylesheet" type="text/css" href="styles.css">-->
+	</head>
+		<body style="font-family:Verdana; font-size:14px; margin:0;background-image: url('./images/s232.jpg');">
+			<div align="center">
+				<h:outputText value="添加题目" style="font-size:50px"></h:outputText>
+			</div>
+			<h:form>
+			<h:panelGrid columns="3" style="align:center;margin-left: 300px">
+				<h:outputLabel for="type">
+					<h:outputText value="题目类型"></h:outputText>
+				</h:outputLabel>
+				<h:selectOneMenu  id="type" value="#{questionAdd.type.id}" required="true" onchange="submit();" valueChangeListener="#{questionAdd.typechange}">
+					<c:forEach items="#{menu.questiontypes}" var="t">
+						<f:selectItem itemLabel="#{t.name}" itemValue="#{t.id}"></f:selectItem>
+					</c:forEach>
+				</h:selectOneMenu>
+				<h:inputHidden value="#{questionAdd.knowid}"></h:inputHidden>
+			</h:panelGrid>
+			</h:form>
+			<h:form id="form">
+			<h:panelGrid columns="3" style="align:center;margin-left: 300px">
+				<h:outputLabel for="content">
+					<h:outputText value="题目类容(填空需填内容处用#号代替)"></h:outputText>
+				</h:outputLabel>
+				<h:inputTextarea cols="30" rows="5" id="content" value="#{questionAdd.question.content}" required="true" requiredMessage="输入内容不能为空">
+				</h:inputTextarea>
+				<h:message for="content" id="errors" style="color: red"></h:message>
+				<h:outputLabel for="scores">
+					<h:outputText value="题目分数(1~100)"></h:outputText>
+				</h:outputLabel>
+				<h:inputText id="scores" value="#{questionAdd.question.score}" required="true" requiredMessage="输入内容不能为空" validatorMessage="分数值必须在0~100之间">
+					<f:validateLongRange minimum="1" maximum="100"></f:validateLongRange>
+				</h:inputText>
+				<h:message for="scores" id="errors1" style="color: red">
+				</h:message>
+				<h:outputLabel for="difficulty">
+					<h:outputText value="题目难度(0~1)"></h:outputText>
+				</h:outputLabel>
+				<h:inputText id="difficulty" value="#{questionAdd.question.difficulty}" required="true" requiredMessage="输入内容不能为空" validatorMessage="难度值必须在0~1之间">
+					<f:validateDoubleRange minimum="0" maximum="1"></f:validateDoubleRange>
+				</h:inputText>
+				<h:message for="difficulty" id="errors2" style="color: red">
+				</h:message>
+				<h:outputLabel for="averagetime">
+					<h:outputText value="平均时间"></h:outputText>
+				</h:outputLabel>
+				<h:inputText id="averagetime" value="#{questionAdd.question.averagetime}" required="true" requiredMessage="输入内容不能为空"></h:inputText>
+				<h:message for="averagetime" style="color: red">
+				</h:message>
+				</h:panelGrid>
+				<c:if test="${fn:trim(questionAdd.type.name) eq '单项选择题'||fn:trim(questionAdd.type.name) eq '多项选择题'||fn:trim(questionAdd.type.name) eq '判断题'}">
+				<h:panelGrid columns="3" style="align:center;margin-left: 300px">
+				<h:outputLabel for="s1">
+					<h:outputText value="A"></h:outputText>
+				</h:outputLabel>
+				<h:inputText id="s1" value="#{questionAdd.selection.selection1}" required="true" requiredMessage="输入内容不能为空"></h:inputText>
+				<h:message for="s1" style="color: red"/>
+				<h:outputLabel for="s2">
+					<h:outputText value="B"></h:outputText>
+				</h:outputLabel>
+				<h:inputText id="s2" value="#{questionAdd.selection.selection2}" required="true" requiredMessage="输入内容不能为空"></h:inputText>
+				<h:message for="s2" style="color: red"/>
+				</h:panelGrid>
+				</c:if>
+				<c:if test="#{fn:trim(questionAdd.type.name) eq '单项选择题'||fn:trim(questionAdd.type.name) eq '多项选择题'}">
+				<h:panelGrid columns="3" style="align:center;margin-left: 300px">
+				<h:outputLabel for="s3">
+					<h:outputText value="C"></h:outputText>
+				</h:outputLabel>
+				<h:inputText id="s3" value="#{questionAdd.selection.selection3}" required="true" requiredMessage="输入内容不能为空"></h:inputText>
+				<h:message for="s3" style="color: red"/>
+				<h:outputLabel for="s4">
+					<h:outputText value="D"></h:outputText>
+				</h:outputLabel>
+				<h:inputText id="s4" value="#{questionAdd.selection.selection4}" required="true" requiredMessage="输入内容不能为空"></h:inputText>
+				<h:message for="s4" style="color: red"/>
+				</h:panelGrid>
+				</c:if>
+				<c:if test="#{fn:trim(questionAdd.type.name) eq '单项选择题'}">
+				<h:panelGrid columns="3" style="align:center;margin-left: 300px">
+				<h:outputLabel for="answer1">
+					<h:outputText value="题目答案"></h:outputText>
+				</h:outputLabel>
+				<h:selectOneRadio id="answer1" value="#{questionAdd.question.answer}" layout="lineDirection" required="true" requiredMessage="答案内容不能为空">
+					<f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
+					<f:selectItem itemLabel="B" itemValue="B"></f:selectItem>
+					<f:selectItem itemLabel="C" itemValue="C"></f:selectItem>
+					<f:selectItem itemLabel="D" itemValue="D"></f:selectItem>
+				</h:selectOneRadio>
+				<h:message for="answer1" style="color: red">
+				</h:message>
+				</h:panelGrid>
+				</c:if>
+				<c:if test="#{fn:trim(questionAdd.type.name) eq '多项选择题'}">
+				<h:panelGrid columns="3" style="align:center;margin-left: 300px">
+				<h:outputLabel for="answer2">
+					<h:outputText value="题目答案"></h:outputText>
+				</h:outputLabel>
+				<h:selectManyCheckbox id="answer2" value="#{questionAdd.question.answerlist}" layout="lineDirection" required="true" requiredMessage="答案内容不能为空">
+					<f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
+					<f:selectItem itemLabel="B" itemValue="B"></f:selectItem>
+					<f:selectItem itemLabel="C" itemValue="C"></f:selectItem>
+					<f:selectItem itemLabel="D" itemValue="D"></f:selectItem>
+				</h:selectManyCheckbox>
+				<h:message for="answer2" style="color: red">
+				</h:message>
+				</h:panelGrid>
+				</c:if>
+				<c:if test="#{fn:trim(questionAdd.type.name) eq '判断题'}">
+				<h:panelGrid columns="3" style="align:center;margin-left: 300px">
+				<h:outputLabel for="answer8">
+					<h:outputText value="题目答案"></h:outputText>
+				</h:outputLabel>
+				<h:selectOneRadio id="answer8" value="#{questionAdd.question.answer}" layout="lineDirection" required="true" requiredMessage="答案内容不能为空">
+					<f:selectItem itemLabel="对" itemValue="A"></f:selectItem>
+					<f:selectItem itemLabel="错" itemValue="B"></f:selectItem>
+				</h:selectOneRadio>
+				<h:message for="answer8" style="color: red">
+				</h:message>
+				</h:panelGrid>
+				</c:if>
+				<c:if test="${fn:trim(questionAdd.type.name) !='单项选择题'}">
+				<c:if test="${fn:trim(questionAdd.type.name) !='多项选择题'}">
+				<c:if test="${fn:trim(questionAdd.type.name) !='判断题'}">
+					<h:panelGrid columns="3" style="align:center;margin-left: 300px">
+				<h:outputLabel for="answer">
+					<h:outputText value="题目答案(不同答案按#号分割)"></h:outputText>
+				</h:outputLabel>
+				<h:inputTextarea id="answer" cols="30" rows="5" value="#{questionAdd.question.answer}" required="true" requiredMessage="答案内容不能为空"/>
+				<h:message for="answer" style="color: red">
+				</h:message>
+				</h:panelGrid>
+				</c:if>
+				</c:if>
+				</c:if>
+				<c:if test="#{fn:trim(questionAdd.type.name) eq '单项填空题'||fn:trim(questionAdd.type.name) eq '多项填空题'||fn:trim(questionAdd.type.name) eq '程序设计题'}">
+				<h:panelGrid columns="3" style="align:center;margin-left: 300px">
+				<h:outputLabel for="code">
+					<h:outputText value="code"></h:outputText>
+				</h:outputLabel>
+				<h:inputTextarea id="code" cols="30" rows="5" value="#{questionAdd.question.code}"/>
+				<h:message for="code" style="color: red">
+				</h:message>
+				</h:panelGrid>
+				</c:if>
+				<h:panelGrid columns="3" style="align:center;margin-left: 300px">
+				<h:outputLabel for="preContent">
+					<h:outputText value="题目预览"></h:outputText>
+				</h:outputLabel>
+				<h:inputTextarea id="preContent" readonly="true" cols="30" rows="5" value="#{questionAdd.preContent}"></h:inputTextarea>
+				<h:commandButton action="#{questionAdd.addQuestion}" value="添加">
+					<f:ajax render="preContent"></f:ajax>
+				</h:commandButton>
+				</h:panelGrid>
+		</h:form>
+		相似的题目：<h:outputText value="#{questionAdd.squestion.content}"></h:outputText>
+	</body>
+</html>

@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <body>
+        <ui:composition template="./../../template.xhtml">
+            <ui:define name="title">
+                试题进入页面
+            </ui:define>
+            <ui:define name="body">
+                <h:form>
+                    <c:if test="${StuAction.isTesting==1}">	                   
+                                科目 
+                                班级
+                                监考教师 
+                                考场 
+                                开始时间 
+                                考试时间   
+                                状态
+                            <c:forEach var="ta" items="#{StuAction.testAssigns}">
+
+                                <c:forEach var="c" items="#{StuAction.course}">
+                                    <c:if test="${ta.courseid==c.id}">
+                                        #{c.name}
+                                    </c:if>
+                                </c:forEach>
+
+                                <c:forEach var="c" items="#{StuAction.classinfo}">
+                                    <c:if test="${ta.classid==c.id}">
+                                        #{c.name}
+                                    </c:if>
+                                </c:forEach>
+
+                                <c:forEach var="teacher" items="#{ArrExamAction.teachers}">
+                                    <c:if test="${ta.teacher==teacher.id}">
+                                        #{teacher.name}
+                                    </c:if>
+                                </c:forEach>
+
+                                <c:forEach var="cr" items="#{ArrExamAction.classrooms}">
+                                    <c:if test="${ta.classroom==cr.id}">
+                                        #{cr.name}
+                                    </c:if>
+                                </c:forEach>
+
+                                #{ta.testtime}
+                                #{ta.testinterval}
+                                <h:commandLink action="#{StuAction.isInTesting}" value="进入考试" style="text-decoration: none;"></h:commandLink> 
+                            </c:forEach>
+                    </c:if>
+                    <c:if test="${StuAction.isTesting==0}">
+                        <h1>现在不是考试时间</h1>
+                    </c:if>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewTestpaperTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewTestpaperLabel_id}"/>
+                    <h:outputText value="#{testpaperController.selected.id}" title="#{bundle.ViewTestpaperTitle_id}"/>
+                    <h:outputText value="#{bundle.ViewTestpaperLabel_content}"/>
+                    <h:outputText value="#{testpaperController.selected.content}" title="#{bundle.ViewTestpaperTitle_content}"/>
+                    <h:outputText value="#{bundle.ViewTestpaperLabel_wrongnum}"/>
+                    <h:outputText value="#{testpaperController.selected.wrongnum}" title="#{bundle.ViewTestpaperTitle_wrongnum}"/>
+                    <h:outputText value="#{bundle.ViewTestpaperLabel_suminterval}"/>
+                    <h:outputText value="#{testpaperController.selected.suminterval}" title="#{bundle.ViewTestpaperTitle_suminterval}"/>
+                    <h:outputText value="#{bundle.ViewTestpaperLabel_starttime}"/>
+                    <h:outputText value="#{testpaperController.selected.starttime}" title="#{bundle.ViewTestpaperTitle_starttime}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewTestpaperLabel_score}"/>
+                    <h:outputText value="#{testpaperController.selected.score}" title="#{bundle.ViewTestpaperTitle_score}"/>
+                    <h:outputText value="#{bundle.ViewTestpaperLabel_answer}"/>
+                    <h:outputText value="#{testpaperController.selected.answer}" title="#{bundle.ViewTestpaperTitle_answer}"/>
+                    <h:outputText value="#{bundle.ViewTestpaperLabel_checkstate}"/>
+                    <h:outputText value="#{testpaperController.selected.checkstate}" title="#{bundle.ViewTestpaperTitle_checkstate}"/>
+                    <h:outputText value="#{bundle.ViewTestpaperLabel_testassigninfom}"/>
+                    <h:outputText value="#{testpaperController.selected.testassigninfom}" title="#{bundle.ViewTestpaperTitle_testassigninfom}"/>
+                    <h:outputText value="#{bundle.ViewTestpaperLabel_studentinfo}"/>
+                    <h:outputText value="#{testpaperController.selected.studentinfo}" title="#{bundle.ViewTestpaperTitle_studentinfo}"/>
+                    <h:outputText value="#{bundle.ViewTestpaperLabel_courseinfo}"/>
+                    <h:outputText value="#{testpaperController.selected.courseinfo}" title="#{bundle.ViewTestpaperTitle_courseinfo}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{testpaperController.destroyAndView}" value="#{bundle.ViewTestpaperDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewTestpaperEditLink}"/>
+                <br />
+                <h:commandLink action="#{testpaperController.prepareCreate}" value="#{bundle.ViewTestpaperCreateLink}" />
+                <br />
+                <h:commandLink action="#{testpaperController.prepareList}" value="#{bundle.ViewTestpaperShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewTestpaperIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

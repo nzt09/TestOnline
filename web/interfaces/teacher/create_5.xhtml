@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="添加学生信息"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="学号" for="stuno" />
+                    <h:inputText id="stuno" value="#{departclassController.selected.stuno}" title="#{bundle.CreateDepartclassTitle_stuno}" />
+                    <h:outputLabel value="姓名" for="name" />
+                    <h:inputText id="name" value="#{departclassController.selected.name}" title="#{bundle.CreateDepartclassTitle_name}" />
+                    <h:outputLabel value="密码" for="password" />
+                    <h:inputText id="password" value="#{departclassController.selected.password}" title="#{bundle.CreateDepartclassTitle_password}" />
+                    <h:outputLabel value="班级" for="classid" />
+                    <h:inputText id="classid" value="#{departclassController.selected.classid}" title="#{bundle.CreateDepartclassTitle_classid}" />
+                    <h:outputLabel value="学院" for="department" />
+                    <h:inputText id="department" value="#{departclassController.selected.department}" title="#{bundle.CreateDepartclassTitle_department}" />
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{departclassController.create}" value="保存" />
+                <br />
+                <br />
+                <h:commandLink action="#{departclassController.prepareList}" value="显示学生信息" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="manage_user.xhtml" value="返回上一层"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

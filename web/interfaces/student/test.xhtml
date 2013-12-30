@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" xml:lang="en" lang="en">
+	<head>
+		<title>在线考试</title>
+		<meta http-equiv="keywords" content="enter,your,keywords,here" />
+		<meta http-equiv="description"
+			content="A short description of this page." />
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+		<!--<link rel="stylesheet" type="text/css" href="styles.css">-->
+		<script  type="text/javascript"
+			src="../javascript/DateSetter.js"></script>
+		<script  type="text/javascript"
+			src="../javascript/jquery-1.4.1.js"></script>
+		<script  type="text/javascript"
+			src="../javascript/reSubmit.js"></script>
+		<script  type="text/javascript"
+			src="../javascript/confirmandcancel.js"></script>
+		<script language="javascript">
+				var hour = 0, minute = 0, second = 0;
+				var t = 80;
+				var flag1;
+				function studyTime(sum)
+				{
+					t=sum;
+					leftT();
+				               
+				}
+				function leftT()
+				{
+					hour=parseInt(t/60/60);
+				    minute=parseInt(t/60%60);
+				    second=parseInt(t%60);
+					document.getElementById('HOUR').innerHTML=hour;
+				    document.getElementById('SECOND').innerHTML=second;
+				    document.getElementById('MINUTE').innerHTML=minute;
+				    if(t>0)
+				    {
+				    	t = t - 1;
+				    }
+//				    if(t==6120){
+//				    	alert("考试还剩15分钟，请注意及时交卷！");
+//				    }
+				    flag1 = setTimeout("leftT()", 1000);
+				} 
+	</script>
+	</head>
+	<body onload="studyTime('${StuAction.lefttime}')">
+		<div align="right">
+			<form name="frmtimer" action="" method="post">
+			剩余时间：<h:outputLabel id="HOUR"></h:outputLabel>:<h:outputLabel id="MINUTE"></h:outputLabel>:<h:outputLabel id="SECOND"></h:outputLabel>
+			<br/>
+			<hr/>
+		</form>
+		</div>
+		<div>
+			<h:form>
+				<c:if test="${StuAction.isTesting==1}">	
+				开考时间：#{StuAction.testAssign.testtime}&nbsp;&nbsp;&nbsp;考试时长：#{StuAction.testAssign.testinterval}
+				<br />
+					<c:forEach var="questype" items="#{StuAction.listQuestionType}">
+						<c:if test="${StuAction.s1==1}">
+							<c:if test="${questype.id==1}">
+								<h1>
+									#{questype.name}，请作答。
+								</h1>
+								<br />
+							</c:if>
+						</c:if>
+						<c:if test="${StuAction.s2==1}">
+							<c:if test="${questype.id==2}">
+								<h1>
+									#{questype.name}，请作答。
+								</h1>
+								<br />
+							</c:if>
+						</c:if>
+						<c:if test="${StuAction.s3==1}">
+							<c:if test="${questype.id==3}">
+								<h1>
+									#{questype.name}，请作答。
+								</h1>
+								<br />
+							</c:if>
+						</c:if>
+						<c:if test="${StuAction.s4==1}">
+							<c:if test="${questype.id==4}">
+								<h1>
+									#{questype.name}，请作答。
+								</h1>
+								<br />
+							</c:if>
+						</c:if>
+						<c:if test="${StuAction.s5==1}">
+							<c:if test="${questype.id==5}">
+								<h1>
+									#{questype.name}，请作答。
+								</h1>
+								<br />
+							</c:if>
+						</c:if>
+						<c:if test="${StuAction.s6==1}">
+							<c:if test="${questype.id==6}">
+								<h1>
+									#{questype.name}，请作答。
+								</h1>
+								<br />
+							</c:if>
+						</c:if>
+						<c:if test="${StuAction.s7==1}">
+							<c:if test="${questype.id==7}">
+								<h1>
+									#{questype.name}，请作答。
+								</h1>
+								<br />
+							</c:if>
+						</c:if>
+						<c:if test="${StuAction.s8==1}">
+							<c:if test="${questype.id==8}">
+								<h1>
+									#{questype.name}，请作答。
+								</h1>
+								<br />
+							</c:if>
+						</c:if>
+						<c:forEach var="ques" items="#{StuAction.questioninfo}">
+							<div style="background-color: #FFFF99">
+								<c:if test="${ques.questiontype==questype.id}">
+									
+									#{ques.number} . &nbsp;
+									<c:if test="${ques.questiontype==1}">
+											#{ques.content} &nbsp;( #{ques.score}分)<br />
+										<h:selectOneRadio value="#{ques.pageanswer}"
+											layout="pageDirection">
+											<c:forEach items="#{ques.pagecontent}" var="s">
+												<f:selectItem itemLabel="#{s.contentstring}"
+													itemValue="#{s.boxvalue}"></f:selectItem>
+											</c:forEach>
+										</h:selectOneRadio>
+									</c:if>
+									<c:if test="${ques.questiontype==2}">
+											#{ques.content} &nbsp;( #{ques.score}分)<br />
+										<h:selectManyCheckbox value="#{ques.pageanswers}"
+											layout="pageDirection">
+											<c:forEach items="#{ques.pagecontent}" var="s">
+												<f:selectItem itemLabel="#{s.contentstring}"
+													itemValue="#{s.boxvalue}"></f:selectItem>
+											</c:forEach>
+										</h:selectManyCheckbox>
+									</c:if>
+									<c:if test="${ques.questiontype==3}">
+										<c:forEach items="#{ques.pagecontent}" var="s" end="0">
+													#{s.contentstring}
+												</c:forEach>
+										<c:forEach items="#{ques.pagecontent}" var="s" begin="1">
+											<h:inputText value="#{s.boxvalue}"></h:inputText>#{s.contentstring}
+												</c:forEach>
+										&nbsp;( #{ques.score}分)<br />
+									</c:if>
+									<c:if test="${ques.questiontype==4}">
+										#{ques.content} &nbsp;( #{ques.score}分)<br />
+										<h:inputTextarea rows="10" cols="50"
+											value="#{ques.pageanswer}">
+										</h:inputTextarea>
+									</c:if>
+									<c:if test="${ques.questiontype==5}">
+										#{ques.content} &nbsp;( #{ques.score}分)<br />
+										<h:inputTextarea rows="10" cols="50"
+											value="#{ques.pageanswer}">
+										</h:inputTextarea>
+									</c:if>
+									<c:if test="${ques.questiontype==6}">
+										<c:forEach items="#{ques.pagecontent}" var="s">
+											<br />#{s.contentstring}
+												</c:forEach>
+										&nbsp;( #{ques.score}分)<br />
+										<h:inputTextarea rows="30" cols="50"
+											value="#{ques.pageanswer}" />
+									</c:if>
+									<c:if test="${ques.questiontype==7}">
+										<c:forEach items="#{ques.pagecontent}" var="s" end="0">
+													#{s.contentstring}
+												</c:forEach>
+										<c:forEach items="#{ques.pagecontent}" var="s" begin="1">
+											<h:inputText value="#{s.boxvalue}"></h:inputText>#{s.contentstring}
+												</c:forEach>
+										&nbsp;( #{ques.score}分)<br />
+									</c:if>
+									<c:if test="${ques.questiontype==8}">
+										#{ques.content} &nbsp;( #{ques.score}分)<br />
+										<h:selectOneRadio value="#{ques.pageanswer}"
+											layout="pageDirection">
+											<c:forEach items="#{ques.selectionlist}" var="s">
+												<f:selectItem itemLabel="#{s}"></f:selectItem>
+											</c:forEach>
+										</h:selectOneRadio>
+									</c:if>
+									<br />
+
+								</c:if>
+							</div>
+						</c:forEach>
+						<c:if test="${StuAction.s1==1}">
+							<c:if test="${questype.id==1}">
+								<h:commandButton onclick="" value="保存"
+									action="#{StuAction.insert}"></h:commandButton>
+							</c:if>
+						</c:if>
+						<c:if test="${StuAction.s2==1}">
+							<c:if test="${questype.id==2}">
+								<h:commandButton onclick="" value="保存"
+									action="#{StuAction.insert}"></h:commandButton>
+							</c:if>
+						</c:if>
+						<c:if test="${StuAction.s3==1}">
+							<c:if test="${questype.id==3}">
+								<h:commandButton onclick="" value="保存"
+									action="#{StuAction.insert}"></h:commandButton>
+							</c:if>
+						</c:if>
+						<c:if test="${StuAction.s4==1}">
+							<c:if test="${questype.id==4}">
+								<h:commandButton onclick="" value="保存"
+									action="#{StuAction.insert}"></h:commandButton>
+							</c:if>
+						</c:if>
+						<c:if test="${StuAction.s5==1}">
+							<c:if test="${questype.id==5}">
+								<h:commandButton onclick="" value="保存"
+									action="#{StuAction.insert}"></h:commandButton>
+							</c:if>
+						</c:if>
+						<c:if test="${StuAction.s6==1}">
+							<c:if test="${questype.id==6}">
+								<h:commandButton onclick="" value="保存"
+									action="#{StuAction.insert}"></h:commandButton>
+							</c:if>
+						</c:if>
+						<c:if test="${StuAction.s7==1}">
+							<c:if test="${questype.id==7}">
+								<h:commandButton onclick="" value="保存"
+									action="#{StuAction.insert}"></h:commandButton>
+							</c:if>
+						</c:if>
+						<c:if test="${StuAction.s8==1}">
+							<c:if test="${questype.id==8}">
+								<h:commandButton onclick="" value="保存"
+									action="#{StuAction.insert}"></h:commandButton>
+							</c:if>
+						</c:if>
+					</c:forEach>
+					<h:commandButton onclick="" value="提交"
+						action="#{StuAction.submitPaper}"></h:commandButton>
+				</c:if>
+				<c:if test="${StuAction.isTesting==0}">
+					<h1>
+						现在不是考试时间
+					</h1>
+				</c:if>
+			</h:form>
+		</div>
+	</body>
+</html>

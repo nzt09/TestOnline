@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../template.xhtml">
+
+            <ui:define name="title">
+                title
+            </ui:define>
+
+            <ui:define name="body">
+                <h3>
+                    姓名：
+                    <h:outputText value="#{studentBean.student.name }"></h:outputText>
+                    课程：
+                    <h:outputText value="#{studentBean.courseName }"></h:outputText>
+                    成绩统计图、折线图如下
+                </h3>
+                <h:dataTable id="allTestpaperTable" rowClasses="td1,td2" columnClasses="col,col,col,col,col,col" value="#{studentBean.templist}" var="col"
+                             style="border: solid thin black">
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="考试科目" />
+                        </f:facet>
+                        <h:outputText value="#{studentBean.courseName}" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="考试时间" />
+                        </f:facet>
+                        <h:outputText value="#{col.starttime }" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="分数" />
+                        </f:facet>
+                        <h:outputText value="#{col.score}" />
+                    </h:column>
+                </h:dataTable>
+                <div id="placeholder" style="width: 400px; height: 200px;"></div>
+                <h:inputHidden id="pictureData" value="#{studentBean.pictureData}" />
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

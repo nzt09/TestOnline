@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewDepartmentTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewDepartmentLabel_id}"/>
+                    <h:outputText value="#{departmentController.selected.id}" title="#{bundle.ViewDepartmentTitle_id}"/>
+                    <h:outputText value="#{bundle.ViewDepartmentLabel_name}"/>
+                    <h:outputText value="#{departmentController.selected.name}" title="#{bundle.ViewDepartmentTitle_name}"/>
+                    <h:outputText value="#{bundle.ViewDepartmentLabel_school}"/>
+                    <h:outputText value="#{departmentController.selected.school}" title="#{bundle.ViewDepartmentTitle_school}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{departmentController.destroyAndView}" value="#{bundle.ViewDepartmentDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewDepartmentEditLink}"/>
+                <br />
+                <h:commandLink action="#{departmentController.prepareCreate}" value="#{bundle.ViewDepartmentCreateLink}" />
+                <br />
+                <h:commandLink action="#{departmentController.prepareList}" value="#{bundle.ViewDepartmentShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewDepartmentIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

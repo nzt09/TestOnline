@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:c="http://java.sun.com/jsp/jstl/core" xml:lang="en" lang="en">
+	<head>
+		<title>系统用户管理</title>
+		<meta http-equiv="keywords" content="enter,your,keywords,here" />
+		<meta http-equiv="description"
+			content="A short description of this page." />
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+		<link rel="stylesheet" type="text/css" href="layout.css" />
+	</head>
+	<h:body>
+		<div id="top1">	
+		<h:form>
+			<table>
+				<tr>
+					<td>
+						<p>
+							<ui:insert name="body">管理系统用户</ui:insert>
+						</p>
+						<h:outputLabel>身份</h:outputLabel>
+						<h:selectOneMenu id="identify" value="#{EduAction.roleId}" onchange="submit()" 
+						style="width: 150px " valueChangeListener="#{EduAction.changeShowHide}">
+						<f:selectItem itemValue="" itemLabel="请选择"/>
+						<c:forEach var="role" items="#{EduAction.rolesinfos}">
+							<f:selectItem itemValue="#{role.id}" itemLabel="#{role.name}"/>
+						</c:forEach>
+						</h:selectOneMenu>
+						
+						<h:outputLabel>学校</h:outputLabel>
+						<h:selectOneMenu value="#{EduAction.schoolId}" onchange="submit()" 
+						style="width: 150px " valueChangeListener="#{EduAction.changeStateSchool}">
+						<c:forEach var="school" items="#{EduAction.schools}">
+							<f:selectItem itemValue="#{school.id}" itemLabel="#{school.name}"/>
+						</c:forEach>					
+						</h:selectOneMenu>
+						<h:outputLabel>院系</h:outputLabel>
+						<h:selectOneMenu  value="#{EduAction.instituteId}" onchange="submit()" 
+						style="width: 150px " valueChangeListener="#{EduAction.changeStateIns}">
+						<f:selectItem itemValue="0" itemLabel="请选择"/>
+						<c:forEach var="institute" items="#{EduAction.institutes}">
+							<f:selectItem itemValue="#{institute.id}" itemLabel="#{institute.name}"/>
+						</c:forEach>		
+						</h:selectOneMenu>
+						
+						<h:outputLabel binding="#{EduAction.outPutLabel1}">专业</h:outputLabel>
+						<h:selectOneMenu id="majorId" value="#{EduAction.majorId}" onchange="submit()" 
+						style="width: 150px " valueChangeListener="#{EduAction.changeStateMajor}" binding="#{EduAction.selectOneMenu1}">
+						    <f:selectItem itemValue="0" itemLabel="请选择"/>
+							<c:forEach var="major" items="#{EduAction.majors}" >
+								<f:selectItem itemValue="#{major.id}" itemLabel="#{major.name}"/>
+							</c:forEach>
+						</h:selectOneMenu>
+						
+						<h:outputLabel binding="#{EduAction.outPutLabel2}">班级</h:outputLabel>
+						<h:selectOneMenu id="classId" value="#{EduAction.classId}" binding="#{EduAction.selectOneMenu2}" style="width: 150px ">
+						<f:selectItem itemValue="0" itemLabel="请选择"/>
+						<c:forEach var="class" items="#{EduAction.classes}">
+							<f:selectItem itemValue="#{class.id}" itemLabel="#{class.name}"/>
+						</c:forEach>
+						</h:selectOneMenu>					
+						<h:commandLink target="role_context" action="search_role.xhtml" actionListener="#{EduAction.getStuOrTeacherById}" value="查询" 
+						style="text-decoration: none;"></h:commandLink>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<h:commandLink target="role_context" action="#{EduAction.toAddPage}" value="添加" style="text-decoration: none;"/>
+					</td>
+				</tr>
+			</table>		
+			</h:form>
+		</div>
+		<div id ="bottom1">
+			<iframe name="role_context" src="" width="100%" height="100%" frameborder="0"></iframe>
+	    </div>		
+	</h:body>
+</html>

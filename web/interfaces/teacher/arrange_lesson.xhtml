@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <body>
+
+        <ui:composition template="./../../template.xhtml">
+
+            <ui:define name="title">
+                安排授课
+            </ui:define>
+
+            <ui:define name="body">
+                <h:form>
+<!--                    <tr>
+                        <td>
+                            <h:outputLabel>学校</h:outputLabel>
+                <h:selectOneMenu  >      
+                    <f:selectItems value="#{schoolController.itemsAvailableSelectMany}"></f:selectItems>
+                </h:selectOneMenu>
+                <h:outputLabel>院系</h:outputLabel>
+                <h:selectOneMenu    style="width: 150px " >
+                    <f:selectItems value="#{departmentController.itemsAvailableSelectMany}" ></f:selectItems>
+                </h:selectOneMenu>
+                <h:outputLabel >专业</h:outputLabel>
+                <h:selectOneMenu >
+                    <f:selectItems value="#{majorController.itemsAvailableSelectMany}"></f:selectItems>
+                </h:selectOneMenu>
+                <h:outputLabel >班级</h:outputLabel>
+                <h:selectOneMenu  >
+                    <f:selectItems value="#{classinfoController.itemsAvailableSelectMany}"></f:selectItems>
+                </h:selectOneMenu>	
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <h:outputLabel>科目</h:outputLabel>
+                        <h:selectOneMenu >
+                            <f:selectItems value="#{courseinfoController.itemsAvailableSelectMany}"></f:selectItems>
+                        </h:selectOneMenu>
+                        <h:outputLabel>授课老师</h:outputLabel>
+                        <h:selectOneMenu>
+                            <f:selectItems value="#{teacherController.itemsAvailableSelectMany}"></f:selectItems>
+                        </h:selectOneMenu>
+                        <h:outputLabel>学期</h:outputLabel>
+						<h:selectOneMenu >
+							<f:selectItem itemValue="2009-2010-1" itemLabel="2009-2010-1"/>
+							<f:selectItem itemValue="2009-2010-2" itemLabel="2009-2010-2"/>
+							<f:selectItem itemValue="2010-2011-1" itemLabel="2010-2011-1"/>
+							<f:selectItem itemValue="2010-2011-2" itemLabel="2010-2011-2"/>
+							<f:selectItem itemValue="2011-2012-1" itemLabel="2011-2012-1"/>
+							<f:selectItem itemValue="2011-2012-2" itemLabel="2011-2012-2"/>
+							<f:selectItem itemValue="2012-2013-1" itemLabel="2012-2013-1"/>
+							<f:selectItem itemValue="2012-2013-2" itemLabel="2012-2013-2"/>
+							<f:selectItem itemValue="2013-2014-1" itemLabel="2013-2014-1"/>
+							<f:selectItem itemValue="2013-2014-2" itemLabel="2013-2014-2"/>
+						</h:selectOneMenu>
+                        </td>
+                    </tr>-->
+
+               <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListTeachercourseclassEmpty}" rendered="#{teachercourseclassController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{teachercourseclassController.items.rowCount > 0}">
+                    <h:outputText value="#{teachercourseclassController.pagination.pageFirstItem + 1}..#{teachercourseclassController.pagination.pageLastItem + 1}/#{teachercourseclassController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{teachercourseclassController.previous}" value="#{bundle.Previous} #{teachercourseclassController.pagination.pageSize}" rendered="#{teachercourseclassController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{teachercourseclassController.next}" value="#{bundle.Next} #{teachercourseclassController.pagination.pageSize}" rendered="#{teachercourseclassController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{teachercourseclassController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="编号"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="任课老师"/>
+                            </f:facet>
+                            <h:outputText value="#{item.teacher.name}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="专业"/>
+                            </f:facet>
+                            <h:outputText value="#{item.courseinfo.name}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="班级"/>
+                            </f:facet>
+                            <h:outputText value="#{item.classinfo.name}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="学期"/>
+                            </f:facet>
+                            <h:outputText value="#{item.term}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                           
+                            <h:commandLink action="#{teachercourseclassController.prepareEdit}" value="修改"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{teachercourseclassController.destroy}" value="删除"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{teachercourseclassController.prepareCreate}" value="添加"/>
+                <br />
+                <br />
+                <h:link outcome="main.xhtml" value="返回上一层"/>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

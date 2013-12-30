@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateStudentinfoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateStudentinfoLabel_id}" for="id" />
+                    <h:inputText id="id" value="#{studentinfoController.selected.id}" title="#{bundle.CreateStudentinfoTitle_id}" required="true" requiredMessage="#{bundle.CreateStudentinfoRequiredMessage_id}"/>
+                    <h:outputLabel value="#{bundle.CreateStudentinfoLabel_name}" for="name" />
+                    <h:inputText id="name" value="#{studentinfoController.selected.name}" title="#{bundle.CreateStudentinfoTitle_name}" />
+                    <h:outputLabel value="#{bundle.CreateStudentinfoLabel_email}" for="email" />
+                    <h:inputText id="email" value="#{studentinfoController.selected.email}" title="#{bundle.CreateStudentinfoTitle_email}" />
+                    <h:outputLabel value="#{bundle.CreateStudentinfoLabel_password}" for="password" />
+                    <h:inputText id="password" value="#{studentinfoController.selected.password}" title="#{bundle.CreateStudentinfoTitle_password}" />
+                    <h:outputLabel value="#{bundle.CreateStudentinfoLabel_stuno}" for="stuno" />
+                    <h:inputText id="stuno" value="#{studentinfoController.selected.stuno}" title="#{bundle.CreateStudentinfoTitle_stuno}" />
+                    <h:outputLabel value="#{bundle.CreateStudentinfoLabel_classinfo}" for="classinfo" />
+                    <h:selectOneMenu id="classinfo" value="#{studentinfoController.selected.classinfo}" title="#{bundle.CreateStudentinfoTitle_classinfo}" >
+                        <f:selectItems value="#{classinfoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{studentinfoController.create}" value="#{bundle.CreateStudentinfoSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{studentinfoController.prepareList}" value="#{bundle.CreateStudentinfoShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateStudentinfoIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
