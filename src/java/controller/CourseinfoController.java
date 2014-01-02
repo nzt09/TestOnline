@@ -34,7 +34,6 @@ public class CourseinfoController implements Serializable {
     private MajorFacadeLocal majorFacade;
     @Inject
     private MajorController majcon;
-
     private Courseinfo current;
     private DataModel items = null;
     @EJB
@@ -206,14 +205,13 @@ public class CourseinfoController implements Serializable {
     public SelectItem[] getItemsAvailableSelectA() {
         classId = stuCon.getCurrent().getClassinfo().getId();
         MajorId = stuCon.getCurrent().getClassinfo().getMajor().getId();
-        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByMajor(MajorId), false);
+         SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByMajor(MajorId), false);
 //        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
         for (int i = 0; i < item.length; i++) {
             item[i].setLabel(((Courseinfo) item[i].getValue()).getName());
             item[i].setValue(((Courseinfo) item[i].getValue()).getId());
         }
         return item;
-
     }
 
     public SelectItem[] getItemsAvailableSelectM() {

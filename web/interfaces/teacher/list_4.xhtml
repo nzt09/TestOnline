@@ -58,12 +58,7 @@
                             </f:facet>
                             <h:outputText value="#{item.ipend}"/>
                         </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#注意事项"/>
-                            </f:facet>
-                            <h:outputText value="#{item.notice}"/>
-                        </h:column>
+                 
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="基础分"/>
@@ -80,13 +75,13 @@
                             <f:facet name="header">
                                 <h:outputText value="监考老师"/>
                             </f:facet>
-                            <h:outputText value="#{item.teacher}"/>
+                            <h:outputText value="#{item.teacher.name}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="专业"/>
                             </f:facet>
-                            <h:outputText value="#{item.courseinfo}"/>
+                            <h:outputText value="#{item.courseinfo.name}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
@@ -98,7 +93,7 @@
                             <f:facet name="header">
                                 <h:outputText value="班级"/>
                             </f:facet>
-                            <h:outputText value="#{item.classinfo}"/>
+                            <h:outputText value="#{item.classinfo.name}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">

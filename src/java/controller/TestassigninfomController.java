@@ -154,6 +154,7 @@ public class TestassigninfomController implements Serializable {
     }
 
     public Testassigninfom getSelected() {
+
         if (current == null) {
             current = new Testassigninfom();
             selectedItemIndex = -1;
@@ -296,6 +297,7 @@ public class TestassigninfomController implements Serializable {
     }
 
     public DataModel getItems() {
+        items = null;
         if (items == null) {
             items = getPagination().createPageDataModel();
         }
@@ -303,6 +305,7 @@ public class TestassigninfomController implements Serializable {
     }
 
     public DataModel getItems1() {
+        items1=null;
         if (items1 == null) {
             items1 = getPagination1().createPageDataModel();
         }

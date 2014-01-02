@@ -15,18 +15,20 @@
             </h:panelGroup>
             <h:form>
                 <h:panelGrid columns="2">
-                    <h:outputLabel value="学号" for="stuno" />
-                    <h:inputText id="stuno" value="#{departclassController.selected.stuno}" title="#{bundle.EditDepartclassTitle_stuno}" />
+                      <h:outputLabel value="id" for="id" />
+                      <h:inputText id="id" value="#{departclassController.selected.id}" title="#{bundle.EditStudentinfoTitle_id}" required="true" requiredMessage="#{bundle.EditStudentinfoRequiredMessage_id}"/>
+                  
                     <h:outputLabel value="姓名" for="name" />
                     <h:inputText id="name" value="#{departclassController.selected.name}" title="#{bundle.EditDepartclassTitle_name}" />
                     <h:outputLabel value="密码" for="password" />
                     <h:inputText id="password" value="#{departclassController.selected.password}" title="#{bundle.EditDepartclassTitle_password}" />
+                      <h:outputLabel value="学号" for="stuno" />
+                    <h:inputText id="stuno" value="#{departclassController.selected.stuno}" title="#{bundle.EditDepartclassTitle_stuno}" />
                     <h:outputLabel value="班级" for="classid" />
                     <h:inputText id="classid" value="#{departclassController.selected.classid}" title="#{bundle.EditDepartclassTitle_classid}" />
-                    <h:outputLabel value="学院" for="department" />
-                    <h:inputText id="department" value="#{departclassController.selected.department}" title="#{bundle.EditDepartclassTitle_department}" />
+                   
                 </h:panelGrid>
-                <h:commandLink action="#{departclassController.update}" value="保存"/>
+                <h:commandLink action="#{studentinfoController.eduupdate(s)}" value="保存"/>
                 <br />
                 
                 <h:commandLink action="#{departclassController.prepareList}" value="显示学生信息" immediate="true"/>

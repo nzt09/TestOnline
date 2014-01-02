@@ -16,19 +16,26 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
 import sessionBean.ClassinfoFacadeLocal;
+import sessionBean.DepartclassFacadeLocal;
 
 @Named("classinfoController")
 @SessionScoped
 public class ClassinfoController implements Serializable {
-
+  @EJB
+  private DepartclassFacadeLocal  departclassFacade;
+  @Inject
+  private DepartclassController departclassController;
+  
+    
     private Classinfo current;
     private DataModel items = null;
     @EJB
     private sessionBean.ClassinfoFacadeLocal ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
-
+    private int classId;
     public ClassinfoController() {
     }
 
@@ -128,7 +135,7 @@ public class ClassinfoController implements Serializable {
             return "List";
         }
     }
-
+   
     private void performDestroy() {
         try {
             getFacade().remove(current);
@@ -195,6 +202,7 @@ public class ClassinfoController implements Serializable {
         }
         return item;
     }
+    
     public Classinfo getClassinfo(java.lang.Integer id) {
         return ejbFacade.find(id);
     }

@@ -3,6 +3,10 @@ package controller;
 import entities.Studentinfo;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
+import entities.Departclass;
+import entities.Department;
+import entities.Rolesinfo;
+import entities.Teacher;
 import entities.Teachercourseclass;
 import sessionBean.StudentinfoFacadeLocal;
 
@@ -22,7 +26,10 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
+import sessionBean.DepartclassFacadeLocal;
+import sessionBean.TeacherFacadeLocal;
 import sessionBean.TeachercourseclassFacadeLocal;
+import static tools.Publicfields.EDUTEACHER_ROLE;
 
 @Named("studentinfoController")
 @SessionScoped
@@ -33,7 +40,17 @@ public class StudentinfoController implements Serializable {
 
     @Inject
     private TeachercourseclassController teachercourseCont;
-
+    
+    @EJB
+    private DepartclassFacadeLocal DepartclassFacade;
+    @Inject
+    private DepartclassController DepartclassController;
+     @EJB
+    private TeacherFacadeLocal teacherFacade;
+    @Inject
+    private TeacherController teacherController;
+ 
+    
     private Studentinfo current;
     private DataModel items = null;
     @EJB
@@ -44,6 +61,10 @@ public class StudentinfoController implements Serializable {
 
     private List<SelectItem> courseList;// 用于存放该学生的所有课程名
     private int departmentId;
+     private Teacher teacher;
+   
+    private int roleId;
+    
 
     public List<SelectItem> getCourseList() {
         return courseList;
@@ -102,7 +123,7 @@ public class StudentinfoController implements Serializable {
         if (pagination == null) {
             pagination = new PaginationHelper(10) {
 
-                @Override
+               @Override
                 public int getItemsCount() {
                     return getFacade().count();
                 }
@@ -115,6 +136,8 @@ public class StudentinfoController implements Serializable {
         }
         return pagination;
     }
+    
+  
 
     public String prepareList() {
         recreateModel();
@@ -150,9 +173,21 @@ public class StudentinfoController implements Serializable {
         return "edit_1";
     }
 
+    
     public String update() {
         try {
             getFacade().edit(current);
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("StudentinfoUpdated"));
+            return "list_1";
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            return null;
+        }
+    }
+    //教务老师修改学生信息
+    public String eduupdate() {
+        try {
+//            getFacade().edit();
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("StudentinfoUpdated"));
             return "list_5";
         } catch (Exception e) {
@@ -160,14 +195,14 @@ public class StudentinfoController implements Serializable {
             return null;
         }
     }
-
+    
     public String destroy() {
         current = (Studentinfo) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
         recreateModel();
-        return "list_5";
+        return "list_1";
     }
 
     public String destroyAndView() {
@@ -182,15 +217,18 @@ public class StudentinfoController implements Serializable {
             return "list_1";
         }
     }
-    public void delete(Studentinfo s) {
+    //教务老师删学生信息
+    public String delete(Studentinfo s) {
         try {
             getFacade().remove(s);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("StudentinfoDeleted"));
+         
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
+           return "list_5";
     }
-
+    
     private void performDestroy() {
         try {
             getFacade().remove(current);
@@ -249,7 +287,7 @@ public class StudentinfoController implements Serializable {
     public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
-
+   
     public Studentinfo getStudentinfo(java.lang.Integer id) {
         return ejbFacade.find(id);
     }

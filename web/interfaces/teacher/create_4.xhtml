@@ -37,19 +37,19 @@
                     <h:inputText id="averagetime" value="#{testassigninfomController.selected.averagetime}" title="#{bundle.CreateTestassigninfomTitle_averagetime}" />
                     <h:outputLabel value="监考老师" for="teacher" />
                     <h:selectOneMenu id="teacher" value="#{testassigninfomController.selected.teacher}" title="#{bundle.CreateTestassigninfomTitle_teacher}" >
-                        <f:selectItems value="#{teacherController.itemsAvailableSelectOne}"/>
+                        <f:selectItems value="#{teacherController.itemsAvailableSelectM}"/>
                     </h:selectOneMenu>
                     <h:outputLabel value="专业" for="courseinfo" />
                     <h:selectOneMenu id="courseinfo" value="#{testassigninfomController.selected.courseinfo}" title="#{bundle.CreateTestassigninfomTitle_courseinfo}" >
-                        <f:selectItems value="#{courseinfoController.itemsAvailableSelectOne}"/>
+                        <f:selectItems value="#{courseinfoController.itemsAvailableSelectM}"/>
                     </h:selectOneMenu>
                     <h:outputLabel value="教室" for="classroom" />
                     <h:selectOneMenu id="classroom" value="#{testassigninfomController.selected.classroom}" title="#{bundle.CreateTestassigninfomTitle_classroom}" >
-                        <f:selectItems value="#{classroomController.itemsAvailableSelectOne}"/>
+                        <f:selectItems value="#{classroomController.itemsAvailableSelectM}"/>
                     </h:selectOneMenu>
                     <h:outputLabel value="班级" for="classinfo" />
                     <h:selectOneMenu id="classinfo" value="#{testassigninfomController.selected.classinfo}" title="#{bundle.CreateTestassigninfomTitle_classinfo}" >
-                        <f:selectItems value="#{classinfoController.itemsAvailableSelectOne}"/>
+                        <f:selectItems value="#{classinfoController.itemsAvailableSelectM}"/>
                     </h:selectOneMenu>
                 </h:panelGrid>
                 <br />
@@ -59,7 +59,7 @@
                 <h:commandLink action="#{testassigninfomController.prepareList}" value="显示考试信息" immediate="true"/>
                 <br />
                 <br />
-                <h:link outcome="TestassigninformController.xhtml" value="返回上一页"/>
+                <h:link outcome="arrange_exam.xhtml" value="返回上一页"/>
             </h:form>
         </ui:define>
     </ui:composition>

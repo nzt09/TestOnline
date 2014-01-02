@@ -7,7 +7,7 @@
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
-            <h:outputText value="hhhhhhhhhhhhhhhhhhhhh"></h:outputText>
+            <h:outputText value="学生信息"></h:outputText>
         </ui:define>
         <ui:define name="body">
             <h:form styleClass="jsfcrud_list_form">
@@ -42,23 +42,26 @@
                             <f:facet name="header">
                                 <h:outputText value="班级"/>
                             </f:facet>
-                            <h:outputText value="#{item.classid}"/>
+                            <h:outputText value="#{item.classId}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="学院"/>
                             </f:facet>
-                            <h:outputText value="#{item.department}"/>
+                            <h:outputText value="#{majorController.findDepartment()}"/>
                         </h:column>
                         <h:column>
-                            <h:commandLink action="#{studentinfoController.prepareEdit}" value="修改"/>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{departclassController.Edit()}" value="修改"/>
                             <h:outputText value=" "/>
-                            <h:commandLink action="#{departclassController.destroy()}" value="删除"/>
+                            <h:commandLink action="#{departclassController.deleted()}" value="删除"/>
                         </h:column>
                     </h:dataTable>
                 </h:panelGroup>
               <br />
-              <h:commandLink action="#{departclassController.prepareCreate}" value="添加"/>
+              <h:commandLink action="#{studentinfoController.prepareCreate()}" value="添加"/>
                 <br />
                 <h:link outcome="manage_user.xhtml" value="返回上一层"/>
             </h:form>
