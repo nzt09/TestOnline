@@ -19,8 +19,6 @@
                     <h:inputText id="id" value="#{studentinfoController.selected.id}" title="#{bundle.EditStudentinfoTitle_id}" required="true" requiredMessage="#{bundle.EditStudentinfoRequiredMessage_id}"/>
                     <h:outputLabel value="姓名" for="name" />
                     <h:inputText id="name" value="#{studentinfoController.selected.name}" title="#{bundle.EditStudentinfoTitle_name}" />
-                    <h:outputLabel value="邮箱" for="email" />
-                    <h:inputText id="email" value="#{studentinfoController.selected.email}" title="#{bundle.EditStudentinfoTitle_email}" />
                     <h:outputLabel value="密码" for="password" />
                     <h:inputText id="password" value="#{studentinfoController.selected.password}" title="#{bundle.EditStudentinfoTitle_password}" />
                     <h:outputLabel value="学号" for="stuno" />
@@ -29,8 +27,9 @@
                     <h:selectOneMenu id="classinfo" value="#{studentinfoController.selected.classinfo}" title="#{bundle.EditStudentinfoTitle_classinfo}" >
                         <f:selectItems value="#{classinfoController.itemsAvailableSelectM}"/>
                     </h:selectOneMenu>
+                     
                 </h:panelGrid>
-                <h:commandLink action="#{studentinfoController.update}" value="修改"/>
+                <h:commandLink action="#{studentinfoController.update()}" value="修改"/>
                 <br />
                 <!--                <br />
                                 <h:link outcome="View" value="#{bundle.EditStudentinfoViewLink}"/>

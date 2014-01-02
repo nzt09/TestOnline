@@ -4,7 +4,9 @@ import entities.Departclass;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
 import entities.Department;
+import entities.Major;
 import entities.Rolesinfo;
+import entities.Studentinfo;
 import entities.Teacher;
 
 
@@ -23,6 +25,8 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import sessionBean.DepartclassFacadeLocal;
+import sessionBean.MajorFacadeLocal;
+import sessionBean.StudentinfoFacadeLocal;
 import sessionBean.TeacherFacadeLocal;
 import static tools.Publicfields.EDUTEACHER_ROLE;
 
@@ -31,16 +35,20 @@ import static tools.Publicfields.EDUTEACHER_ROLE;
 public class DepartclassController implements Serializable {
     
     @EJB
-    private DepartclassFacadeLocal departclassFacade;
+    private StudentinfoFacadeLocal studentinfoFacade;
 
     @Inject
-    private DepartclassController departclassCon;
+    private StudentinfoController studentinfoController;
     @EJB
     private TeacherFacadeLocal teacherFacade;
     @Inject
     private TeacherController teacherController;
-    
+    @EJB
+    private MajorFacadeLocal majorFacade;
+    @Inject
+    private MajorController majorController;
     private Teacher teacher;
+    private Major major;
     private Department department;
     private Rolesinfo rolesinfo;
     
@@ -52,7 +60,7 @@ public class DepartclassController implements Serializable {
     private int selectedItemIndex;
     private int departmentId;
     private int roleId;
-
+    
     public int getRoleId() {
         return roleId;
     }
@@ -108,14 +116,16 @@ public class DepartclassController implements Serializable {
     }
     public String myview(){
         teacher=new Teacher();
+        major = new Major();
         department=new Department();
         department.setId(departmentId);
         rolesinfo=new Rolesinfo();
         rolesinfo.setId(roleId);
+        major.setDepartment(department);
         teacher.setDepartment(department);
         teacher.setRolesinfo(rolesinfo);
         System.out.print(teacher.toString());
-        
+        majorController.setCurrent(major);
         teacherController.setCurrent(teacher);
         if(roleId==EDUTEACHER_ROLE){
             System.out.print("dasfasfasfafs");
@@ -158,18 +168,44 @@ public class DepartclassController implements Serializable {
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "edit_1";
     }
+    //教务老师修改学生信息
+      public String Edit() {
+        current = (Departclass) getItems().getRowData();
+        Studentinfo s1=new Studentinfo();
+        s1=studentinfoFacade.find(current.getId());
+        System.out.println(s1);
+        studentinfoController.setCurrent(s1);
+        
+//        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        return "edit_1";
+    }
 
     public String update() {
         try {
+            
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("DepartclassUpdated"));
-            return "view_5";
+            return "list_5";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
         }
     }
-
+   //教务老师删除学生信息
+     public String deleted() {
+        current = (Departclass) getItems().getRowData();
+        Studentinfo s=new Studentinfo();
+        s=studentinfoFacade.find(current.getId());
+        studentinfoController.delete(s);
+//        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+//        performDestroy();
+//        recreatePagination();
+//        recreateModel();
+         recreateModel();
+        return "list_5";
+        
+    }
+     
     public String destroy() {
         current = (Departclass) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();

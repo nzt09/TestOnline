@@ -6,12 +6,12 @@
       xmlns:rich="http://richfaces.org/rich"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:a4j="http://richfaces.org/a4j">
-  
+
     <ui:composition template="./../../eduModel.xhtml">
         <ui:define name="content">
             <h:form>
                 <div id="left">
-                    <rich:panel style="height: 100%">
+                    <rich:panel style="height: 70%">
                         所教课程：
                         <h:selectOneMenu  id="course" valueChangeListener="#{chapterinfoController.typeCourseListener}" >
                             <f:selectItem itemValue="----请选择课程----"></f:selectItem>
@@ -20,14 +20,33 @@
                         </h:selectOneMenu><br/>
                         章节：
                         <h:selectOneMenu id="chapter" value="#{knowledgeController.chapterId}" valueChangeListener="#{chapterinfoController.typeChapterListenner}">
-                            <f:selectItem itemValue="----请选择对应的章节----"></f:selectItem>
+                            <f:selectItem itemLabel="----请选择对应的章节----" itemValue="0" ></f:selectItem>
                             <f:selectItems value="#{chapterinfoController.chapterList}" />
-                            <f:ajax event="change" render="myName newName bigtree"></f:ajax>
+                            <f:ajax event="change" render=" myName newName bigtree point"></f:ajax>
                         </h:selectOneMenu>
                     </rich:panel>
+                    <div id="tree">
+                        知识点：
+                        <rich:panel header="" style="height: 100%" id="treePanel">
+                            <rich:tree var="item" id="bigtree">
+                                <rich:treeModelRecursiveAdaptor roots="#{knowledgeController.knowledgeRoot}" nodes="#{item.KParents}">
+                                    <rich:treeNode>
+                                        <h:commandLink value="#{item.kl.name}" action="#{knowledgeController.setSelected(item.kl)}">
+                                        </h:commandLink>
+                                    </rich:treeNode>
+                                    <rich:treeModelAdaptor  nodes="#{item.KChildren}">
+                                        <rich:treeNode>
+                                            <h:commandLink value="#{item.kl.name}" action="#{knowledgeController.setSelected(item.kl)}"> 
+                                            </h:commandLink>
+                                        </rich:treeNode>      
+                                    </rich:treeModelAdaptor>
+                                </rich:treeModelRecursiveAdaptor>
+                            </rich:tree>
+                        </rich:panel>
+                    </div>
                 </div>
                 <div align="center" class="right_content">
-                    <rich:tabPanel switchType="client">
+                    <rich:tabPanel switchType="ajax" id="tabPane" >
                         <rich:tab header="章节">
                             <h:panelGrid columns="2" style="column-width: 50px;">
                                 <h:outputText value="当前选中节点信息:" ></h:outputText>
@@ -47,23 +66,27 @@
 
                         </rich:tab>
                         <rich:tab header="知识点管理">
-                            <div id="tree">
-                                <rich:panel header="" style="height: 100%" id="treePanel">
-                                    <rich:tree var="item" id="bigtree">
-                                        <rich:treeModelRecursiveAdaptor roots="#{knowledgeController.knowledgeRoot}" nodes="#{item.CCParents}">
-                                            <rich:treeNode>
-                                                <h:outputText value="#{item.cc.name}"/>
-                                            </rich:treeNode>
-                                            <rich:treeModelAdaptor  nodes="#{item.CCChildren}">
-                                                <rich:treeNode>
-                                                    <h:commandLink value="#{item.cc.name}" action="#{knowledgeController.setSelected(item.cc)}">
-                                                        
-                                                    </h:commandLink>
-                                                </rich:treeNode>      
-                                            </rich:treeModelAdaptor>
-                                        </rich:treeModelRecursiveAdaptor>
-                                    </rich:tree>
-                                </rich:panel>
+                            <div align="center" class="divcss2">
+                                <h:outputText value="知识点信息:" rendered="#{knowledgeController.chapterIdSelected}"></h:outputText>
+                                <h:outputText id="knowledgename" value="#{knowledgeController.selected.name}" rendered="#{knowledgeController.chapterIdSelected}"/><br/>
+                                <h:outputText value="章节信息："></h:outputText>
+                                <h:outputText id="point" value="#{chapterinfoController.selected.name}"></h:outputText>
+                                <br/>
+                                <rich:inplaceInput id="newPname" value="#{knowledgeController.newPname}" defaultLabel="点击输入名字"/>
+
+                                <h:commandButton value="父知识点" action="#{knowledgeController.createParentKnowledge()}">
+                                </h:commandButton><br/>
+                                <rich:inplaceInput id="changename" value="#{knowledgeController.selected.name}" rendered="#{knowledgeController.chapterIdSelected}"  />
+                                <h:commandButton id="update"    value="修改" rendered="#{knowledgeController.chapterIdSelected}"  /><br/><p/>
+
+
+                                <rich:inplaceInput id="newname" value="#{knowledgeController.newName}" defaultLabel="点击输入名字" rendered="#{knowledgeController.chapterIdSelected}"/>
+
+                                <h:commandButton id="add"   value="子知识添加" action="#{knowledgeController.createChildrenKnowledge()}" rendered="#{knowledgeController.chapterIdSelected}">
+                                </h:commandButton>
+                                <h:commandButton id="dd" value="删除" action="#{knowledgeController.delete()}" rendered="#{knowledgeController.chapterIdSelected}">
+                                    <f:ajax render="treePanel"/>
+                                </h:commandButton>
                             </div>
                         </rich:tab>
                         <rich:tab header="题目管理">

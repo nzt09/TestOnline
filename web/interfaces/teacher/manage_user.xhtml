@@ -11,47 +11,25 @@
         <ui:composition template="./../../template.xhtml">
 
             <ui:define name="title">
-                
+
             </ui:define>
 
             <ui:define name="body">
                 <h:form>
-<!--                <h:outputLabel>身份</h:outputLabel>
-                <h:selectOneMenu id="identify"   >
-                    <f:selectItems value="#{rolesinfoController.itemsAvailableSelectMany}"/>
-                </h:selectOneMenu>
-                <h:outputText>学校</h:outputText>
-                <h:selectOneMenu  >      
-                    <f:selectItems value="#{schoolController.itemsAvailableSelectMany}"></f:selectItems>
-                </h:selectOneMenu>
-                <h:outputLabel>院系</h:outputLabel>
-                <h:selectOneMenu    style="width: 150px " >
-                    <f:selectItems value="#{departmentController.itemsAvailableSelectMany}" ></f:selectItems>
-                </h:selectOneMenu>
-                <h:outputLabel >专业</h:outputLabel>
-                <h:selectOneMenu >
-                    <f:selectItems value="#{majorController.itemsAvailableSelectMany}"></f:selectItems>
-                </h:selectOneMenu>
-                <h:outputLabel >班级</h:outputLabel>
-                <h:selectOneMenu  >
-                    <f:selectItems value="#{classinfoController.itemsAvailableSelectMany}"></f:selectItems>
-                </h:selectOneMenu>					
-                <h:commandLink target="context" action="search_role.xhtml" actionListener="#{allLoginController.typeChangeListener}"
-                               ></h:commandLink>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <h:commandLink target="context" action="add_roles" value="添加" />-->
-                 <h1 align="left">在线考试系统</h1><br/>
+                    <h1 align="left">在线考试系统</h1><br/>
                     <h4>管理任课教师，学生</h4><br/>
-                    
+
                     <h:selectOneMenu id="departmentId" value="#{departclassController.departmentId}" >
                         <f:selectItems value="#{departmentController.itemsAvailableSelectMany}"/>
                     </h:selectOneMenu>
                     <h:selectOneMenu id="roleId"  value="#{departclassController.roleId}" >
                         <f:selectItems value="#{rolesinfoController.itemsAvailableSelectTs}"/>
                     </h:selectOneMenu>
+
                     <h:commandLink target="context" action="#{departclassController.myview()}" value="查看"  style="text-decoration: none;"/>
 <!--                    <h:commandLink target="context" action="#{teacherController.action1()}" value="添加" style="text-decoration: none;"/>-->
-                  
-                     <h:link outcome="main.xhtml" value="返回上一层"/>
+
+                    <h:link outcome="main.xhtml" value="返回上一层"/>
                 </h:form>
             </ui:define>
 

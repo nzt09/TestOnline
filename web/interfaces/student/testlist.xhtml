@@ -23,13 +23,13 @@
                     <h:dataTable value="#{testassigninfomController.items1}" var="item1" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTestassigninfomTitle_id}"/>
+                                <h:outputText value="编号"/>
                             </f:facet>
                             <h:outputText value="#{item1.id}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTestassigninfomTitle_testtime}"/>
+                                <h:outputText value="考试开始时间"/>
                             </f:facet>
                             <h:outputText value="#{item1.testtime}">
                                 <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" timeZone="GMT+8"/>
@@ -37,37 +37,37 @@
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTestassigninfomTitle_testinterval}"/>
+                                <h:outputText value="考试时间"/>
                             </f:facet>
                             <h:outputText value="#{item1.testinterval}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTestassigninfomTitle_notice}"/>
+                                <h:outputText value="注意事项"/>
                             </f:facet>
                             <h:outputText value="#{item1.notice}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTestassigninfomTitle_teacher}"/>
+                                <h:outputText value="监考老师"/>
                             </f:facet>
                             <h:outputText value="#{item1.teacher.name}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTestassigninfomTitle_courseinfo}"/>
+                                <h:outputText value="课程"/>
                             </f:facet>
                             <h:outputText value="#{item1.courseinfo.name}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTestassigninfomTitle_classroom}"/>
+                                <h:outputText value="教室"/>
                             </f:facet>
                             <h:outputText value="#{item1.classroom.name}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTestassigninfomTitle_classinfo}"/>
+                                <h:outputText value="班级"/>
                             </f:facet>
                             <h:outputText value="#{item1.classinfo.name}"/>
                         </h:column>
@@ -77,19 +77,19 @@
                             </f:facet>
                             <h:outputText value="#{studentinfoController.gettime()}"/>
                         </h:column>-->
-                       <h:column>
+<!--                       <h:column>
                             <f:facet name="header">
                                 <h:outputText value="当前"/>
                             </f:facet>
                            <h:outputText value="#{testassigninfomController.isTesting()}"/>
                            
-                        </h:column>
+                        </h:column>-->
                      
                     </h:dataTable>
                 </h:panelGroup>
                 
                 <h:commandLink action="main.xhtml"    value="开始考试" rendered="#{testassigninfomController.isTesting()}"></h:commandLink>
-               
+                <h:outputText value="不在考试时间" rendered="#{!testassigninfomController.isTesting()}"/>
                 <h:link outcome="list.xhtml" value="返回上一层"/>
             </h:form>
         </ui:define>

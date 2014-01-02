@@ -8,8 +8,10 @@ package controller;
 import entities.Knowledge;
 import java.util.LinkedList;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+import sessionBean.MyKnowledgeFacadeLocal;
 
 /**
  *
@@ -17,55 +19,44 @@ import javax.inject.Named;
  */
 @Named
 @SessionScoped
-public class WrappedKnowledge implements java.io.Serializable{
+public class WrappedKnowledge implements java.io.Serializable {
 
-    private Knowledge cc;
-
-    public Knowledge getCc() {
-        return cc;
-    }
-public WrappedKnowledge(){
-    
-}
-    public void setCc(Knowledge cc) {
-        this.cc = cc;
-    }
-    private List<WrappedKnowledge> CCParents;
-    private List<WrappedKnowledge> CCChildren;
-
-    public WrappedKnowledge(Knowledge cc1) {
-        cc=cc1;
+    private Knowledge kl;
+    private List<WrappedKnowledge> KParents;
+    private List<WrappedKnowledge> KChildren;
+    public Knowledge getKl() {
+        return kl;
     }
 
-    public List<WrappedKnowledge> getCCParents() {
-            this.CCChildren = new LinkedList<>();
-            this.CCParents = new LinkedList<>();
-            
-            if (cc.getKnowledgeList().size() > 0) {
-                for (Knowledge cc1 : cc.getKnowledgeList()) {
-                    if (cc1.getKnowledgeList().size() > 0) {
-                        this.CCParents.add(new WrappedKnowledge(cc1));
-                    } else {
-                        this.CCChildren.add(new WrappedKnowledge(cc1));
-                    }
-                }
-            }
-        return this.CCParents;
+    public void setKl(Knowledge kl) {
+        this.kl = kl;
     }
 
-    public List<WrappedKnowledge> getCCChildren() {
-            this.CCChildren = new LinkedList<>();
-            this.CCParents = new LinkedList<>();
-            if (cc.getKnowledgeList().size() > 0) {
-                for (Knowledge cc1 : cc.getKnowledgeList()) {
-                    if (cc1.getKnowledgeList().size() > 0) {
-                        this.CCParents.add(new WrappedKnowledge(cc1));
-                    } else {
-                        this.CCChildren.add(new WrappedKnowledge(cc1));
-                    }
-                } 
+    public WrappedKnowledge(Knowledge knowledge) {
+        this.kl = knowledge;
+    }
+
+    public List<WrappedKnowledge> getKParents() {
+        if (null == this.KParents) {
+            this.KParents = new LinkedList<>();
         }
-        return this.CCChildren;
+        return KParents;
+    }
+
+    public void setKParents(List<WrappedKnowledge> KParents) {
+        this.KParents = KParents;
+    }
+
+    public List<WrappedKnowledge> getKChildren() {
+        if (null == this.KChildren) {
+            this.KChildren = new LinkedList<>();
+        }
+        return KChildren;
 
     }
+
+    public void setKChildren(List<WrappedKnowledge> KChildren) {
+        this.KChildren = KChildren;
+    }
+
 }

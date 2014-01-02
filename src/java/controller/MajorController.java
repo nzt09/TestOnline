@@ -17,17 +17,30 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
+import sessionBean.DepartclassFacadeLocal;
+import sessionBean.StudentinfoFacadeLocal;
 
 @Named("majorController")
 @SessionScoped
 public class MajorController implements Serializable {
+   
 
     private Major current;
+
+    public Major getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(Major current) {
+        this.current = current;
+    }
     private DataModel items = null;
     @EJB
     private sessionBean.MajorFacadeLocal ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    private int department;
 
     public MajorController() {
     }
@@ -187,7 +200,14 @@ public class MajorController implements Serializable {
     public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
-
+    
+  
+    public String findDepartment(){
+         department = this.getCurrent().getDepartment().getId();
+         SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByDepartmentId(department), false);
+         String name = ((Major)item[0].getValue()).getDepartment().getName();
+        return name;
+    }
     public Major getMajor(java.lang.Integer id) {
         return ejbFacade.find(id);
     }
