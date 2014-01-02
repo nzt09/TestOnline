@@ -14,7 +14,7 @@
                 <h:panelGroup id="messagePanel" layout="block">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
-                <h:outputText escape="false" value="hhhhhhhh" rendered="#{departclassController.items.rowCount == 0}"/>
+                <h:outputText escape="false" value="#{bundle.ListDepartclassEmpty}" rendered="#{departclassController.items.rowCount == 0}"/>
                 <h:panelGroup rendered="#{departclassController.items.rowCount > 0}">
                     <h:outputText value="#{departclassController.pagination.pageFirstItem + 1}..#{departclassController.pagination.pageLastItem + 1}/#{departclassController.pagination.itemsCount}"/>&nbsp;
                     <h:commandLink action="#{departclassController.previous}" value="上一页" rendered="#{departclassController.pagination.hasPreviousPage}"/>&nbsp;

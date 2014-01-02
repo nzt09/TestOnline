@@ -32,7 +32,7 @@ import static tools.Publicfields.EDUTEACHER_ROLE;
 @Named("departclassController")
 @SessionScoped
 public class DepartclassController implements Serializable {
-    
+
     @EJB
     private StudentinfoFacadeLocal studentinfoFacade;
 
@@ -61,7 +61,7 @@ public class DepartclassController implements Serializable {
     private int selectedItemIndex;
     private int departmentId;
     private int roleId;
-    
+
     public int getRoleId() {
         return roleId;
     }
@@ -115,10 +115,11 @@ public class DepartclassController implements Serializable {
         }
         return pagination;
     }
-    public String myview(){
-        teacher=new Teacher();
+
+    public String myview() {
+        teacher = new Teacher();
         major = new Major();
-        department=new Department();
+        department = new Department();
         department.setId(departmentId);
         rolesinfo = new Rolesinfo();
         rolesinfo.setId(roleId);
@@ -170,21 +171,22 @@ public class DepartclassController implements Serializable {
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "edit_1";
     }
+
     //教务老师修改学生信息
-      public String Edit() {
+    public String Edit() {
         current = (Departclass) getItems().getRowData();
-        Studentinfo s1=new Studentinfo();
-        s1=studentinfoFacade.find(current.getId());
+        Studentinfo s1 = new Studentinfo();
+        s1 = studentinfoFacade.find(current.getId());
         System.out.println(s1);
         studentinfoController.setCurrent(s1);
-        
+
 //        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "edit_1";
     }
 
     public String update() {
         try {
-            
+
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("DepartclassUpdated"));
             return "list_5";
@@ -193,33 +195,29 @@ public class DepartclassController implements Serializable {
             return null;
         }
     }
-   //教务老师删除学生信息
-     public String deleted() {
+
+    //教务老师删除学生信息
+    public String deleted() {
         current = (Departclass) getItems().getRowData();
-        Studentinfo s=new Studentinfo();
-        s=studentinfoFacade.find(current.getId());
+        Studentinfo s = new Studentinfo();
+        s = studentinfoFacade.find(current.getId());
         studentinfoController.delete(s);
 //        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
 //        performDestroy();
 //        recreatePagination();
 //        recreateModel();
-         recreateModel();
+        recreateModel();
         return "list_5";
-        
+
     }
-     
+
     public String destroy() {
         current = (Departclass) getItems().getRowData();
-        Studentinfo s=new Studentinfo();
-        s=studentFacade.find(current.getId());
-        studentController.delete(s);
-        
-        
-
-//        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-//        performDestroy();
-//        recreatePagination();
-//        recreateModel();
+        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        performDestroy();
+        recreatePagination();
+        recreateModel();
+        return "List";
     }
 
     public String destroyAndView() {
