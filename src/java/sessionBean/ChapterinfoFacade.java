@@ -31,7 +31,7 @@ public class ChapterinfoFacade extends AbstractFacade<Chapterinfo> implements Ch
     }
 
     public List<Chapterinfo> findByCourseId(int id) {
-        List<Chapterinfo> tem = em.createNativeQuery("select * from chapterinfo where course =" + id + "", Chapterinfo.class).getResultList();
+        List<Chapterinfo> tem = em.createNativeQuery("select * from chapterinfo where course =" + id + " order by chapternum", Chapterinfo.class).getResultList();
         if (null == tem || tem.isEmpty()) {
             return null;
         } else {

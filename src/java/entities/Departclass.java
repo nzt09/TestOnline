@@ -7,12 +7,14 @@
 package entities;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -25,37 +27,42 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Departclass.findAll", query = "SELECT d FROM Departclass d"),
-    @NamedQuery(name = "Departclass.findByStuno", query = "SELECT d FROM Departclass d WHERE d.stuno = :stuno"),
+    @NamedQuery(name = "Departclass.findById", query = "SELECT d FROM Departclass d WHERE d.id = :id"),
     @NamedQuery(name = "Departclass.findByName", query = "SELECT d FROM Departclass d WHERE d.name = :name"),
-    @NamedQuery(name = "Departclass.findByPassword", query = "SELECT d FROM Departclass d WHERE d.password = :password"),
     @NamedQuery(name = "Departclass.findByClassid", query = "SELECT d FROM Departclass d WHERE d.classid = :classid"),
+    @NamedQuery(name = "Departclass.findByPassword", query = "SELECT d FROM Departclass d WHERE d.password = :password"),
+    @NamedQuery(name = "Departclass.findByStuno", query = "SELECT d FROM Departclass d WHERE d.stuno = :stuno"),
     @NamedQuery(name = "Departclass.findByDepartment", query = "SELECT d FROM Departclass d WHERE d.department = :department")})
 public class Departclass implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Size(max = 20)
-    @Column(name = "STUNO")
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ID")
     @Id
-    private String stuno;
+    private int id;
     @Size(max = 50)
     @Column(name = "NAME")
     private String name;
+    @Column(name = "CLASSID")
+    private Integer classid;
     @Size(max = 20)
     @Column(name = "PASSWORD")
     private String password;
-    @Column(name = "CLASSID")
-    private Integer classid;
+    @Size(max = 20)
+    @Column(name = "STUNO")
+    private String stuno;
     @Column(name = "DEPARTMENT")
     private Integer department;
 
     public Departclass() {
     }
 
-    public String getStuno() {
-        return stuno;
+    public int getId() {
+        return id;
     }
 
-    public void setStuno(String stuno) {
-        this.stuno = stuno;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -66,6 +73,14 @@ public class Departclass implements Serializable {
         this.name = name;
     }
 
+    public Integer getClassid() {
+        return classid;
+    }
+
+    public void setClassid(Integer classid) {
+        this.classid = classid;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -74,12 +89,12 @@ public class Departclass implements Serializable {
         this.password = password;
     }
 
-    public Integer getClassid() {
-        return classid;
+    public String getStuno() {
+        return stuno;
     }
 
-    public void setClassid(Integer classid) {
-        this.classid = classid;
+    public void setStuno(String stuno) {
+        this.stuno = stuno;
     }
 
     public Integer getDepartment() {
