@@ -7,14 +7,14 @@
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
-            <h:outputText value="#{bundle.ListDepartclassTitle}"></h:outputText>
+            <h:outputText value="hhhhhhhhhhhhhhhhhhhhh"></h:outputText>
         </ui:define>
         <ui:define name="body">
             <h:form styleClass="jsfcrud_list_form">
                 <h:panelGroup id="messagePanel" layout="block">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
-                <h:outputText escape="false" value="#{bundle.ListDepartclassEmpty}" rendered="#{departclassController.items.rowCount == 0}"/>
+                <h:outputText escape="false" value="hhhhhhhh" rendered="#{departclassController.items.rowCount == 0}"/>
                 <h:panelGroup rendered="#{departclassController.items.rowCount > 0}">
                     <h:outputText value="#{departclassController.pagination.pageFirstItem + 1}..#{departclassController.pagination.pageLastItem + 1}/#{departclassController.pagination.itemsCount}"/>&nbsp;
                     <h:commandLink action="#{departclassController.previous}" value="上一页" rendered="#{departclassController.pagination.hasPreviousPage}"/>&nbsp;
@@ -51,12 +51,9 @@
                             <h:outputText value="#{item.department}"/>
                         </h:column>
                         <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="&nbsp;"/>
-                            </f:facet>
                             <h:commandLink action="#{studentinfoController.prepareEdit}" value="修改"/>
                             <h:outputText value=" "/>
-                            <h:commandLink action="#{studentinfoController.destroy}" value="删除"/>
+                            <h:commandLink action="#{departclassController.destroy()}" value="删除"/>
                         </h:column>
                     </h:dataTable>
                 </h:panelGroup>

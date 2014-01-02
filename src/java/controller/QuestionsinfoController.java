@@ -17,10 +17,14 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
 
 @Named("questionsinfoController")
 @SessionScoped
 public class QuestionsinfoController implements Serializable {
+
+    @Inject
+    private KnowledgeController kc;
 
     private Questionsinfo current;
     private DataModel items = null;
@@ -28,6 +32,14 @@ public class QuestionsinfoController implements Serializable {
     private sessionBean.QuestionsinfoFacadeLocal ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    private int typeId;
+    private int knowid;
+
+    public void selectQuestion(int id) {
+        typeId = id;
+        knowid = kc.getSelected().getId();
+        items = this.getPagination().createPageDataModel();
+    }
 
     public QuestionsinfoController() {
     }
@@ -55,7 +67,8 @@ public class QuestionsinfoController implements Serializable {
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+                    System.out.println("有没有啊" + typeId);
+                    return new ListDataModel(getFacade().findConstrainRange(typeId,knowid, new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
                 }
             };
         }
@@ -96,6 +109,22 @@ public class QuestionsinfoController implements Serializable {
         return "Edit";
     }
 
+    public String edit() {
+        current = (Questionsinfo) getItems().getRowData();
+        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        return "editQuestion";
+    }
+     public String updateQuestion() {
+        try {
+            getFacade().edit(current);
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("QuestionsinfoUpdated"));
+            return "eduMain";
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            return null;
+        }
+    }
+    
     public String update() {
         try {
             getFacade().edit(current);

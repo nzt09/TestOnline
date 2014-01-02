@@ -9,34 +9,30 @@
     <body > 
         <ui:composition template="./../../template.xhtml">
             <ui:define name="title" >
-                在线考试系统
+                
             </ui:define>
             <ui:define name="body" >  
-                <body style="width: 200px;background-image: url('../image/bgm.jpg')">
-                    <div class="divcss" >
-                        <div  id="main"  >
-                            <h:form  >
-                                <rich:panel style="width:360px;height: 150px;background-image: url('../image/bgm.jpg')" >
-                                    <f:facet name="header">
-                                        <h:outputText value="考试系统登陆"/>
-                                    </f:facet>
-                                    <h:panelGrid columns="2">
-                                        <h:outputText value="用户编号： " styleClass="stylefont"/>
-                                        <rich:inplaceInput defaultLabel="点击输入你的编号" value="#{loginController.userId}" style="width: 150px;"
-                                                           showControls="true"/>
-                                        <h:outputText value="密码：" styleClass="stylefont"/>
-                                        <rich:inplaceInput defaultLabel="点击输入你的密码" value="#{loginController.password}" style="width: 150px;"
-                                                           showControls="true" >
-                                        </rich:inplaceInput>
-                                        <h:commandButton style="width: 100px;height: 25px " id="submit" value="登录" action="#{loginController.login()}"></h:commandButton> 
-                                        <h:commandButton style="width: 100px;height: 25px" id="cancel" value="重置" action="#{loginController.cancel()}"></h:commandButton>
-                                    </h:panelGrid>
-                                </rich:panel>
-                            </h:form>
-                        </div>
+                    <div  class="BODY"  >
+                        <h:form  >
+                            <rich:panel style="width:360px;height: 150px;background-image: url('../image/bgm.jpg')" >
+                                <f:facet name="header">
+                                    <h:outputText value="考试系统登陆"/>
+                                </f:facet>
+                                <h:panelGrid columns="2">
+                                    <h:outputText value="用户编号： " styleClass="stylefont"/>
+                                    <rich:inplaceInput defaultLabel="点击输入你的编号" value="#{loginController.userId}" style="width: 150px;"
+                                                       showControls="true"/>
+                                    <h:outputText value="密码：" styleClass="stylefont"/>
+                                    <rich:inplaceInput defaultLabel="点击输入你的密码" value="#{loginController.password}" style="width: 150px;"
+                                                       showControls="true" >
+                                    </rich:inplaceInput>
+                                    <h:commandButton style="width: 100px;height: 25px " id="submit" value="登录" action="#{loginController.login()}"></h:commandButton> 
+                                    <h:commandButton style="width: 100px;height: 25px" id="cancel" value="重置" action="#{loginController.cancel()}"></h:commandButton>
+                                </h:panelGrid>
+                            </rich:panel>
+                        </h:form>
                     </div>
-                </body>
-
+                
             </ui:define>
         </ui:composition>
     </body>

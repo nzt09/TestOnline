@@ -182,6 +182,14 @@ public class StudentinfoController implements Serializable {
             return "list_1";
         }
     }
+    public void delete(Studentinfo s) {
+        try {
+            getFacade().remove(s);
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("StudentinfoDeleted"));
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+        }
+    }
 
     private void performDestroy() {
         try {

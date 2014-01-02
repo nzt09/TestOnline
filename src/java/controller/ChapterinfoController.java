@@ -47,7 +47,7 @@ public class ChapterinfoController implements Serializable {
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private int courseId;
-    private List<SelectItem> courses;
+   
     //新添加的章节的名称
     private String cname;
     //该课程对应的总章节数
@@ -56,6 +56,44 @@ public class ChapterinfoController implements Serializable {
     private List<SelectItem> chapterList;
     //选取到的章节的Id
     private int chapterId;
+    //新添加的章节的章节号
+    private int chapterNum;
+
+    
+    public int getChapterNum() {
+        return chapterNum;
+    }
+
+    public void setChapterNum(int chapterNum) {
+        this.chapterNum = chapterNum;
+    }
+
+    public String selectChapterNum() {
+        if (chapterNum == 0) {
+            chapterNum=0;
+            return "请输入章节";
+        } else {
+            if (chapterNum < 0 || chapterNum > 50) {
+                chapterNum=0;
+                return "输入的章节号必须在0~50以内的整数";
+            } else {
+                if (courseId == 0) {
+                    chapterNum=0;
+                    return "请先选择课程";
+                } else {
+                    List<Chapterinfo> chapters = ejbFacade.findByCourseId(courseId);
+                    for (int i = 0; i < chapters.size(); i++) {
+                        if (chapters.get(i).getChapternum() == chapterNum) {
+                            chapterNum=0;
+                            return "已存在该章节号，请重新输入";
+                        }
+                    }
+                }
+                chapterNum=0;
+                return "可以添加";
+            }
+        }
+    }
 
     public List<SelectItem> getChapterList() {
         return chapterList;
@@ -84,7 +122,7 @@ public class ChapterinfoController implements Serializable {
         List<Chapterinfo> chapters = ejbFacade.findByCourseId(courseId);
         for (int i = 0; i < chapters.size(); i++) {
             SelectItem selectItem = new SelectItem();
-            selectItem.setLabel(chapters.get(i).getName());
+            selectItem.setLabel("第" + chapters.get(i).getChapternum() + "章" + chapters.get(i).getName());
             selectItem.setValue(chapters.get(i).getId());
             chapterList.add(selectItem);
         }
@@ -92,10 +130,14 @@ public class ChapterinfoController implements Serializable {
 
     public void typeCourseListener(ValueChangeEvent event) {
         courseId = Integer.parseInt((String) event.getNewValue());
-        courses = new ArrayList<>();
-        List<Courseinfo> courses = courseinfoFacade.findByCourseId(courseId);
-        //获得对应的章节的集合
-        this.selectAllChapter();
+        if (courseId != 0) {
+            //获得对应的章节的集合
+            this.selectAllChapter();
+        }
+        else{
+            chapterList=null;
+        }
+
     }
 
     public ChapterinfoController() {
@@ -171,14 +213,18 @@ public class ChapterinfoController implements Serializable {
     //添加新的章节信息
     public void createNewChapter() {
         try {
-            Chapterinfo cinfo=new Chapterinfo();
+            Chapterinfo cinfo = new Chapterinfo();
             cinfo.setName(cname);
-            cinfo.setCourseinfo(this.current.getCourseinfo());
-            cinfo.setChapternum(this.current.getChapternum() + 1);
+            Courseinfo cf = new Courseinfo();
+            cf.setId(courseId);
+            cinfo.setCourseinfo(cf);
+            cinfo.setChapternum(chapterNum);
             getFacade().create(cinfo);
             //一定要重新赋值一下吗？
             this.selectAllChapter();
-
+            chapterNum=0;
+            cname=null;
+            this.current = null;
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ChapterinfoCreated"));
 
         } catch (Exception e) {
@@ -197,9 +243,9 @@ public class ChapterinfoController implements Serializable {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
     }
-    
+
     //删除章节信息
-    public void delete() { 
+    public void delete() {
         System.out.println("ddd");
         performDestroy();
         this.cname = null;
@@ -207,7 +253,6 @@ public class ChapterinfoController implements Serializable {
         //对不对呢
         this.selectAllChapter();
     }
-
 
     public String prepareEdit() {
         current = (Chapterinfo) getItems().getRowData();

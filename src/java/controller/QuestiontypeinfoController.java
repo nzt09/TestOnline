@@ -104,12 +104,11 @@ public class QuestiontypeinfoController implements Serializable {
         }
     }
 //
-    public String delete() {
+    public void delete() {
         current = (Questiontypeinfo) getItems().getRowData();
         performDestroy();
         this.items = null;
         typeName = null;
-        return "";
     }
 
     

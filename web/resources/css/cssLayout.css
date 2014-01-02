@@ -41,9 +41,9 @@
 }
 
 .right_content {
-    background-color: #dddddd;
-    height: 200px;
-    margin: 0px 0px 0px 200px;
+    background-color:white;
+    height: 500px;;
+    margin: 0px 0px 0px 0px;
 }
 
 #top a:link, #top a:visited {
@@ -64,3 +64,13 @@
 }
 
 #contentmain { height:500px; background:#c2dfef}
+
+#qType {
+    float: left;
+    width: 200px;
+    height: 200px;
+}
+
+.divcss1{ padding-top: 20px}
+.divcss4{height: 20px; width: 200px; margin-left: 170px; margin-top: 0px;}
+.divcss5{height: 20px; width: 200px; margin-left: 370px; margin-top: -250px;}

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="./../../template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="修改题目信息"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="内容" for="content" />
+                    <h:inputText id="content" value="#{questionsinfoController.selected.content}" title="#{bundle.EditQuestionsinfoTitle_content}" />
+                    <h:outputLabel value="分值" for="score" />
+                    <h:inputText id="score" value="#{questionsinfoController.selected.score}" title="#{bundle.EditQuestionsinfoTitle_score}" />
+                    <h:outputLabel value="难度" for="difficulty" />
+                    <h:inputText id="difficulty" value="#{questionsinfoController.selected.difficulty}" title="#{bundle.EditQuestionsinfoTitle_difficulty}" />
+                    <h:outputLabel value="选项" for="selections" />
+                    <h:inputText id="selections" value="#{questionsinfoController.selected.selections}" title="#{bundle.EditQuestionsinfoTitle_selections}" />
+                    <h:outputLabel value="答案" for="answer" />
+                    <h:inputText id="answer" value="#{questionsinfoController.selected.answer}" title="#{bundle.EditQuestionsinfoTitle_answer}" />
+                    <h:outputLabel value="平均用时" for="averagetime" />
+                    <h:inputText id="averagetime" value="#{questionsinfoController.selected.averagetime}" title="#{bundle.EditQuestionsinfoTitle_averagetime}" />
+                    <h:outputLabel value="#{bundle.EditQuestionsinfoLabel_code}" for="code" />
+                    <h:inputText id="code" value="#{questionsinfoController.selected.code}" title="#{bundle.EditQuestionsinfoTitle_code}" />
+                    <h:outputLabel value="#{bundle.EditQuestionsinfoLabel_insequence}" for="insequence" />
+                    <h:inputText id="insequence" value="#{questionsinfoController.selected.insequence}" title="#{bundle.EditQuestionsinfoTitle_insequence}" />
+                    <h:outputLabel value="#{bundle.EditQuestionsinfoLabel_count}" for="count" />
+                    <h:inputText id="count" value="#{questionsinfoController.selected.count}" title="#{bundle.EditQuestionsinfoTitle_count}" />
+                    <h:outputLabel value="#{bundle.EditQuestionsinfoLabel_testcasepara}" for="testcasepara" />
+                    <h:inputText id="testcasepara" value="#{questionsinfoController.selected.testcasepara}" title="#{bundle.EditQuestionsinfoTitle_testcasepara}" />
+                    <h:outputLabel value="#{bundle.EditQuestionsinfoLabel_testcaseresult}" for="testcaseresult" />
+                    <h:inputText id="testcaseresult" value="#{questionsinfoController.selected.testcaseresult}" title="#{bundle.EditQuestionsinfoTitle_testcaseresult}" />
+                    <h:outputLabel value="分析" for="analysis" />
+                    <h:inputText id="analysis" value="#{questionsinfoController.selected.analysis}" title="#{bundle.EditQuestionsinfoTitle_analysis}" />
+                    <h:outputLabel value="题目类型" for="questiontypeinfo" />
+                    <h:selectOneMenu id="questiontypeinfo" value="#{questionsinfoController.selected.questiontypeinfo}" title="#{bundle.EditQuestionsinfoTitle_questiontypeinfo}" >
+                        <f:selectItems value="#{questiontypeinfoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="所属知识点" for="knowledge" />
+                    <h:selectOneMenu id="knowledge" value="#{questionsinfoController.selected.knowledge}" title="#{bundle.EditQuestionsinfoTitle_knowledge}" >
+                        <f:selectItems value="#{knowledgeController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink action="#{questionsinfoController.update}" value="保存"/>
+                <br />
+                <br />
+                <h:link outcome="eduMain.xhtml" value="返回" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

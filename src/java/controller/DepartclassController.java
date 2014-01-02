@@ -5,8 +5,8 @@ import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
 import entities.Department;
 import entities.Rolesinfo;
+import entities.Studentinfo;
 import entities.Teacher;
-
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -23,27 +23,28 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import sessionBean.DepartclassFacadeLocal;
+import sessionBean.StudentinfoFacade;
+import sessionBean.StudentinfoFacadeLocal;
 import sessionBean.TeacherFacadeLocal;
 import static tools.Publicfields.EDUTEACHER_ROLE;
 
 @Named("departclassController")
 @SessionScoped
 public class DepartclassController implements Serializable {
-    
-    @EJB
-    private DepartclassFacadeLocal departclassFacade;
 
+    @EJB
+    private StudentinfoFacadeLocal studentFacade;
     @Inject
-    private DepartclassController departclassCon;
+    private StudentinfoController studentController;
     @EJB
     private TeacherFacadeLocal teacherFacade;
     @Inject
     private TeacherController teacherController;
-    
+
     private Teacher teacher;
     private Department department;
     private Rolesinfo rolesinfo;
-    
+
     private Departclass current;
     private DataModel items = null;
     @EJB
@@ -60,6 +61,7 @@ public class DepartclassController implements Serializable {
     public void setRoleId(int roleId) {
         this.roleId = roleId;
     }
+
     public int getDepartmentId() {
         return departmentId;
     }
@@ -73,7 +75,6 @@ public class DepartclassController implements Serializable {
 //        departmentId = Integer.parseInt((String) event.getNewValue());
 //        System.out.print(departmentId);
 //    }
-
     public DepartclassController() {
     }
 
@@ -95,36 +96,38 @@ public class DepartclassController implements Serializable {
 
                 @Override
                 public int getItemsCount() {
-                    return getFacade().findConstrainRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()},  departmentId).size();
+                    return getFacade().findConstrainRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}, departmentId).size();
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findConstrainRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()},  departmentId));
+                    return new ListDataModel(getFacade().findConstrainRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}, departmentId));
                 }
             };
         }
         return pagination;
     }
-    public String myview(){
-        teacher=new Teacher();
-        department=new Department();
+
+    public String myview() {
+        teacher = new Teacher();
+        department = new Department();
         department.setId(departmentId);
-        rolesinfo=new Rolesinfo();
+        rolesinfo = new Rolesinfo();
         rolesinfo.setId(roleId);
         teacher.setDepartment(department);
         teacher.setRolesinfo(rolesinfo);
         System.out.print(teacher.toString());
-        
+
         teacherController.setCurrent(teacher);
-        if(roleId==EDUTEACHER_ROLE){
+        if (roleId == EDUTEACHER_ROLE) {
             System.out.print("dasfasfasfafs");
-           teacherController.selectDepartment();
-           return teacherController.prepareList();
-        }else
-          return prepareList();
+            teacherController.selectDepartment();
+            return teacherController.prepareList();
+        } else {
+            return prepareList();
+        }
     }
-    
+
     public String prepareList() {
         recreateModel();
         return "list_5";
@@ -170,13 +173,18 @@ public class DepartclassController implements Serializable {
         }
     }
 
-    public String destroy() {
+    public void destroy() {
         current = (Departclass) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        performDestroy();
-        recreatePagination();
-        recreateModel();
-        return "list_5";
+        Studentinfo s=new Studentinfo();
+        s=studentFacade.find(current.getId());
+        studentController.delete(s);
+        
+        
+
+//        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+//        performDestroy();
+//        recreatePagination();
+//        recreateModel();
     }
 
     public String destroyAndView() {
