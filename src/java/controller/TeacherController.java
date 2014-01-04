@@ -108,7 +108,7 @@ public class TeacherController implements Serializable {
         List<Classinfo> currentCla = classinfoFacade.findByMajor(majorId);
         for (int i = 0; i < currentCla.size(); i++) {
             SelectItem selectItem = new SelectItem();
-            selectItem.setLabel(currentCla.get(i).getName());
+            selectItem.setLabel(currentCla.get(i).getClassname());
             selectItem.setValue(currentCla.get(i).getId());
             classList.add(selectItem);
         }
@@ -158,16 +158,16 @@ public class TeacherController implements Serializable {
     }
 
     public void selectDepartment() {
-        
+
         System.out.print("dzzzzzzzzzzzzzzzzzzz");
         System.out.print(this.getCurrent().getDepartment().getId());
-        departmentId=this.getCurrent().getDepartment().getId();
-        roleId=this.getCurrent().getRolesinfo().getId();
+        departmentId = this.getCurrent().getDepartment().getId();
+        roleId = this.getCurrent().getRolesinfo().getId();
         System.out.print(this.getCurrent().getRolesinfo().getId());
     }
 
     public PaginationHelper getPagination() {
-        
+
         if (pagination == null) {
             pagination = new PaginationHelper(2) {
 
@@ -185,9 +185,14 @@ public class TeacherController implements Serializable {
         return pagination;
     }
 
+    public String teacherprepareList() {
+        recreateModel();
+        return "teacherMain";
+    }
+
     public String prepareList() {
         recreateModel();
-        return "list";
+        return "adminMain";
     }
 
     public String prepareView() {
@@ -206,7 +211,7 @@ public class TeacherController implements Serializable {
         try {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TeacherCreated"));
-            return "list";
+            return "adminMain";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -217,7 +222,7 @@ public class TeacherController implements Serializable {
         try {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TeacherCreated"));
-            return "manage_user";
+            return "teacherMain";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -230,11 +235,22 @@ public class TeacherController implements Serializable {
         return "edit";
     }
 
+    public String adminupdate() {
+        try {
+            getFacade().edit(current);
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TeacherUpdated"));
+            return "adminMain.xhtml";
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            return null;
+        }
+    }
+
     public String update() {
         try {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TeacherUpdated"));
-            return "list";
+            return "teacherMain";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -245,11 +261,20 @@ public class TeacherController implements Serializable {
         try {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("AdminPasswordChange"));
-            return "main";
+            return "adminMain";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
         }
+    }
+
+    public String admindestroy() {
+        current = (Teacher) getItems().getRowData();
+        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        performDestroy();
+        recreatePagination();
+        recreateModel();
+        return "adminMain";
     }
 
     public String destroy() {
@@ -258,7 +283,7 @@ public class TeacherController implements Serializable {
         performDestroy();
         recreatePagination();
         recreateModel();
-        return "list";
+        return "teacherMain";
     }
 
     public String destroyAndView() {
@@ -403,5 +428,4 @@ public class TeacherController implements Serializable {
         }
     }
 
-   
 }

@@ -153,7 +153,7 @@ public class StudentinfoController implements Serializable {
     public String prepareCreate() {
         current = new Studentinfo();
         selectedItemIndex = -1;
-        return "create_1";
+        return "creat1";
     }
 
     public String create() {
@@ -170,7 +170,7 @@ public class StudentinfoController implements Serializable {
     public String prepareEdit() {
         current = (Studentinfo) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "edit_1";
+        return "edi1";
     }
 
     
@@ -178,7 +178,7 @@ public class StudentinfoController implements Serializable {
         try {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("StudentinfoUpdated"));
-            return "list_1";
+            return "teacherMain";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -189,7 +189,7 @@ public class StudentinfoController implements Serializable {
         try {
 //            getFacade().edit();
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("StudentinfoUpdated"));
-            return "list_5";
+            return "teacherMain";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -202,7 +202,7 @@ public class StudentinfoController implements Serializable {
         performDestroy();
         recreatePagination();
         recreateModel();
-        return "list_1";
+        return "teacherMain";
     }
 
     public String destroyAndView() {
@@ -226,7 +226,7 @@ public class StudentinfoController implements Serializable {
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
-           return "list_5";
+           return "teacherMain";
     }
     
     private void performDestroy() {

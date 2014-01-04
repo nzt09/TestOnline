@@ -1,20 +1,16 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
+       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
 
-        <ui:composition template="./../../template.xhtml">
-
-            <ui:define name="title">
-                title
-            </ui:define>
-
-            <ui:define name="body">
+        <ui:composition template="./../../teacher.xhtml">
+     <ui:define name="content">
                <h:form styleClass="jsfcrud_list_form">
+                   <h:outputText>考试信息</h:outputText>
                 <h:panelGroup id="messagePanel" layout="block">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
@@ -26,13 +22,13 @@
                     <h:dataTable value="#{testassigninfomController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTestassigninfomTitle_id}"/>
+                                <h:outputText value="编号"/>
                             </f:facet>
                             <h:outputText value="#{item.id}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTestassigninfomTitle_testtime}"/>
+                                <h:outputText value="考试时间"/>
                             </f:facet>
                             <h:outputText value="#{item.testtime}">
                                 <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
@@ -40,87 +36,80 @@
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTestassigninfomTitle_testinterval}"/>
+                                <h:outputText value="考试分数"/>
                             </f:facet>
                             <h:outputText value="#{item.testinterval}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTestassigninfomTitle_testdifficulty}"/>
+                                <h:outputText value="难度"/>
                             </f:facet>
                             <h:outputText value="#{item.testdifficulty}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTestassigninfomTitle_ipstart}"/>
+                                <h:outputText value="IP开始地址"/>
                             </f:facet>
                             <h:outputText value="#{item.ipstart}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTestassigninfomTitle_ipend}"/>
+                                <h:outputText value="IP结束地址"/>
                             </f:facet>
                             <h:outputText value="#{item.ipend}"/>
                         </h:column>
+                      
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTestassigninfomTitle_notice}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.notice}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTestassigninfomTitle_noticescore}"/>
+                                <h:outputText value="基础分"/>
                             </f:facet>
                             <h:outputText value="#{item.noticescore}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTestassigninfomTitle_averagetime}"/>
+                                <h:outputText value="平均时间"/>
                             </f:facet>
                             <h:outputText value="#{item.averagetime}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTestassigninfomTitle_teacher}"/>
+                                <h:outputText value="监考老师"/>
                             </f:facet>
-                            <h:outputText value="#{item.teacher}"/>
+                            <h:outputText value="#{item.teacher.name}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTestassigninfomTitle_courseinfo}"/>
+                                <h:outputText value="专业"/>
                             </f:facet>
-                            <h:outputText value="#{item.courseinfo}"/>
+                            <h:outputText value="#{item.courseinfo.name}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTestassigninfomTitle_classroom}"/>
+                                <h:outputText value="教室"/>
                             </f:facet>
-                            <h:outputText value="#{item.classroom}"/>
+                            <h:outputText value="#{item.classroom.name}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListTestassigninfomTitle_classinfo}"/>
+                                <h:outputText value="班级"/>
                             </f:facet>
-                            <h:outputText value="#{item.classinfo}"/>
+                            <h:outputText value="#{item.classinfo.classname}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="&nbsp;"/>
                             </f:facet>
-                            <h:commandLink action="#{testassigninfomController.prepareView}" value="#{bundle.ListTestassigninfomViewLink}"/>
+                           
+                            <h:commandLink action="#{testassigninfomController.prepareEdit}" value="修改"/>
                             <h:outputText value=" "/>
-                            <h:commandLink action="#{testassigninfomController.prepareEdit}" value="#{bundle.ListTestassigninfomEditLink}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{testassigninfomController.destroy}" value="#{bundle.ListTestassigninfomDestroyLink}"/>
+                            <h:commandLink action="#{testassigninfomController.destroy}" value="删除"/>
                         </h:column>
                     </h:dataTable>
                 </h:panelGroup>
                 <br />
-                <h:commandLink action="#{testassigninfomController.prepareCreate}" value="#{bundle.ListTestassigninfomCreateLink}"/>
+                <h:commandLink action="#{testassigninfomController.prepareCreate}" value="添加考试信息"/>
                 <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.ListTestassigninfomIndexLink}"/>
+               
             </h:form>
             </ui:define>
 

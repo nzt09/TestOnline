@@ -89,7 +89,7 @@ public class TeachercourseclassController implements Serializable {
 
     public String prepareList() {
         recreateModel();
-        return "list_3";
+        return "teacher_lesson.xhtml";
     }
 
     public String prepareView() {
@@ -101,7 +101,7 @@ public class TeachercourseclassController implements Serializable {
     public String prepareCreate() {
         current = new Teachercourseclass();
         selectedItemIndex = -1;
-        return "create_3";
+        return "creat3";
     }
 
     public String create() {
@@ -118,14 +118,14 @@ public class TeachercourseclassController implements Serializable {
     public String prepareEdit() {
         current = (Teachercourseclass) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "edit_3";
+        return "edi3";
     }
 
     public String update() {
         try {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TeachercourseclassUpdated"));
-            return "list_3";
+            return "teacher_lesson";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -138,7 +138,7 @@ public class TeachercourseclassController implements Serializable {
         performDestroy();
         recreatePagination();
         recreateModel();
-        return "list_3";
+        return "teacher_lesson";
       
     }
    

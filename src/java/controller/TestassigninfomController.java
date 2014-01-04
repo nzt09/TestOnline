@@ -207,19 +207,19 @@ public class TestassigninfomController implements Serializable {
 
     public String prepareList() {
         recreateModel();
-        return "list_4";
+        return "teacher_exam";
     }
 
     public String prepareView() {
         current = (Testassigninfom) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "list_4";
+        return "teacher_exam";
     }
 
     public String prepareCreate() {
         current = new Testassigninfom();
         selectedItemIndex = -1;
-        return "create_4";
+        return "creat4";
     }
 
     public String create() {
@@ -236,14 +236,14 @@ public class TestassigninfomController implements Serializable {
     public String prepareEdit() {
         current = (Testassigninfom) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "edit_4";
+        return "edi4";
     }
 
     public String update() {
         try {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TestassigninfomUpdated"));
-            return "list_4";
+            return "teacher_exam";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -256,7 +256,7 @@ public class TestassigninfomController implements Serializable {
         performDestroy();
         recreatePagination();
         recreateModel();
-        return "list_4";
+        return "tecaher_exam";
     }
 
     public String destroyAndView() {

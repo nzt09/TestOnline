@@ -61,6 +61,8 @@ public class DepartclassController implements Serializable {
     private int selectedItemIndex;
     private int departmentId;
     private int roleId;
+    private boolean flag = false;
+    private boolean flag1 = false;
 
     public int getRoleId() {
         return roleId;
@@ -116,7 +118,8 @@ public class DepartclassController implements Serializable {
         return pagination;
     }
 
-    public String myview() {
+    public void myview() {
+      
         teacher = new Teacher();
         major = new Major();
         department = new Department();
@@ -129,20 +132,30 @@ public class DepartclassController implements Serializable {
         System.out.print(teacher.toString());
         majorController.setCurrent(major);
         teacherController.setCurrent(teacher);
+        System.out.println(departmentId+roleId);
         if (roleId == EDUTEACHER_ROLE) {
             System.out.print("dasfasfasfafs");
             teacherController.selectDepartment();
-            return teacherController.prepareList();
+            teacherController.prepareList();
+            flag=true;
+            flag1=false;
         } else {
-            return prepareList();
+             prepareList();
+             flag1 = true;
+             flag=false;
         }
     }
 
-    public String prepareList() {
-        recreateModel();
-        return "list_5";
-    }
+//    public String prepareList() {
+//        recreateModel();
+//        return "list_5";
+//    }
 
+    public void prepareList() {
+        System.out.println("ssssssssssss");
+        recreateModel();
+    }
+    
     public String prepareView() {
         current = (Departclass) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
@@ -181,7 +194,8 @@ public class DepartclassController implements Serializable {
         studentinfoController.setCurrent(s1);
 
 //        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "edit_1";
+        recreateModel();
+        return "edit1";
     }
 
     public String update() {
@@ -189,7 +203,7 @@ public class DepartclassController implements Serializable {
 
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("DepartclassUpdated"));
-            return "list_5";
+            return "teacherMain";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -207,7 +221,7 @@ public class DepartclassController implements Serializable {
 //        recreatePagination();
 //        recreateModel();
         recreateModel();
-        return "list_5";
+        return "teacherMain";
 
     }
 
@@ -217,7 +231,7 @@ public class DepartclassController implements Serializable {
         performDestroy();
         recreatePagination();
         recreateModel();
-        return "List";
+        return "teacherMain";
     }
 
     public String destroyAndView() {
@@ -294,6 +308,34 @@ public class DepartclassController implements Serializable {
 
     public Departclass getDepartclass(java.lang.String id) {
         return ejbFacade.find(id);
+    }
+
+    /**
+     * @return the flag
+     */
+    public boolean isFlag() {
+        return flag;
+    }
+
+    /**
+     * @param flag the flag to set
+     */
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
+
+    /**
+     * @return the flag1
+     */
+    public boolean isFlag1() {
+        return flag1;
+    }
+
+    /**
+     * @param flag1 the flag1 to set
+     */
+    public void setFlag1(boolean flag1) {
+        this.flag1 = flag1;
     }
 
     @FacesConverter(forClass = Departclass.class)

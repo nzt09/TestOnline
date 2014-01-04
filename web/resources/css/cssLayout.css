@@ -21,10 +21,24 @@
     height: 200px;
 }
 
+#left1 {
+    float: left;
+    background-color: #ece3a5;
+    width: 200px;
+    height: 400px;
+}
+
+#left2 {
+    float: left;
+    background-color: #ece3a5;
+    width: 200px;
+    height: 400px;
+}
+
 #right {
     float: right;
     background-color: #ece3a5;
-    padding: 5px;
+    padding: 0px;
     width: 150px;
 }
 

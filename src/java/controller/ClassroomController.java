@@ -65,7 +65,7 @@ public class ClassroomController implements Serializable {
 
     public String prepareList() {
         recreateModel();
-        return "list_2";
+        return "teacherclassroom";
     }
 
     public String prepareView() {
@@ -77,12 +77,12 @@ public class ClassroomController implements Serializable {
     public String prepareCreate() {
         current = new Classroom();
         selectedItemIndex = -1;
-        return "create_2";
+        items=null;
+        return "creat2";
     }
 
     public String create() {
         try {
-
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ClassroomCreated"));
             return prepareCreate();
@@ -95,14 +95,14 @@ public class ClassroomController implements Serializable {
     public String prepareEdit() {
         current = (Classroom) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "edit_2";
+        return "edi2";
     }
 
     public String update() {
         try {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ClassroomUpdated"));
-            return "list_2";
+            return "teacherclassroom";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -115,7 +115,7 @@ public class ClassroomController implements Serializable {
         performDestroy();
         recreatePagination();
         recreateModel();
-        return "list_2";
+        return "teacherclassroom";
     }
 
     public String destroyAndView() {
