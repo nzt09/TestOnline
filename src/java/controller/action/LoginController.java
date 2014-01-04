@@ -134,6 +134,7 @@ public class LoginController implements java.io.Serializable {
     public String loginout() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         facesContext.getExternalContext().invalidateSession();
+        this.password = "";
         return "/interfaces/login/login";
     }
 

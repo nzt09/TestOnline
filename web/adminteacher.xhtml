@@ -18,37 +18,18 @@
 
         <div id="top" class="top">
             <ui:insert name="top">
-             <rich:panel>
-                        <h:form>
-                            编号：<h:outputText value="#{loginController.userId}" ></h:outputText><br/>
-                            用户名：<h:outputText value=" #{loginController.name}"></h:outputText><br/>
-                         
-                        </h:form>
-                    </rich:panel>    
+                <rich:panel>
+                    <h:form>
+                        编号：<h:outputText value="#{loginController.userId}" ></h:outputText><br/>
+                        用户名：<h:outputText value=" #{loginController.name}"></h:outputText><br/>
+                        <h:commandLink action="#{loginController.loginout()}" style="text-decoration: none;background-color: blue">退出</h:commandLink><br/>
+                        <h:commandLink  action="adminChangePasswords.xhtml" value="修改密码" style="text-decoration: none;background-color: blue"/><br/>
+                    </h:form>
+                </rich:panel>    
             </ui:insert>
         </div>
-        <div>
-            <div id="left2">
-                <h:form>
-                <ui:insert name="left">
-                   
-                     <h:commandLink target="context" action="#{teacherController.prepareList}" value="查看教师"  style="text-decoration: none;"/><br/>
-                    <h:selectOneMenu id="departmentId" valueChangeListener="#{teacherController.typeDepartmentListener}" >
-                        <f:selectItems value="#{departmentController.itemsAvailableSelectMany}"/>
-                    </h:selectOneMenu>
-                    <h:selectOneMenu id="roleId" valueChangeListener="#{teacherController.typeRolesListener}" >
-                        <f:selectItems value="#{rolesinfoController.itemsAvailableSelectSome}"/>
-                    </h:selectOneMenu><br/>
-                    <h:commandLink  action="create.xhtml" value="添加教务教师" style="text-decoration: none;"/><br/>
-                      
-                    <h:commandLink  action="adminChangePasswords.xhtml" value="修改密码" style="text-decoration: none;"/><br/>
-                      <h:commandLink action="#{loginController.loginout()}" style="text-decoration: none;">退出</h:commandLink><br/>
-                  </ui:insert>
-                </h:form>
-            </div>
-            <div id="content" class="left_content">
-                <ui:insert name="content">Content</ui:insert>
-            </div>
+        <div id="content" class="left_content">
+            <ui:insert name="content">Content</ui:insert>
         </div>
     </h:body>
 

@@ -30,7 +30,7 @@
 
 #left2 {
     float: left;
-    background-color: #ece3a5;
+    background-color: gray;
     width: 200px;
     height: 400px;
 }
@@ -51,7 +51,6 @@
 .left_content {
     background-color: #dddddd;
     padding: 5px;
-    margin-left: 210px;
 }
 
 .right_content {
