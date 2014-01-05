@@ -2,17 +2,26 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:a4j="http://richfaces.org/a4j">
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <h:outputStylesheet name="./css/default.css"/>
         <h:outputStylesheet name="./css/cssLayout.css"/>
-        <h:outputStylesheet name="./css/login.css"/>
+        
     </h:head>
     <title>在线考试系统</title>
     <h:body>
+        <h:form>
+            <h:outputText value="验证码(*)：" styleClass="label"></h:outputText>
+            <h:outputLabel value="换一张">
+                <a4j:ajax render="ssss" event="click"></a4j:ajax>
+            </h:outputLabel>
+            <h:message for="vcode" styleClass="error"></h:message>
+            <h:inputText id="vcode" required="true" value="#{loginController.validate_code}"></h:inputText>
+            <h:graphicImage value="#{loginController.validator.path}" id="ssss"></h:graphicImage>
+        </h:form>
 
-        
     </h:body>
 
 </html>

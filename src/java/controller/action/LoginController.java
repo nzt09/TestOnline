@@ -5,6 +5,7 @@
  */
 package controller.action;
 
+import com.validate.CodeImageGenerator;
 import controller.StudentinfoController;
 import controller.TeacherController;
 import entities.Studentinfo;
@@ -18,7 +19,6 @@ import javax.inject.Named;
 import sessionBean.StudentinfoFacadeLocal;
 import sessionBean.TeacherFacadeLocal;
 import tools.Publicfields;
-
 
 /**
  *
@@ -34,20 +34,47 @@ public class LoginController implements java.io.Serializable {
     @Inject
     private StudentinfoController stuCon;
 
-
     @EJB
     private TeacherFacadeLocal teaFacade;
 
     @Inject
     private TeacherController teaCon;
 
-    
+    //验证码
+    private CodeImageGenerator validator;
+
+    private String validate_code;
+
+    public String getValidate_code() {
+        return validate_code;
+    }
+
+    public void setValidate_code(String validate_code) {
+        this.validate_code = validate_code;
+    }
+
+    public CodeImageGenerator getValidator() {
+        if (validator != null) {
+            validator.getTarget().delete();
+            validator = null;
+        }
+        validator = new CodeImageGenerator();
+        System.out.println(validator.getCode());
+        return validator;
+    }
+
+    public void setValidator(CodeImageGenerator validator) {
+        this.validator = validator;
+    }
+
     // 获得login.xhtml中inputText的值，用户输入的用户编号
     private String userId;
     // 获得login.xhtml中inputSecret的值，用户输入的密码
     private String password;
     private String className;
     private int classId;
+    //判断验证码是否对
+    private boolean validateFlag = false;
 
     public int getClassId() {
         return classId;
@@ -56,8 +83,6 @@ public class LoginController implements java.io.Serializable {
     public void setClassId(int classId) {
         this.classId = classId;
     }
-    
-    
 
     public String getClassName() {
         return className;
@@ -66,7 +91,7 @@ public class LoginController implements java.io.Serializable {
     public void setClassName(String className) {
         this.className = className;
     }
-   
+
     public String getName() {
         return name;
     }
@@ -77,43 +102,59 @@ public class LoginController implements java.io.Serializable {
     //  用户名并且往后传递
     private String name;
 
+    //用ajax验证验证码
+    public String doValidate() {
+        if (validate_code == null) {
+            return "";
+        } else {
+            if (validate_code.equals(validator.getCode())) {
+                validateFlag = true;
+                return "验证码正确";
+            }
+            validateFlag = false;
+            return "验证码不正确";
+        }
+
+    }
 
     // 登录验证
     public String login() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
-        Teacher currentTea=teaFacade.findByIdPassword(userId, password);
-        Studentinfo currentStu=studentFacade.findByIdPassword(userId, password);
-        if(null != currentTea.getName()&& null == currentStu.getName()){
-            //管理员登陆
-                  name=currentTea.getName();
-                  teaCon.setCurrent(currentTea);
-            if(currentTea.getRolesinfo().getId()==Publicfields.ADMINISTRATOR_ROLE)
-            {
-                
-                
-                return "/interfaces/administrator/adminMain";
-            }
-            //教务老师登陆
-            else if(currentTea.getRolesinfo().getId()==Publicfields.TEACHER_ROLE){
-                
-                return "/interfaces/teacher/teacherMain";
-            }
-            //任课老师登陆
-            else if(currentTea.getRolesinfo().getId()==Publicfields.EDUTEACHER_ROLE){
+        Teacher currentTea = teaFacade.findByIdPassword(userId, password);
+        Studentinfo currentStu = studentFacade.findByIdPassword(userId, password);
+        if (validateFlag == true) {
+            if (null != currentTea.getName() && null == currentStu.getName()) {
+                //管理员登陆
+                name = currentTea.getName();
                 teaCon.setCurrent(currentTea);
-                return "/interfaces/eduteacher/eduMain.xhtml";
+                if (currentTea.getRolesinfo().getId() == Publicfields.ADMINISTRATOR_ROLE) {
+                    return "/interfaces/administrator/adminMain";
+                } //教务老师登陆
+                else if (currentTea.getRolesinfo().getId() == Publicfields.TEACHER_ROLE) {
+
+                    return "/interfaces/teacher/teacherMain";
+                } //任课老师登陆
+                else if (currentTea.getRolesinfo().getId() == Publicfields.EDUTEACHER_ROLE) {
+                    teaCon.setCurrent(currentTea);
+                    return "/interfaces/eduteacher/eduMain.xhtml";
+                }
+
+            } else if (null == currentTea.getName() && null != currentStu.getName()) {
+                name = currentStu.getName();
+                className = currentStu.getClassinfo().getClassname();
+                classId = currentStu.getClassinfo().getId();
+
+                stuCon.setCurrent(currentStu);
+                return "/interfaces/student/main";
             }
-            
-        } else if(null ==currentTea.getName()&& null != currentStu.getName())
-        { 
-            name=currentStu.getName();
-            className=currentStu.getClassinfo().getClassname();
-            classId=currentStu.getClassinfo().getId();
-            
-            stuCon.setCurrent(currentStu);
-           return "/interfaces/student/main";
+            this.validate_code = null;
+            this.password = null;
+            return "/error/errorLogin.xhtml";
+        } else {
+            this.validate_code = null;
+            this.password = null;
+            return "errorLogin.xhtml";
         }
-        return "/error/errorLogin";
     }
 
     public String getUserId() {
@@ -137,7 +178,6 @@ public class LoginController implements java.io.Serializable {
         this.password = "";
         return "/interfaces/login/login";
     }
-
 
     public String getPassword() {
         return password;

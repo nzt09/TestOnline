@@ -5,34 +5,49 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:rich="http://richfaces.org/rich">
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j">
     <body > 
         <ui:composition template="./../../template.xhtml">
             <ui:define name="title" >
-                
+
             </ui:define>
             <ui:define name="body" >  
-                    <div  class="BODY"  >
-                        <h:form  >
-                            <rich:panel style="width:360px;height: 150px;background-image: url('../image/bgm.jpg')" >
-                                <f:facet name="header">
-                                    <h:outputText value="考试系统登陆"/>
-                                </f:facet>
-                                <h:panelGrid columns="2">
-                                    <h:outputText value="用户编号： " styleClass="stylefont"/>
-                                    <rich:inplaceInput defaultLabel="点击输入你的编号" value="#{loginController.userId}" style="width: 150px;"
-                                                       showControls="true"/>
-                                    <h:outputText value="密码：" styleClass="stylefont"/>
-                                    <rich:inplaceInput defaultLabel="点击输入你的密码" value="#{loginController.password}" style="width: 150px;"
-                                                       showControls="true" >
-                                    </rich:inplaceInput>
-                                    <h:commandButton style="width: 100px;height: 25px " id="submit" value="登录" action="#{loginController.login()}"></h:commandButton> 
-                                    <h:commandButton style="width: 100px;height: 25px" id="cancel" value="重置" action="#{loginController.cancel()}"></h:commandButton>
-                                </h:panelGrid>
-                            </rich:panel>
-                        </h:form>
-                    </div>
-                
+                <div  class="BODY"  >
+                    <h:form  >
+                        <rich:panel style="width:460px;height: 200px;background-image: url('../image/bgm.jpg')" >
+                            <f:facet name="header">
+                                <h:outputText value="考试系统登陆"/>
+                            </f:facet>
+                            <h:panelGrid columns="2">
+                                <h:outputText value="用户编号： " styleClass="stylefont"/>
+                                <rich:inplaceInput defaultLabel="点击输入你的编号" value="#{loginController.userId}" style="width: 150px;"
+                                                   showControls="true"/>
+                                <h:outputText value="密码：" styleClass="stylefont"/>
+                                <rich:inplaceInput defaultLabel="点击输入你的密码" value="#{loginController.password}" style="width: 150px;"
+                                                   showControls="true" >
+                                </rich:inplaceInput>
+                            </h:panelGrid>
+                            <h:panelGrid columns="5">
+                                <h:outputText value="验证码(*)：" styleClass="label"></h:outputText>
+                                <h:inputText id="vcode" required="true" value="#{loginController.validate_code}">
+                                    <f:ajax event="mouseout" render="vali"></f:ajax>
+                                </h:inputText>
+                                <h:graphicImage value="#{loginController.validator.path}" id="ssss"></h:graphicImage>
+                                <h:outputLabel value="换一张">
+                                    <a4j:ajax render="ssss" event="click"></a4j:ajax>
+                                </h:outputLabel>
+                                <h:outputLabel value="#{loginController.doValidate()}" id="vali"></h:outputLabel>
+                                
+                            </h:panelGrid>
+                            <h:panelGrid columns="2">
+                                <h:commandButton style="width: 100px;height: 25px " id="submit" value="登录" action="#{loginController.login()}"></h:commandButton> 
+                                <h:commandButton style="width: 100px;height: 25px" id="cancel" value="重置" action="#{loginController.cancel()}"></h:commandButton>
+                            </h:panelGrid>
+                        </rich:panel>
+                    </h:form>
+                </div>
+
             </ui:define>
         </ui:composition>
     </body>
