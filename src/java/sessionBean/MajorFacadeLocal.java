@@ -32,4 +32,5 @@ public interface MajorFacadeLocal {
 
     List<Major> findByDepartment(int id);
     
+    List<Major> findByDepartmentId(int department);
 }

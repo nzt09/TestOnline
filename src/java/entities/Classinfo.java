@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Classinfo.findAll", query = "SELECT c FROM Classinfo c"),
     @NamedQuery(name = "Classinfo.findById", query = "SELECT c FROM Classinfo c WHERE c.id = :id"),
-    @NamedQuery(name = "Classinfo.findByName", query = "SELECT c FROM Classinfo c WHERE c.name = :name")})
+    @NamedQuery(name = "Classinfo.findByName", query = "SELECT c FROM Classinfo c WHERE c.classname = :classname")})
 public class Classinfo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -43,8 +43,8 @@ public class Classinfo implements Serializable {
     @Column(name = "ID")
     private Integer id;
     @Size(max = 20)
-    @Column(name = "NAME")
-    private String name;
+    @Column(name = "CLASSNAME")
+    private String classname;
     @OneToMany(mappedBy = "classinfo")
     private List<Testassigninfom> testassigninfomList;
     @OneToMany(mappedBy = "classinfo")
@@ -72,13 +72,15 @@ public class Classinfo implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getClassname() {
+        return classname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setClassname(String classname) {
+        this.classname = classname;
     }
+
+   
 
     @XmlTransient
     public List<Testassigninfom> getTestassigninfomList() {

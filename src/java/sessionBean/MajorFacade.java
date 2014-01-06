@@ -33,4 +33,9 @@ public class MajorFacade extends AbstractFacade<Major> implements MajorFacadeLoc
         List<Major> tem = em.createNativeQuery("select * from major where department=" + id + "", Major.class).getResultList();
         return tem;     
     }  
+     
+      public List<Major> findByDepartmentId(int department) {
+        List<Major> tem = em.createNativeQuery("select * from major where department=" + department + "", Major.class).getResultList();
+        return tem;     
+    }  
 }

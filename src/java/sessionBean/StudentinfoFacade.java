@@ -47,4 +47,5 @@ public class StudentinfoFacade extends AbstractFacade<Studentinfo> implements St
             return tem;
         }
     }
+      
 }

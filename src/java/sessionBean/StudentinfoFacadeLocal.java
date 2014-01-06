@@ -35,4 +35,5 @@ public interface StudentinfoFacadeLocal {
     
     List<Studentinfo> findById(int id);
     
+     
 }

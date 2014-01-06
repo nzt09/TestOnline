@@ -37,4 +37,5 @@ public class DepartclassFacade extends AbstractFacade<Departclass> implements De
         }
         return tem;
     }
+     
 }

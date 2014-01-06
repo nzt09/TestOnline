@@ -33,4 +33,8 @@ public class ClassinfoFacade extends AbstractFacade<Classinfo> implements Classi
         List<Classinfo> tem = em.createNativeQuery("select * from classinfo where major=" + id + "", Classinfo.class).getResultList();
         return tem;
     }
+       public List<Classinfo> findById(int classId) {
+        List<Classinfo> tem = em.createNativeQuery("select * from classinfo where id=" + classId + "", Classinfo.class).getResultList();
+        return tem;
+    }
 }

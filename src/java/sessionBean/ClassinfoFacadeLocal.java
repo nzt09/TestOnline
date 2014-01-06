@@ -32,4 +32,6 @@ public interface ClassinfoFacadeLocal {
     int count();
     
     List<Classinfo> findByMajor(int id);
+    
+     List<Classinfo> findById(int classId);
 }
