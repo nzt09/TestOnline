@@ -33,12 +33,11 @@
                                 <h:inputText id="vcode" required="true" value="#{loginController.validate_code}">
                                     <f:ajax event="mouseout" render="vali"></f:ajax>
                                 </h:inputText>
-                                <h:graphicImage value="#{loginController.validator.path}" id="ssss"></h:graphicImage>
+                                <img src="../../../interfaces/login/image.jsp"></img>
                                 <h:outputLabel value="换一张">
                                     <a4j:ajax render="ssss" event="click"></a4j:ajax>
                                 </h:outputLabel>
-                                <h:outputLabel value="#{loginController.doValidate()}" id="vali"></h:outputLabel>
-                                
+                                <h:graphicImage value="#{loginController.doValidate()}" id="vali"></h:graphicImage>
                             </h:panelGrid>
                             <h:panelGrid columns="2">
                                 <h:commandButton style="width: 100px;height: 25px " id="submit" value="登录" action="#{loginController.login()}"></h:commandButton> 
@@ -47,7 +46,6 @@
                         </rich:panel>
                     </h:form>
                 </div>
-
             </ui:define>
         </ui:composition>
     </body>

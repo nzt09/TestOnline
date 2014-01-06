@@ -16,6 +16,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import sessionBean.StudentinfoFacadeLocal;
 import sessionBean.TeacherFacadeLocal;
 import tools.Publicfields;
@@ -39,10 +40,7 @@ public class LoginController implements java.io.Serializable {
 
     @Inject
     private TeacherController teaCon;
-
     //验证码
-    private CodeImageGenerator validator;
-
     private String validate_code;
 
     public String getValidate_code() {
@@ -51,20 +49,6 @@ public class LoginController implements java.io.Serializable {
 
     public void setValidate_code(String validate_code) {
         this.validate_code = validate_code;
-    }
-
-    public CodeImageGenerator getValidator() {
-        if (validator != null) {
-            validator.getTarget().delete();
-            validator = null;
-        }
-        validator = new CodeImageGenerator();
-        System.out.println(validator.getCode());
-        return validator;
-    }
-
-    public void setValidator(CodeImageGenerator validator) {
-        this.validator = validator;
     }
 
     // 获得login.xhtml中inputText的值，用户输入的用户编号
@@ -104,17 +88,23 @@ public class LoginController implements java.io.Serializable {
 
     //用ajax验证验证码
     public String doValidate() {
-        if (validate_code == null) {
+        if (validate_code == null || validate_code.equals("")) {
             return "";
         } else {
-            if (validate_code.equals(validator.getCode())) {
+            //取回验证码页面的session
+            HttpSession tem=(HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            String code=(String) tem.getAttribute("rand");
+            System.out.println("code");
+            if (validate_code.equals(code)) {
+                validate_code = null;
                 validateFlag = true;
-                return "验证码正确";
+                return "../image/right.png";
+            } else {
+                validateFlag = false;
+                validate_code = null;
+                return "../image/wrong.gif";
             }
-            validateFlag = false;
-            return "验证码不正确";
         }
-
     }
 
     // 登录验证
@@ -143,7 +133,6 @@ public class LoginController implements java.io.Serializable {
                 name = currentStu.getName();
                 className = currentStu.getClassinfo().getClassname();
                 classId = currentStu.getClassinfo().getId();
-
                 stuCon.setCurrent(currentStu);
                 return "/interfaces/student/main";
             }

@@ -13,15 +13,13 @@
     </h:head>
 
     <h:body>
-
-
         <div id="top" class="top">
             <ui:insert name="top">
                 <rich:panel>
                     <h:form>
                         编号：<h:outputText value="#{loginController.userId}" ></h:outputText><br/>
                         用户名：<h:outputText value=" #{loginController.name}"></h:outputText><br/>
-
+                        <h:commandLink action="#{loginController.loginout()}" style="text-decoration: none;background-color: blue">退出</h:commandLink><br/>
                     </h:form>
                 </rich:panel>
             </ui:insert>

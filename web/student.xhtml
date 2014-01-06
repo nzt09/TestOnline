@@ -10,23 +10,20 @@
         <h:outputStylesheet name="./css/cssLayout.css"/>
         <title>Facelets Template</title>
     </h:head>
-
     <h:body>
-
-
         <div id="top" class="top">
             <ui:insert name="top">
                 <h:form>
-                学号：<h:outputText value="#{loginController.userId}"></h:outputText><br/>
-                姓名：<h:outputText value="#{loginController.name}"></h:outputText><br/>
-                班级：<h:outputText value="#{loginController.className}"></h:outputText><br/>
+                    学号：<h:outputText value="#{loginController.userId}"></h:outputText><br/>
+                    姓名：<h:outputText value="#{loginController.name}"></h:outputText><br/>
+                    班级：<h:outputText value="#{loginController.className}"></h:outputText><br/>
+                    <h:commandLink action="#{loginController.loginout()}" style="text-decoration: none;">退出</h:commandLink><br/>
                 </h:form>
             </ui:insert>
         </div>
         <div>
             <div id="left">
                 <ui:insert name="left">
-                    <h:commandLink action="#{loginController.loginout()}" style="text-decoration: none;">退出</h:commandLink><br/>
                     <h:commandLink action="testlist.xhtml" value="进入考试"></h:commandLink>
                     <h:outputText value=""></h:outputText><br></br>
                     <h:commandLink  action="student_menu.xhtml" value="查询考试结果" style="text-decoration: none;"/>

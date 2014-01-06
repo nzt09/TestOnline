@@ -17,7 +17,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
+
 import javax.imageio.ImageIO;
+
 
 /**
  * 用来自动生成验证图和验证码,验证图是背景图加上干扰点加上验证码
@@ -31,8 +33,6 @@ public final class CodeImageGenerator {
     private final static int DEF_WIDTH = 60;
 
     private final static int DEF_HEIGHT = 20;
-
-    private final static String BASE_PATH = "interfaces/image";
 
     /**
      * 验证码
@@ -69,7 +69,7 @@ public final class CodeImageGenerator {
      * 生成验证码和验证图
      *
      */
-    private void generateCodeImage() {
+    public void generateCodeImage() {
         // create the image
         image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics g = image.getGraphics();
