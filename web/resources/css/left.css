@@ -1,0 +1,56 @@
+#left  a {
+	color:#333;
+	height:35px;
+	line-height:35px;
+	display:block;
+	text-align:center;
+	text-decoration:none;
+}
+#left a:hover {
+	font-weight:bold;
+	background-color:#F7E99D;
+}
+
+
+#left {
+	background:#F0F6FA;
+	min-height:500px;
+}
+
+.welcome {
+	color:red;
+	font-size:14px;
+	text-align:center;
+}
+#left .command h1 {
+		text-align:center;
+		color:#895F39;	
+		height:35px;
+		font-weight:normal;
+		cursor:pointer;
+		line-height:35px;
+                font-size:13px;
+		border-bottom:1px dashed #ccc;
+		background:url(../../resources/images/left_bg_add.gif) no-repeat 8% 48%;
+	
+}
+
+#left .command  .title2 {
+		background: #F0F6FA url(../../resources/images/left_bg_min.gif) no-repeat 8% 48%;
+                
+}
+
+
+#left .command ul {
+        background: #fff;
+}
+
+
+#left .command li {
+	height:35px;
+	text-align:center;
+	font-size:13px;
+	line-height:35px;
+}
+
+

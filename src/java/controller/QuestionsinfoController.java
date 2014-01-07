@@ -3,6 +3,7 @@ package controller;
 import entities.Questionsinfo;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
+import entities.Questiontypeinfo;
 import sessionBean.QuestionsinfoFacadeLocal;
 
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
@@ -35,6 +37,22 @@ public class QuestionsinfoController implements Serializable {
     private int typeId;
     private int knowid;
 
+    public int getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
+    }
+
+    
+    
+    public void typeListener(ValueChangeEvent event){
+        typeId=Integer.parseInt((String)event.getNewValue());
+        System.out.println("类型"+typeId);    
+    }
+    
+    
     public void selectQuestion(int id) {
         typeId = id;
         knowid = kc.getSelected().getId();
@@ -43,6 +61,11 @@ public class QuestionsinfoController implements Serializable {
 
     public QuestionsinfoController() {
     }
+    
+     public void typeAnswerListener(ValueChangeEvent event){
+         
+         System.out.println("对不对"+(String)event.getNewValue());
+     }
 
     public Questionsinfo getSelected() {
         if (current == null) {
@@ -91,7 +114,18 @@ public class QuestionsinfoController implements Serializable {
         selectedItemIndex = -1;
         return "Create";
     }
-
+    public String addquestion() {
+        try {
+            Questiontypeinfo qt=new Questiontypeinfo();
+            qt.setId(typeId);
+            current.setQuestiontypeinfo(qt);
+            getFacade().create(current);
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    
     public String create() {
         try {
             getFacade().create(current);

@@ -33,9 +33,9 @@
                                 <h:inputText id="vcode" required="true" value="#{loginController.validate_code}">
                                     <f:ajax event="mouseout" render="vali"></f:ajax>
                                 </h:inputText>
-                                <img src="../../../interfaces/login/image.jsp"></img>
+                                <h:graphicImage value="../../../interfaces/login/image.jsp" id="validateImage"></h:graphicImage>
                                 <h:outputLabel value="换一张">
-                                    <a4j:ajax render="ssss" event="click"></a4j:ajax>
+                                    <a4j:ajax render="validateImage" event="click"></a4j:ajax>
                                 </h:outputLabel>
                                 <h:graphicImage value="#{loginController.doValidate()}" id="vali"></h:graphicImage>
                             </h:panelGrid>

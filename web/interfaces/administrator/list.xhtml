@@ -3,17 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:rich="http://richfaces.org/rich">
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <body>
         <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
-                <h:form styleClass="jsfcrud_list_form">
-                    <div id="left2">
-                        <h:commandLink  action="#{teacherController.isShow()}" value="查看教师"  style="text-decoration: none;"/><br/>
-                        <h:commandLink  action="#{teacherController.isCreate()}" value="添加教务教师" style="text-decoration: none;"/><br/>
-                    </div>
-                    <rich:panel rendered="#{teacherController.showFlag}">
+                <h:form>
+                    <rich:panel>
                         <h:selectOneMenu id="departmentId" valueChangeListener="#{teacherController.typeDepartmentListener}" >
                             <f:selectItems value="#{departmentController.itemsAvailableSelectMany}"/>
                         </h:selectOneMenu>
@@ -64,42 +60,13 @@
                                     <f:facet name="header">
                                         <h:outputText value="&nbsp;"/>
                                     </f:facet>   
-                                    <h:commandButton action="#{teacherController.prepareEdit}" value="修改"/>
-                                    <h:outputText value=" "/>
                                     <h:commandButton action="#{teacherController.admindestroy()}" value="删除"/>
                                 </rich:column>
                             </rich:dataTable>
                         </h:panelGroup>
-                        <br />
                     </rich:panel>
-                        <rich:panel rendered="#{teacherController.createFlag}">
-                            <h:panelGrid columns="2">
-                                <h:outputLabel value="编号" for="id" />
-                                <h:inputText id="id" value="#{teacherController.selected.personid}">
-                                </h:inputText>
-                                <h:outputLabel value="姓名" for="name" />
-                                <h:inputText id="name" value="#{teacherController.selected.name}">
-                                </h:inputText>
-                                <h:outputLabel value="密码" for="password" />
-                                <h:inputSecret id="password" value="#{teacherController.selected.password}" />
-                            </h:panelGrid>
-                            <h:panelGrid columns="2">
-                                <h:outputLabel value="教师" for="rolesinfo" />
-                                <h:selectOneMenu id="rolesinfo" value="#{teacherController.selected.rolesinfo}"  >
-                                    <f:selectItems value="#{rolesinfoController.itemsAvailableSelectOnlyOne}"/>
-                                </h:selectOneMenu>
-                                <h:outputLabel value="学院" for="department" />
-                                <rich:inplaceSelect id="department" value="#{teacherController.selected.department}" defaultLabel="点击此处选择学院">
-                                    <f:selectItems value="#{departmentController.itemsAvailableSelectSome}"/>
-                                </rich:inplaceSelect>
-                            </h:panelGrid>
-                            <br />
-                            <h:commandLink action="#{teacherController.create}" value="添加" />
-                            <br />
-                        </rich:panel>
                 </h:form>
             </ui:define>
         </ui:composition>
-
     </body>
 </html>

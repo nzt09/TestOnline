@@ -8,6 +8,10 @@
             <base-name>/Bundle</base-name>
             <var>bundle</var>
         </resource-bundle>
+        <resource-bundle>
+            <base-name>/Bundle</base-name>
+            <var>bundle</var>
+        </resource-bundle>
     </application>
     <factory>
         <exception-handler-factory>com.importent.ViewExpiredExceptionExceptionHandlerFactory</exception-handler-factory>

@@ -5,7 +5,6 @@
  */
 package controller.action;
 
-import com.validate.CodeImageGenerator;
 import controller.StudentinfoController;
 import controller.TeacherController;
 import entities.Studentinfo;
@@ -92,8 +91,8 @@ public class LoginController implements java.io.Serializable {
             return "";
         } else {
             //取回验证码页面的session
-            HttpSession tem=(HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-            String code=(String) tem.getAttribute("rand");
+            HttpSession tem = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            String code = (String) tem.getAttribute("rand");
             System.out.println("code");
             if (validate_code.equals(code)) {
                 validate_code = null;
@@ -118,11 +117,12 @@ public class LoginController implements java.io.Serializable {
                 name = currentTea.getName();
                 teaCon.setCurrent(currentTea);
                 if (currentTea.getRolesinfo().getId() == Publicfields.ADMINISTRATOR_ROLE) {
-                    return "/interfaces/administrator/adminMain";
+                    
+                    return "/interfaces/administrator/list?faces-redirect=true";
                 } //教务老师登陆
                 else if (currentTea.getRolesinfo().getId() == Publicfields.TEACHER_ROLE) {
-
-                    return "/interfaces/teacher/teacherMain";
+                    return "/stylemodel";
+//                    return "/interfaces/teacher/teacherMain";
                 } //任课老师登陆
                 else if (currentTea.getRolesinfo().getId() == Publicfields.EDUTEACHER_ROLE) {
                     teaCon.setCurrent(currentTea);

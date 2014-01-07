@@ -14,6 +14,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
@@ -29,7 +30,27 @@ public class QuestiontypeinfoController implements Serializable {
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private String typeName;
+    //类型的Id
+    private int typeId;
 
+    public int getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
+    }
+    
+    
+    
+
+    
+    public void typeListener(ValueChangeEvent event){
+        typeId=Integer.parseInt((String)event.getNewValue());
+        System.out.println("类型"+typeId);    
+    }
+    
+    
     public String getTypeName() {
         return typeName;
     }
@@ -218,6 +239,16 @@ public class QuestiontypeinfoController implements Serializable {
         SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
         for (int i = 0; i < item.length; i++) {
             item[i].setLabel(((Questiontypeinfo) item[i].getValue()).getName());
+        }
+        return item;
+
+    }
+    
+     public SelectItem[] getItemsAvailableSelectAll() {
+        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        for (int i = 0; i < item.length; i++) {
+            item[i].setLabel(((Questiontypeinfo) item[i].getValue()).getName());
+            item[i].setValue(((Questiontypeinfo) item[i].getValue()).getId());
         }
         return item;
 

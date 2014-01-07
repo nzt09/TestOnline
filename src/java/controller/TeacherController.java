@@ -54,21 +54,8 @@ public class TeacherController implements Serializable {
     private List<SelectItem> teacherCourseList;
     private int majorId;
 
-    //标志能否显示
-    private boolean showFlag = false;
-    //同上显示添加界面
-    private boolean createFlag = false;
-
-    public void isCreate() {
-        current.setName("");
-        showFlag = false;
-        createFlag = true;
-    }
-
     public void isShow() {
         items = null;
-        showFlag = true;
-        createFlag = false;
     }
 
     public List<SelectItem> getTeacherCourseList() {
@@ -228,7 +215,7 @@ public class TeacherController implements Serializable {
         try {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TeacherCreated"));
-            return "adminMain";
+            return "";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -379,7 +366,6 @@ public class TeacherController implements Serializable {
         SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
         for (int i = 0; i < item.length; i++) {
             item[i].setLabel(((Teacher) item[i].getValue()).getName());
-
         }
         return item;
     }
@@ -387,34 +373,6 @@ public class TeacherController implements Serializable {
     public Teacher getTeacher(java.lang.String id) {
         return ejbFacade.find(id);
 
-    }
-
-    /**
-     * @return the showFlag
-     */
-    public boolean isShowFlag() {
-        return showFlag;
-    }
-
-    /**
-     * @param showFlag the showFlag to set
-     */
-    public void setShowFlag(boolean showFlag) {
-        this.showFlag = showFlag;
-    }
-
-    /**
-     * @return the createFlag
-     */
-    public boolean isCreateFlag() {
-        return createFlag;
-    }
-
-    /**
-     * @param createFlag the createFlag to set
-     */
-    public void setCreateFlag(boolean createFlag) {
-        this.createFlag = createFlag;
     }
 
     @FacesConverter(forClass = Teacher.class)

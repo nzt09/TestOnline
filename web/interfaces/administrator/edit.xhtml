@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="编号" for="personid" />
+                    <h:inputText id="personid" value="#{teacherController.selected.personid}"  required="true" requiredMessage="#{bundle.EditTeacherRequiredMessage_personid}"/>
+                    <h:outputLabel value="姓名" for="name" />
+                    <h:inputText id="name" value="#{teacherController.selected.name}"  />
+                    <h:outputLabel value="教师类型" for="rolesinfo" />
+                    <h:selectOneMenu id="rolesinfo" value="#{teacherController.selected.rolesinfo}" title="#{bundle.EditTeacherTitle_rolesinfo}" >
+                        <f:selectItems value="#{rolesinfoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.EditTeacherLabel_department}" for="department" />
+                    <h:selectOneMenu id="department" value="#{teacherController.selected.department}" title="#{bundle.EditTeacherTitle_department}" >
+                        <f:selectItems value="#{departmentController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink action="#{teacherController.update}" value="#{bundle.EditTeacherSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditTeacherViewLink}"/>
+                <br />
+                <h:commandLink action="#{teacherController.prepareList}" value="#{bundle.EditTeacherShowAllLink}" immediate="true"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
