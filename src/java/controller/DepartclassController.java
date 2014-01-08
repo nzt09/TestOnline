@@ -63,8 +63,7 @@ public class DepartclassController implements Serializable {
     public void setClassId(int classId) {
         this.classId = classId;
     }
-    private boolean flag = false;
-    private boolean flag1 = false;
+    
 
     public int getRoleId() {
         return roleId;
@@ -105,12 +104,12 @@ public class DepartclassController implements Serializable {
 
                 @Override
                 public int getItemsCount() {
-                    return getFacade().countHH();
+                    return getFacade().count(classId);
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findConstrainRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}, departmentId,classId));
+                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}, departmentId,classId));
                 }
             };
         }
@@ -227,7 +226,7 @@ public class DepartclassController implements Serializable {
     }
 
     private void updateCurrentItem() {
-        int count = getFacade().count();
+        int count = getFacade().count(classId);
         if (selectedItemIndex >= count) {
             // selected index cannot be bigger than number of items:
             selectedItemIndex = count - 1;
@@ -237,7 +236,7 @@ public class DepartclassController implements Serializable {
             }
         }
         if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1},classId,departmentId).get(0);
         }
     }
 
@@ -278,34 +277,6 @@ public class DepartclassController implements Serializable {
 
     public Departclass getDepartclass(java.lang.String id) {
         return ejbFacade.find(id);
-    }
-
-    /**
-     * @return the flag
-     */
-    public boolean isFlag() {
-        return flag;
-    }
-
-    /**
-     * @param flag the flag to set
-     */
-    public void setFlag(boolean flag) {
-        this.flag = flag;
-    }
-
-    /**
-     * @return the flag1
-     */
-    public boolean isFlag1() {
-        return flag1;
-    }
-
-    /**
-     * @param flag1 the flag1 to set
-     */
-    public void setFlag1(boolean flag1) {
-        this.flag1 = flag1;
     }
 
     @FacesConverter(forClass = Departclass.class)

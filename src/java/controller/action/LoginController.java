@@ -4,11 +4,8 @@
  * and open the template in the editor.
  */
 package controller.action;
-
-import com.validate.CodeImageGenerator;
 import controller.StudentinfoController;
 import controller.TeacherController;
-import entities.Department;
 import entities.Studentinfo;
 import entities.Teacher;
 import java.io.IOException;
