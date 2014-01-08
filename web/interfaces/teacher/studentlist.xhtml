@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <body>
+        <ui:composition template="./../../stylemodel.xhtml">
+            <ui:define name="content">
+                <h:form>
+                    <h4>管理学生信息</h4>
+                    <h:panelGroup id="messagePanel" layout="block">
+                        <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                    </h:panelGroup>
+                    <h:outputText escape="false" value="#{bundle.ListDepartclassEmpty}" rendered="#{departclassController.items.rowCount == 0}"/>
+                    <h:panelGroup rendered="#{departclassController.items.rowCount > 0}">
+                        <h:outputText value="#{departclassController.pagination.pageFirstItem + 1}..#{departclassController.pagination.pageLastItem + 1}/#{departclassController.pagination.itemsCount}"/>&nbsp;
+                        <h:commandLink action="#{departclassController.previous}" value="#{bundle.Previous} #{studentinfoController.pagination.pageSize}" rendered="#{departclassController.pagination.hasPreviousPage}"/>&nbsp;
+                        <h:commandLink action="#{departclassController.next}" value="#{bundle.Next} #{studentinfoController.pagination.pageSize}" rendered="#{departclassController.pagination.hasNextPage}"/>&nbsp;
+                        <h:dataTable value="#{departclassController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px" >
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="学号"/>
+                                </f:facet>
+                                <h:outputText value="#{item.stuno}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="名字"/>
+                                </f:facet>
+                                <h:outputText value="#{item.name}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="密码"/>
+                                </f:facet>
+                                <h:outputText value="#{item.password}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="班级"/>
+                                </f:facet>
+                                <h:outputText value="#{item.classname}"/>
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="&nbsp;"/>
+                                </f:facet>
+                                <h:commandLink action="#{departclassController.Edit()}" value="修改"/>
+                                <h:outputText value=" "/>
+                                <h:commandLink action="#{departclassController.deleted()}" value="删除"/>
+                            </h:column>
+                        </h:dataTable>
+                    </h:panelGroup>
+                    <br />
+                    <h:commandLink action="#{studentinfoController.prepareCreate()}" value="添加"/>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

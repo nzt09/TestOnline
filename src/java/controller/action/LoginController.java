@@ -5,8 +5,10 @@
  */
 package controller.action;
 
+import com.validate.CodeImageGenerator;
 import controller.StudentinfoController;
 import controller.TeacherController;
+import entities.Department;
 import entities.Studentinfo;
 import entities.Teacher;
 import java.io.IOException;
@@ -117,12 +119,11 @@ public class LoginController implements java.io.Serializable {
                 name = currentTea.getName();
                 teaCon.setCurrent(currentTea);
                 if (currentTea.getRolesinfo().getId() == Publicfields.ADMINISTRATOR_ROLE) {
-
+                    
                     return "/interfaces/administrator/list?faces-redirect=true";
                 } //教务老师登陆
                 else if (currentTea.getRolesinfo().getId() == Publicfields.TEACHER_ROLE) {
-
-                    return "/interfaces/teacher/teacherMain";
+                      return "/interfaces/teacher/teacherlist?faces-redirect=true";
                 } //任课老师登陆
                 else if (currentTea.getRolesinfo().getId() == Publicfields.EDUTEACHER_ROLE) {
                     teaCon.setCurrent(currentTea);

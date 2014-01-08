@@ -24,7 +24,6 @@ import sessionBean.StudentinfoFacadeLocal;
 @Named("majorController")
 @SessionScoped
 public class MajorController implements Serializable {
-   
 
     private Major current;
 
@@ -194,20 +193,25 @@ public class MajorController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        for (int i = 0; i < item.length; i++) {
+            item[i].setLabel(((Major) item[i].getValue()).getName());
+            item[i].setValue(((Major) item[i].getValue()).getId());
+        }
+        return item;
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
-    
-  
-    public String findDepartment(){
-         department = this.getCurrent().getDepartment().getId();
-         SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByDepartmentId(department), false);
-         String name = ((Major)item[0].getValue()).getDepartment().getName();
+
+    public String findDepartment() {
+        department = this.getCurrent().getDepartment().getId();
+        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByDepartmentId(department), false);
+        String name = ((Major) item[0].getValue()).getDepartment().getName();
         return name;
     }
+
     public Major getMajor(java.lang.Integer id) {
         return ejbFacade.find(id);
     }

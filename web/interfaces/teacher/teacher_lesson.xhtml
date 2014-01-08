@@ -6,12 +6,10 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
-
-        <ui:composition template="./../../teacher.xhtml">
-
+        <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
                 <h:form>
-                    <h:outputText>授课信息</h:outputText>
+                    <h4>授课信息</h4>
                     <h:panelGroup id="messagePanel" layout="block">
                         <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                     </h:panelGroup>
@@ -35,7 +33,7 @@
                             </h:column>
                             <h:column>
                                 <f:facet name="header">
-                                    <h:outputText value="专业"/>
+                                    <h:outputText value="课程"/>
                                 </f:facet>
                                 <h:outputText value="#{item.courseinfo.name}"/>
                             </h:column>
@@ -55,7 +53,6 @@
                                 <f:facet name="header">
                                     <h:outputText value="&nbsp;"/>
                                 </f:facet>
-
                                 <h:commandLink action="#{teachercourseclassController.prepareEdit}" value="修改"/>
                                 <h:outputText value=" "/>
                                 <h:commandLink action="#{teachercourseclassController.destroy}" value="删除"/>

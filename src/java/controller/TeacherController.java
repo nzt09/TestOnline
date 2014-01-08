@@ -7,6 +7,7 @@ import entities.Classinfo;
 import entities.Major;
 import entities.Teachercourseclass;
 import sessionBean.TeacherFacadeLocal;
+import tools.Publicfields;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -53,6 +54,7 @@ public class TeacherController implements Serializable {
     //显示该老师所交课程
     private List<SelectItem> teacherCourseList;
     private int majorId;
+    
 
     public void isShow() {
         items = null;
@@ -86,7 +88,23 @@ public class TeacherController implements Serializable {
     private DataModel items = null;
     @EJB
     private sessionBean.TeacherFacadeLocal ejbFacade;
+
+    public int getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(int departmentId) {
+        this.departmentId = departmentId;
+    }
     private PaginationHelper pagination;
+
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
     private int selectedItemIndex, roleId, departmentId;
 
     //监听上一页获取学院的编号
@@ -191,7 +209,7 @@ public class TeacherController implements Serializable {
 
     public String teacherprepareList() {
         recreateModel();
-        return "teacherMain";
+        return "teacherlist";
     }
 
     public String prepareList() {
@@ -208,7 +226,7 @@ public class TeacherController implements Serializable {
     public String prepareCreate() {
         current = new Teacher();
         selectedItemIndex = -1;
-        return "create";
+        return "teacherCreate";
     }
 
     public String create() {
@@ -226,7 +244,7 @@ public class TeacherController implements Serializable {
         try {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TeacherCreated"));
-            return "teacherMain";
+            return "";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -236,25 +254,14 @@ public class TeacherController implements Serializable {
     public String prepareEdit() {
         current = (Teacher) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "edit";
-    }
-
-    public String adminupdate() {
-        try {
-            getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TeacherUpdated"));
-            return "adminMain.xhtml";
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
-        }
+        return "editteacher";
     }
 
     public String update() {
         try {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TeacherUpdated"));
-            return "teacherMain";
+            return "teacherlist";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -287,7 +294,7 @@ public class TeacherController implements Serializable {
         performDestroy();
         recreatePagination();
         recreateModel();
-        return "teacherMain";
+        return "teacherlist";
     }
 
     public String destroyAndView() {
@@ -345,13 +352,13 @@ public class TeacherController implements Serializable {
     public String next() {
         getPagination().nextPage();
         recreateModel();
-        return "list";
+        return "teacherlist";
     }
 
     public String previous() {
         getPagination().previousPage();
         recreateModel();
-        return "list";
+        return "teacherlist";
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
@@ -369,6 +376,15 @@ public class TeacherController implements Serializable {
         }
         return item;
     }
+
+//    public SelectItem[] getItemsAvailableSelecteduTeacher() {
+//        roleId = Publicfields.EDUTEACHER_ROLE;
+//        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByRoleId(roleId), false);
+//        for (int i = 0; i < item.length; i++) {
+//            item[i].setLabel(((Teacher) item[i].getValue()).getName());
+//        }
+//        return item;
+//    }
 
     public Teacher getTeacher(java.lang.String id) {
         return ejbFacade.find(id);
@@ -414,21 +430,4 @@ public class TeacherController implements Serializable {
         }
 
     }
-
-    public String action() {
-        if (roleId == 3) {
-            return "list";
-        } else {
-            return "list_5";
-        }
-    }
-
-    public String action1() {
-        if (roleId == 3) {
-            return "create";
-        } else {
-            return "create_1";
-        }
-    }
-
 }

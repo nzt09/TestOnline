@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+        <ui:composition template="./../../stylemodel.xhtml">
+            <ui:define name="content">
+                <h:form>
+                    <h:outputText value="添加授课信息"></h:outputText>
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="任课老师" for="teacher" />
+                        <h:selectOneMenu id="teacher" value="#{teachercourseclassController.selected.teacher}" title="#{bundle.CreateTeachercourseclassTitle_teacher}" >
+                            <f:selectItems value="#{teacherController.itemsAvailableSelecteduTeacher}"/>
+                        </h:selectOneMenu>
+                        <h:outputLabel value="专业" for="courseinfo" />
+                        <h:selectOneMenu id="courseinfo" value="#{teachercourseclassController.selected.courseinfo}" title="#{bundle.CreateTeachercourseclassTitle_courseinfo}" >
+                            <f:selectItems value="#{courseinfoController.itemsAvailableSelectM}"/>
+                        </h:selectOneMenu>
+                        <h:outputLabel value="班级" for="classinfo" />
+                        <h:selectOneMenu id="classinfo" value="#{teachercourseclassController.selected.classinfo}" title="#{bundle.CreateTeachercourseclassTitle_classinfo}" >
+                            <f:selectItems value="#{classinfoController.itemsAvailableSelectM}"/>
+                        </h:selectOneMenu>
+                        <h:outputLabel value="学期" for="term" />
+                        <h:selectOneMenu id="term" value="#{teachercourseclassController.selected.term}"  title="#{bundle.CreateTeachercourseclassTitle_classinfo}">
+                            <f:selectItems value="#{publicFields.terms}"/>
+                        </h:selectOneMenu>
+                    </h:panelGrid>
+                    <br />
+                    <h:commandLink action="#{teachercourseclassController.create}" value="添加" />
+                    <br />
+                    <br />
+                    <h:commandLink action="#{teachercourseclassController.prepareList}" value="显示所有信息" immediate="true"/>
+                    <br />
+
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

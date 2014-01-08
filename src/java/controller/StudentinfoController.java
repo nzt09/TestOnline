@@ -141,7 +141,7 @@ public class StudentinfoController implements Serializable {
 
     public String prepareList() {
         recreateModel();
-        return "list_1";
+        return "studentlist";
     }
 
     public String prepareView() {
@@ -153,7 +153,7 @@ public class StudentinfoController implements Serializable {
     public String prepareCreate() {
         current = new Studentinfo();
         selectedItemIndex = -1;
-        return "creat1";
+        return "studentCreate";
     }
 
     public String create() {
@@ -170,7 +170,7 @@ public class StudentinfoController implements Serializable {
     public String prepareEdit() {
         current = (Studentinfo) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "edi1";
+        return "studentEdit";
     }
 
     
@@ -178,7 +178,7 @@ public class StudentinfoController implements Serializable {
         try {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("StudentinfoUpdated"));
-            return "teacherMain";
+            return "studentlist";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -189,7 +189,7 @@ public class StudentinfoController implements Serializable {
         try {
 //            getFacade().edit();
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("StudentinfoUpdated"));
-            return "teacherMain";
+            return "studentlist";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -202,7 +202,7 @@ public class StudentinfoController implements Serializable {
         performDestroy();
         recreatePagination();
         recreateModel();
-        return "teacherMain";
+        return "studentlist";
     }
 
     public String destroyAndView() {
@@ -226,7 +226,7 @@ public class StudentinfoController implements Serializable {
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
-           return "teacherMain";
+           return "studentlist";
     }
     
     private void performDestroy() {
@@ -271,13 +271,13 @@ public class StudentinfoController implements Serializable {
     public String next() {
         getPagination().nextPage();
         recreateModel();
-        return "list_1";
+        return "studentlist";
     }
 
     public String previous() {
         getPagination().previousPage();
         recreateModel();
-        return "list_1";
+        return "studentlist";
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {

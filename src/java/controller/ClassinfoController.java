@@ -188,7 +188,12 @@ public class ClassinfoController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+         SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        for (int i = 0; i < item.length; i++) {
+            item[i].setLabel(((Classinfo) item[i].getValue()).getClassname());
+            item[i].setValue(((Classinfo) item[i].getValue()).getId());
+        }
+        return item;
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
@@ -198,7 +203,6 @@ public class ClassinfoController implements Serializable {
         SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
         for (int i = 0; i < item.length; i++) {
             item[i].setLabel(((Classinfo) item[i].getValue()).getClassname());
-           
         }
         return item;
     }

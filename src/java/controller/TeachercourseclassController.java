@@ -4,9 +4,14 @@ import entities.Teachercourseclass;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
 import sessionBean.TeachercourseclassFacadeLocal;
+import tools.Publicfields;
 
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.ResourceBundle;
+import java.util.Set;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -101,14 +106,14 @@ public class TeachercourseclassController implements Serializable {
     public String prepareCreate() {
         current = new Teachercourseclass();
         selectedItemIndex = -1;
-        return "creat3";
+        return "lessonCreate";
     }
 
     public String create() {
         try {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TeachercourseclassCreated"));
-            return prepareCreate();
+            return "";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -118,7 +123,7 @@ public class TeachercourseclassController implements Serializable {
     public String prepareEdit() {
         current = (Teachercourseclass) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "edi3";
+        return "lessonEdit";
     }
 
     public String update() {
@@ -198,13 +203,13 @@ public class TeachercourseclassController implements Serializable {
     public String next() {
         getPagination().nextPage();
         recreateModel();
-        return "list_3";
+        return "teacher_lesson";
     }
 
     public String previous() {
         getPagination().previousPage();
         recreateModel();
-        return "list_3";
+        return "teacher_lesson";
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
@@ -214,16 +219,31 @@ public class TeachercourseclassController implements Serializable {
     public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
-    
-     public SelectItem[] getItemsAvailableSelectTerm() {
-       SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
-        for (int i = 0; i < item.length; i++) {
-            item[i].setLabel(((Teachercourseclass) item[i].getValue()).getTerm());
-            item[i].setValue(((Teachercourseclass) item[i].getValue()).getId());
-        }
-        return item;
-    }
-     
+//    
+//     public SelectItem[] getItemsAvailableSelectTerm() {
+//      SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+////       Set<String> term=new HashSet<>();
+////       Iterator it=term.iterator();
+////       String[] tt=new String[10];
+////       int year=Calendar.getInstance().get(Calendar.YEAR);
+////         System.out.println(year);
+////       for(int i=0;i<item.length;i++){
+////           term.add(((Teachercourseclass) item[i].getValue()).getTerm());
+////            System.out.println(term.toString());
+////       }
+////           if(!term.contains(year)){
+////           term.add(year + "-" + year+1 + "-" + 1);
+////           term.add((String)(year + "-" + year+1 + "-" + 2));
+////           }else
+////           System.out.println(term.toString());
+////        for (int i = 0; i <item.length; i++) {
+////            item[i].setLabel(((Teachercourseclass) item[i].getValue()).getTerm());
+////            item[i].setValue(((Teachercourseclass) item[i].getValue()).getTerm());
+////        }
+//     return Publicfields.getTerms();
+//     
+//    }
+//     
     public Teachercourseclass getTeachercourseclass(java.lang.Integer id) {
         return ejbFacade.find(id);
     }

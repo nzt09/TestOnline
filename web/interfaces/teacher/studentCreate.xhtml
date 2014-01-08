@@ -7,13 +7,11 @@
 
     <body>
 
-        <ui:composition template="./../../teacher.xhtml">
+        <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
                 <h:form>
                     <h:outputText value="添加学生信息"></h:outputText>
                 <h:panelGrid columns="2">
-                    <h:outputLabel value="id" for="id" />
-                    <h:inputText id="id" value="#{studentinfoController.selected.id}" title="#{bundle.CreateStudentinfoTitle_id}" required="true" requiredMessage="#{bundle.CreateStudentinfoRequiredMessage_id}"/>
                     <h:outputLabel value="姓名" for="name" />
                     <h:inputText id="name" value="#{studentinfoController.selected.name}" title="#{bundle.CreateStudentinfoTitle_name}" />
                     <h:outputLabel value="邮箱" for="email" />
@@ -31,7 +29,7 @@
                 <h:commandLink action="#{studentinfoController.create}" value="添加" />
                 <br />
                 <br />
-                <h:commandLink action="teacherMain.xhtml" value="显示所有学生的信息" immediate="true"/>
+                <h:commandLink action="studentlist" value="显示所有学生的信息" immediate="true"/>
                 <br />
               
             </h:form> 

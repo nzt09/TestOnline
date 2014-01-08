@@ -5,31 +5,27 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html">
 
     <body>
-        <ui:composition template="./../../template.xhtml">
-            <ui:define name="title">
-                学生菜单
-            </ui:define>
 
-            <ui:define name="body">
-                <h:form >
-                    学号：<h:outputText value="#{loginController.userId}"></h:outputText><br/>
-                    姓名：<h:outputText value="#{loginController.name}"></h:outputText><br/>
-                    班级：<h:outputText value="#{loginController.className}"></h:outputText><br/>
+        <ui:composition template="./../../student.xhtml">
+            <ui:define name="content">
+                <h:form>
                     <ol>
                         <li>知识点管理
                             <ul>
-                                <li><h:commandLink action="student_result1_1.xhtml" value="知识掌握情况"  style="text-decoration: none;"/></li>
-                                <li><h:commandLink action="student_result2_1.xhtml" value="知识弥补速递"  style="text-decoration: none;"/></li>
-                             </ul>
+                                <li><h:commandLink action="student_result1.1.xhtml" value="知识掌握情况"  style="text-decoration: none;"/></li>
+                                <li><h:commandLink action="student_result2.1.xhtml" value="知识弥补速递"  style="text-decoration: none;"/></li>
+                            </ul>
                         </li>
                         <li>成绩管理
                             <ul>
                                 <li><a href="">所有测试成绩</a></li>
                             </ul>
                         </li>
-                     </ol>
-                 </h:form>
-             </ui:define>
-          </ui:composition>
-      </body>
+                    </ol>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
 </html>

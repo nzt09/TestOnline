@@ -60,7 +60,7 @@ public class TestassigninfomController implements Serializable {
     private int year;
     private boolean isReady=false;
     
-
+//判断当前时间是否在考试时间内
     public boolean isTesting() {
         Calendar c = Calendar.getInstance();
         Calendar beginTime = Calendar.getInstance();
@@ -72,14 +72,9 @@ public class TestassigninfomController implements Serializable {
                 beginTime.setTime(testa.getTesttime());
                 endTime.setTime(testa.getTesttime());
                 System.out.println(testa.getTesttime());
+                endTime.add(Calendar.MINUTE, testa.getTestinterval());
             }
         }
-
-//        beginTime.add(Calendar.YEAR,-1900);
-//        beginTime.add(Calendar.MONTH,-1);
-        endTime.add(Calendar.MINUTE, 120);
-//        endTime.add(Calendar.YEAR,-1900);
-//        endTime.add(Calendar.MONTH,-1);
         System.out.println(beginTime.get(Calendar.MINUTE));
         System.out.println(beginTime.toString());
         System.out.println(endTime.get(Calendar.MINUTE));
@@ -134,7 +129,7 @@ public class TestassigninfomController implements Serializable {
 //        }
 //    return lefttime;
 //    }
-
+//拿到班级ID
     public void getBanjiId() {
         classId = stuCon.getCurrent().getClassinfo().getId();
         System.out.print(classId);
@@ -165,7 +160,7 @@ public class TestassigninfomController implements Serializable {
     private TestassigninfomFacadeLocal getFacade() {
         return ejbFacade;
     }
-
+//学生端的考试安排
     public PaginationHelper getPagination1() {
         classId = stuCon.getCurrent().getClassinfo().getId();
         System.out.print(courseId);
@@ -186,7 +181,7 @@ public class TestassigninfomController implements Serializable {
         }
         return pagination;
     }
-
+//教务老师端的考试安排
     public PaginationHelper getPagination() {
         if (pagination == null) {
             pagination = new PaginationHelper(10) {
@@ -219,7 +214,7 @@ public class TestassigninfomController implements Serializable {
     public String prepareCreate() {
         current = new Testassigninfom();
         selectedItemIndex = -1;
-        return "creat4";
+        return "createexam_arrange";
     }
 
     public String create() {
@@ -236,7 +231,7 @@ public class TestassigninfomController implements Serializable {
     public String prepareEdit() {
         current = (Testassigninfom) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "edi4";
+        return "editexam_arrange";
     }
 
     public String update() {
@@ -256,7 +251,7 @@ public class TestassigninfomController implements Serializable {
         performDestroy();
         recreatePagination();
         recreateModel();
-        return "tecaher_exam";
+        return "teacher_exam";
     }
 
     public String destroyAndView() {

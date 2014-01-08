@@ -7,7 +7,7 @@
 
     <body>
 
-        <ui:composition template="./../../teacher.xhtml">
+        <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
                 <h:form>
                     <h:panelGrid columns="2">
@@ -26,10 +26,7 @@
                     </h:panelGrid>
                     <h:commandLink action="#{studentinfoController.update()}" value="修改"/>
                     <br />
-                    <!--                <br />
-                                    <h:link outcome="View" value="#{bundle.EditStudentinfoViewLink}"/>
-                                    <br />-->
-                    <h:commandLink action="teacherMain" value="显示所有学生信息" immediate="true"/>
+                    <h:commandLink action="studentlist" value="显示所有学生信息" immediate="true"/>
                     <br />
                    
                 </h:form>

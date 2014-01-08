@@ -7,7 +7,7 @@
 
     <body>
 
-        <ui:composition template="./../../teacher.xhtml">
+        <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
                  <h:form>
                 <h:panelGrid columns="2">
@@ -55,8 +55,6 @@
                 <br />-->
                 <h:commandLink action="#{testassigninfomController.prepareList}" value="显示考试安排的信息" immediate="true"/>
                 <br />
-                <br />
-                <h:link outcome="arrange_exam.xhtml" value="返回上一层" />
             </h:form>
             </ui:define>
 

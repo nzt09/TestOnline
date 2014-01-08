@@ -78,7 +78,7 @@ public class ClassroomController implements Serializable {
         current = new Classroom();
         selectedItemIndex = -1;
         items=null;
-        return "creat2";
+        return "createclassroom";
     }
 
     public String create() {
@@ -95,7 +95,7 @@ public class ClassroomController implements Serializable {
     public String prepareEdit() {
         current = (Classroom) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "edi2";
+        return "editclassroom";
     }
 
     public String update() {

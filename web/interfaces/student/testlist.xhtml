@@ -1,98 +1,82 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:a4j="http://richfaces.org/a4j">
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <ui:composition template="/template.xhtml">
-        <ui:define name="title">
-            <h:outputText value="#{bundle.ListTestassigninfomTitle}"></h:outputText>
-        </ui:define>
-        <ui:define name="body">
-            <h:form styleClass="jsfcrud_list_form">
-                <h:panelGroup id="messagePanel" layout="block">
-                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-                </h:panelGroup>
-                <h:outputText escape="false" value="#{bundle.ListTestassigninfomEmpty}" rendered="#{testassigninfomController.items1.rowCount == 0}"/>
-                <h:panelGroup rendered="#{testassigninfomController.items1.rowCount > 0}">
-                    <h:outputText value="#{testassigninfomController.pagination1.pageFirstItem + 1}..#{testassigninfomController.pagination1.pageLastItem + 1}/#{testassigninfomController.pagination1.itemsCount}"/>&nbsp;
-                    <h:commandLink action="#{testassigninfomController.previous}" value="#{bundle.Previous} #{testassigninfomController.pagination1.pageSize}" rendered="#{testassigninfomController.pagination1.hasPreviousPage}"/>&nbsp;
-                    <h:commandLink action="#{testassigninfomController.next}" value="#{bundle.Next} #{testassigninfomController.pagination1.pageSize}" rendered="#{testassigninfomController.pagination1.hasNextPage}"/>&nbsp;
-                    <h:dataTable value="#{testassigninfomController.items1}" var="item1" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="编号"/>
-                            </f:facet>
-                            <h:outputText value="#{item1.id}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="考试开始时间"/>
-                            </f:facet>
-                            <h:outputText value="#{item1.testtime}">
-                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" timeZone="GMT+8"/>
-                            </h:outputText>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="考试时间"/>
-                            </f:facet>
-                            <h:outputText value="#{item1.testinterval}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="注意事项"/>
-                            </f:facet>
-                            <h:outputText value="#{item1.notice}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="监考老师"/>
-                            </f:facet>
-                            <h:outputText value="#{item1.teacher.name}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="课程"/>
-                            </f:facet>
-                            <h:outputText value="#{item1.courseinfo.name}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="教室"/>
-                            </f:facet>
-                            <h:outputText value="#{item1.classroom.name}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="班级"/>
-                            </f:facet>
-                            <h:outputText value="#{item1.classinfo.name}"/>
-                        </h:column>
-<!--                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="当前时间"/>
-                            </f:facet>
-                            <h:outputText value="#{studentinfoController.gettime()}"/>
-                        </h:column>-->
-<!--                       <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="当前"/>
-                            </f:facet>
-                           <h:outputText value="#{testassigninfomController.isTesting()}"/>
-                           
-                        </h:column>-->
-                     
-                    </h:dataTable>
-                </h:panelGroup>
-                
-                <h:commandLink action="main.xhtml"    value="开始考试" rendered="#{testassigninfomController.isTesting()}"></h:commandLink>
-                <h:outputText value="不在考试时间" rendered="#{!testassigninfomController.isTesting()}"/>
-                <h:link outcome="list.xhtml" value="返回上一层"/>
-            </h:form>
-        </ui:define>
-    </ui:composition>
+    <body>
 
+        <ui:composition template="./../../student.xhtml">
+            <ui:define name="content">
+                <h:form styleClass="jsfcrud_list_form">
+                    <h:panelGroup id="messagePanel" layout="block">
+                        <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                    </h:panelGroup>
+                    <h:outputText escape="false" value="#{bundle.ListTestassigninfomEmpty}" rendered="#{testassigninfomController.items1.rowCount == 0}"/>
+                    <h:panelGroup rendered="#{testassigninfomController.items1.rowCount > 0}">
+                        <h:outputText value="#{testassigninfomController.pagination1.pageFirstItem + 1}..#{testassigninfomController.pagination1.pageLastItem + 1}/#{testassigninfomController.pagination1.itemsCount}"/>&nbsp;
+                        <h:commandLink action="#{testassigninfomController.previous}" value="#{bundle.Previous} #{testassigninfomController.pagination1.pageSize}" rendered="#{testassigninfomController.pagination1.hasPreviousPage}"/>&nbsp;
+                        <h:commandLink action="#{testassigninfomController.next}" value="#{bundle.Next} #{testassigninfomController.pagination1.pageSize}" rendered="#{testassigninfomController.pagination1.hasNextPage}"/>&nbsp;
+                        <h:dataTable value="#{testassigninfomController.items1}" var="item1" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="编号"/>
+                                </f:facet>
+                                <h:outputText value="#{item1.id}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="考试开始时间"/>
+                                </f:facet>
+                                <h:outputText value="#{item1.testtime}">
+                                    <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" timeZone="GMT+8"/>
+                                </h:outputText>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="考试时间"/>
+                                </f:facet>
+                                <h:outputText value="#{item1.testinterval}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="注意事项"/>
+                                </f:facet>
+                                <h:outputText value="#{item1.notice}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="监考老师"/>
+                                </f:facet>
+                                <h:outputText value="#{item1.teacher.name}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="课程"/>
+                                </f:facet>
+                                <h:outputText value="#{item1.courseinfo.name}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="教室"/>
+                                </f:facet>
+                                <h:outputText value="#{item1.classroom.name}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="班级"/>
+                                </f:facet>
+                                <h:outputText value="#{item1.classinfo.classname}"/>
+                            </h:column>
+                        </h:dataTable>
+                    </h:panelGroup>
+                    <h:commandLink action="main.xhtml"    value="开始考试" rendered="#{testassigninfomController.isTesting()}"></h:commandLink>
+                    <h:outputText value="不在考试时间" rendered="#{!testassigninfomController.isTesting()}"/>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
 </html>

@@ -6,8 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
-
-        <ui:composition template="./../../teacher.xhtml">
+        <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
                 <h:form>
                     <h:outputText value="添加任课老师信息"></h:outputText>
@@ -20,7 +19,7 @@
                         <h:inputText id="password" value="#{teacherController.selected.password}" title="#{bundle.CreateTeacherTitle_password}" />
                         <h:outputLabel value="身份" for="rolesinfo" />
                         <h:selectOneMenu id="rolesinfo" value="#{teacherController.selected.rolesinfo}" title="#{bundle.CreateTeacherTitle_rolesinfo}" >
-                            <f:selectItems value="#{rolesinfoController.itemsAvailableSelectM}"/>
+                            <f:selectItems value="#{rolesinfoController.itemsAvailableSelectEduM}"/>
                         </h:selectOneMenu>
                         <h:outputLabel value="学院" for="department" />
                         <h:selectOneMenu id="department" value="#{teacherController.selected.department}" title="#{bundle.CreateTeacherTitle_department}" >
@@ -31,7 +30,7 @@
                     <h:commandLink action="#{teacherController.educreate()}" value="保存" />
                     <br />
                     <br />
-                    <h:commandLink action="teacherMain.xhtml" value="显示所有任课老师信息" immediate="true"/>
+                    <h:commandLink action="teacherlist.xhtml" value="显示所有任课老师信息" immediate="true"/>
                     <br />
 
                 </h:form>

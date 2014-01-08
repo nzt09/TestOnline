@@ -36,23 +36,16 @@ public class DepartclassController implements Serializable {
     @EJB
     private StudentinfoFacadeLocal studentinfoFacade;
 
-    @EJB
-    private StudentinfoFacadeLocal studentFacade;
     @Inject
     private StudentinfoController studentinfoController;
-    @EJB
-    private TeacherFacadeLocal teacherFacade;
+   
     @Inject
     private TeacherController teacherController;
-    @EJB
-    private MajorFacadeLocal majorFacade;
+
     @Inject
     private MajorController majorController;
-    private Teacher teacher;
     private Major major;
     private Department department;
-    private Rolesinfo rolesinfo;
-
     private Departclass current;
     private DataModel items = null;
     @EJB
@@ -61,6 +54,15 @@ public class DepartclassController implements Serializable {
     private int selectedItemIndex;
     private int departmentId;
     private int roleId;
+    private int classId;
+
+    public int getClassId() {
+        return classId;
+    }
+
+    public void setClassId(int classId) {
+        this.classId = classId;
+    }
     private boolean flag = false;
     private boolean flag1 = false;
 
@@ -80,11 +82,6 @@ public class DepartclassController implements Serializable {
         this.departmentId = departmentId;
     }
 
-//    //监听上一页获取学院的编号
-//    public void typeDepartmentListener(ValueChangeEvent event) {
-//        departmentId = Integer.parseInt((String) event.getNewValue());
-//        System.out.print(departmentId);
-//    }
     public DepartclassController() {
     }
 
@@ -101,6 +98,8 @@ public class DepartclassController implements Serializable {
     }
 
     public PaginationHelper getPagination() {
+        System.out.println(classId);
+        System.out.println(departmentId);
         if (pagination == null) {
             pagination = new PaginationHelper(10) {
 
@@ -111,48 +110,19 @@ public class DepartclassController implements Serializable {
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findConstrainRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()},departmentId));
+                    return new ListDataModel(getFacade().findConstrainRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}, departmentId,classId));
                 }
             };
         }
         return pagination;
     }
-
-    public void myview() {
-      
-        teacher = new Teacher();
-        major = new Major();
-        department = new Department();
-        department.setId(departmentId);
-        rolesinfo = new Rolesinfo();
-        rolesinfo.setId(roleId);
-        major.setDepartment(department);
-        teacher.setDepartment(department);
-        teacher.setRolesinfo(rolesinfo);
-        System.out.print(teacher.toString());
-        majorController.setCurrent(major);
-        teacherController.setCurrent(teacher);
-        System.out.println(departmentId+roleId);
-        if (roleId == EDUTEACHER_ROLE) {
-            System.out.print("dasfasfasfafs");
-            teacherController.selectDepartment();
-            teacherController.prepareList();
-            flag=true;
-            flag1=false;
-        } else {
-             prepareList();
-             flag1 = true;
-             flag=false;
-        }
-    }
-
-//    public String prepareList() {
-//        recreateModel();
-//        return "list_5";
-//    }
-
+    
+   public void setMajor(){
+       major = new Major();
+       major.setDepartment(department);
+       majorController.setCurrent(major);
+   }
     public void prepareList() {
-        System.out.println("ssssssssssss");
         recreateModel();
     }
     
@@ -195,7 +165,7 @@ public class DepartclassController implements Serializable {
 
 //        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         recreateModel();
-        return "edit1";
+        return "studentEdit";
     }
 
     public String update() {
@@ -203,7 +173,7 @@ public class DepartclassController implements Serializable {
 
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("DepartclassUpdated"));
-            return "teacherMain";
+            return "manage_student";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -221,7 +191,7 @@ public class DepartclassController implements Serializable {
 //        recreatePagination();
 //        recreateModel();
         recreateModel();
-        return "teacherMain";
+        return "studentlist";
 
     }
 
@@ -231,7 +201,7 @@ public class DepartclassController implements Serializable {
         performDestroy();
         recreatePagination();
         recreateModel();
-        return "teacherMain";
+        return "manage_student";
     }
 
     public String destroyAndView() {
@@ -289,13 +259,13 @@ public class DepartclassController implements Serializable {
     public String next() {
         getPagination().nextPage();
         recreateModel();
-        return "list_5";
+        return "studentlist";
     }
 
     public String previous() {
         getPagination().previousPage();
         recreateModel();
-        return "list_5";
+        return "studentlist";
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {

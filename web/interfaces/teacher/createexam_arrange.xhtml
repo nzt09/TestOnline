@@ -7,13 +7,11 @@
 
     <body>
 
-        <ui:composition template="./../../teacher.xhtml">
+        <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
                 <h:form>
                     <h:outputText value="添加考试信息"></h:outputText>
                     <h:panelGrid columns="2">
-                        <h:outputLabel value="编号" for="id" />
-                        <h:inputText id="id" value="#{testassigninfomController.selected.id}" title="#{bundle.CreateTestassigninfomTitle_id}" required="true" requiredMessage="#{bundle.CreateTestassigninfomRequiredMessage_id}"/>
                         <h:outputLabel value="考试时间" for="testtime" />
                         <h:inputText id="testtime" value="#{testassigninfomController.selected.testtime}" title="#{bundle.CreateTestassigninfomTitle_testtime}" >
                             <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />

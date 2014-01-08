@@ -208,6 +208,15 @@ public class RolesinfoController implements Serializable {
         }
         return item;
     }
+    
+      public SelectItem getItemsAvailableSelectEduM() {
+        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        for (int i = 0; i < item.length; i++) {
+            item[i].setLabel(((Rolesinfo) item[i].getValue()).getName());
+
+        }
+        return item[2];
+    }
 //取出若干个实体到前台
 
     public ArrayList<SelectItem> getItemsAvailableSelectSome() {
@@ -228,9 +237,9 @@ public class RolesinfoController implements Serializable {
             item[i].setLabel(((Rolesinfo) item[i].getValue()).getName());
             item[i].setValue(((Rolesinfo) item[i].getValue()).getId());
         }
-        ArrayList<SelectItem> ss = new ArrayList<SelectItem>(2);
+        ArrayList<SelectItem> ss = new ArrayList<SelectItem>(1);
         ss.add(item[2]);
-        ss.add(item[3]);
+        
         return ss;
     }
 
