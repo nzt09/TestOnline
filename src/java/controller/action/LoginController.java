@@ -4,11 +4,14 @@
  * and open the template in the editor.
  */
 package controller.action;
+
+import com.email.Mail;
 import controller.StudentinfoController;
 import controller.TeacherController;
 import entities.Studentinfo;
 import entities.Teacher;
 import java.io.IOException;
+import java.util.Random;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -57,6 +60,23 @@ public class LoginController implements java.io.Serializable {
     private int classId;
     //判断验证码是否对
     private boolean validateFlag = false;
+    
+    //新的密码
+    private String newPassword;
+
+    //
+    private boolean flag = false;
+
+    //登录邮箱
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public int getClassId() {
         return classId;
@@ -83,6 +103,57 @@ public class LoginController implements java.io.Serializable {
     }
     //  用户名并且往后传递
     private String name;
+
+    //用ajax验证用户是否存在
+    public String isAppear() {
+        if (userId == null || userId.isEmpty()) {
+            flag = false;
+            return "请输入编号";
+        } else {
+            Teacher currentTea = teaFacade.find(userId);
+            Studentinfo currentStu = studentFacade.findByStuno(userId);
+            if (currentStu.getName() != null || currentTea != null) {
+                flag = true;
+                return "";
+            }
+            flag = false;
+            return "不存在";
+        }
+    }
+
+    //验证邮箱
+    public String validateEmail() {
+        if (userId == null || userId.isEmpty()) {
+               return "";
+        } else {
+            Teacher currentTea = teaFacade.find(userId);
+            Studentinfo currentStu = studentFacade.findByStuno(userId);
+            if (currentStu.getEmail().equals(email)) {
+                return "true";
+            } else {
+                return "false";
+            }
+        }
+    }
+    
+    //向邮箱发送密码
+    public String sendPasswordMail(){
+        newPassword=this.getNewpassword();
+        Mail.sendMail(email,newPassword);
+        Studentinfo stu=studentFacade.findByStuno(userId);
+        stu.setPassword(newPassword);
+        stuCon.updateStu(stu);
+        return "已发送";
+    }
+    //随机生成一个新的密码
+    public String getNewpassword(){
+        Random random = new Random();
+        String newpassword = String.valueOf(random.nextInt(1000000));
+        if(Integer.parseInt(newpassword)<100000){
+            this.getNewpassword();
+        }
+        return newpassword;
+    }
 
     //用ajax验证验证码
     public String doValidate() {
@@ -116,11 +187,11 @@ public class LoginController implements java.io.Serializable {
                 name = currentTea.getName();
                 teaCon.setCurrent(currentTea);
                 if (currentTea.getRolesinfo().getId() == Publicfields.ADMINISTRATOR_ROLE) {
-                    
+
                     return "/interfaces/administrator/list?faces-redirect=true";
                 } //教务老师登陆
                 else if (currentTea.getRolesinfo().getId() == Publicfields.TEACHER_ROLE) {
-                      return "/interfaces/teacher/teacherlist?faces-redirect=true";
+                    return "/interfaces/teacher/teacherlist?faces-redirect=true";
                 } //任课老师登陆
                 else if (currentTea.getRolesinfo().getId() == Publicfields.EDUTEACHER_ROLE) {
                     teaCon.setCurrent(currentTea);
@@ -172,5 +243,19 @@ public class LoginController implements java.io.Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     * @return the flag
+     */
+    public boolean isFlag() {
+        return flag;
+    }
+
+    /**
+     * @param flag the flag to set
+     */
+    public void setFlag(boolean flag) {
+        this.flag = flag;
     }
 }

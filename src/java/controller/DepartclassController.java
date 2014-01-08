@@ -3,13 +3,16 @@ package controller;
 import entities.Departclass;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
+import entities.Classinfo;
 import entities.Department;
 import entities.Major;
 import entities.Rolesinfo;
 import entities.Studentinfo;
-import entities.Teacher;
+
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -23,11 +26,11 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
+import sessionBean.ClassinfoFacadeLocal;
 import sessionBean.DepartclassFacadeLocal;
 import sessionBean.MajorFacadeLocal;
 import sessionBean.StudentinfoFacadeLocal;
-import sessionBean.TeacherFacadeLocal;
-import static tools.Publicfields.EDUTEACHER_ROLE;
+
 
 @Named("departclassController")
 @SessionScoped
@@ -44,8 +47,31 @@ public class DepartclassController implements Serializable {
 
     @Inject
     private MajorController majorController;
+     @EJB
+    private MajorFacadeLocal majorFacade;
+    @Inject
+    private MajorController majCon;
+     @EJB
+    private ClassinfoFacadeLocal classinfoFacade;
+    @Inject
+    private ClassinfoController claCon;
+    private int majorId;
     private Major major;
     private Department department;
+
+    public void isShow() {
+        items = null;
+    }
+
+    public Departclass getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(Departclass current) {
+        this.current = current;
+    }
+    private Rolesinfo rolesinfo;
+
     private Departclass current;
     private DataModel items = null;
     @EJB
@@ -55,7 +81,12 @@ public class DepartclassController implements Serializable {
     private int departmentId;
     private int roleId;
     private int classId;
-
+     //专业的列表
+    private List<SelectItem> majorList;
+    //班级的列表
+    private List<SelectItem> classList;
+    
+ 
     public int getClassId() {
         return classId;
     }
@@ -64,9 +95,24 @@ public class DepartclassController implements Serializable {
         this.classId = classId;
     }
     
-
     public int getRoleId() {
         return roleId;
+    }
+
+    public List<SelectItem> getMajorList() {
+        return majorList;
+    }
+
+    public void setMajorList(List<SelectItem> majorList) {
+        this.majorList = majorList;
+    }
+
+    public List<SelectItem> getClassList() {
+        return classList;
+    }
+
+    public void setClassList(List<SelectItem> classList) {
+        this.classList = classList;
     }
 
     public void setRoleId(int roleId) {
@@ -84,6 +130,35 @@ public class DepartclassController implements Serializable {
     public DepartclassController() {
     }
 
+    
+    //监听上一页获取学院的编号
+    public void typeDepartmentListener(ValueChangeEvent event) {
+        departmentId = Integer.parseInt((String) event.getNewValue());
+        System.out.print(departmentId);
+        majorList = new ArrayList<>();
+        List<Major> currentMaj = majorFacade.findByDepartment(departmentId);
+        for (int i = 0; i < currentMaj.size(); i++) {
+            SelectItem selectItem = new SelectItem();
+            selectItem.setLabel(currentMaj.get(i).getName());
+            selectItem.setValue(currentMaj.get(i).getId());
+            majorList.add(selectItem);
+        }
+    }
+
+    public void typeMajorListener(ValueChangeEvent event) {
+        majorId = Integer.parseInt((String) event.getNewValue());
+        System.out.print("专业" + majorId);
+        classList = new ArrayList<>();
+        List<Classinfo> currentCla = classinfoFacade.findByMajor(majorId);
+        for (int i = 0; i < currentCla.size(); i++) {
+            SelectItem selectItem = new SelectItem();
+            selectItem.setLabel(currentCla.get(i).getClassname());
+            selectItem.setValue(currentCla.get(i).getId());
+            classList.add(selectItem);
+        }
+    }
+    
+    
     public Departclass getSelected() {
         if (current == null) {
             current = new Departclass();
@@ -97,19 +172,17 @@ public class DepartclassController implements Serializable {
     }
 
     public PaginationHelper getPagination() {
-        System.out.println(classId);
-        System.out.println(departmentId);
         if (pagination == null) {
             pagination = new PaginationHelper(10) {
 
                 @Override
                 public int getItemsCount() {
-                    return getFacade().count(classId);
+                    return getFacade().count(classId,departmentId,majorId);
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}, departmentId,classId));
+                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}, departmentId,classId,majorId));
                 }
             };
         }
@@ -124,7 +197,7 @@ public class DepartclassController implements Serializable {
     public void prepareList() {
         recreateModel();
     }
-    
+
     public String prepareView() {
         current = (Departclass) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
@@ -203,19 +276,6 @@ public class DepartclassController implements Serializable {
         return "manage_student";
     }
 
-    public String destroyAndView() {
-        performDestroy();
-        recreateModel();
-        updateCurrentItem();
-        if (selectedItemIndex >= 0) {
-            return "view_5";
-        } else {
-            // all items were removed - go back to list
-            recreateModel();
-            return "list_5";
-        }
-    }
-
     private void performDestroy() {
         try {
             getFacade().remove(current);
@@ -226,7 +286,7 @@ public class DepartclassController implements Serializable {
     }
 
     private void updateCurrentItem() {
-        int count = getFacade().count(classId);
+        int count = getFacade().count(classId,departmentId,majorId);
         if (selectedItemIndex >= count) {
             // selected index cannot be bigger than number of items:
             selectedItemIndex = count - 1;
@@ -236,7 +296,7 @@ public class DepartclassController implements Serializable {
             }
         }
         if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1},classId,departmentId).get(0);
+            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1},classId,departmentId,majorId).get(0);
         }
     }
 
@@ -255,16 +315,14 @@ public class DepartclassController implements Serializable {
         pagination = null;
     }
 
-    public String next() {
+    public void next() {
         getPagination().nextPage();
         recreateModel();
-        return "studentlist";
     }
 
-    public String previous() {
+    public void previous() {
         getPagination().previousPage();
         recreateModel();
-        return "studentlist";
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {

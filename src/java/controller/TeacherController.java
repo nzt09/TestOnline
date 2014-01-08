@@ -4,6 +4,8 @@ import entities.Teacher;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
 import entities.Classinfo;
+import entities.Departclass;
+import entities.Department;
 import entities.Major;
 import entities.Teachercourseclass;
 import sessionBean.TeacherFacadeLocal;
@@ -27,6 +29,7 @@ import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import sessionBean.ClassinfoFacadeLocal;
 import sessionBean.MajorFacadeLocal;
+import sessionBean.DepartclassFacadeLocal;
 import sessionBean.TeachercourseclassFacadeLocal;
 
 @Named("teacherController")
@@ -38,6 +41,12 @@ public class TeacherController implements Serializable {
 
     @Inject
     private TeachercourseclassController teachercourseCont;
+    
+    @EJB
+    private DepartclassFacadeLocal DepartclassFacade;
+    
+    @Inject
+    private DepartclassController departclassController;
 
     @EJB
     private MajorFacadeLocal majorFacade;
@@ -111,7 +120,6 @@ public class TeacherController implements Serializable {
     public void typeDepartmentListener(ValueChangeEvent event) {
         departmentId = Integer.parseInt((String) event.getNewValue());
         System.out.print(departmentId);
-
         majorList = new ArrayList<SelectItem>();
         List<Major> currentMaj = majorFacade.findByDepartment(departmentId);
         for (int i = 0; i < currentMaj.size(); i++) {
@@ -376,6 +384,7 @@ public class TeacherController implements Serializable {
         }
         return item;
     }
+
 
 //    public SelectItem[] getItemsAvailableSelecteduTeacher() {
 //        roleId = Publicfields.EDUTEACHER_ROLE;

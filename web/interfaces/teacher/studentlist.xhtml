@@ -8,11 +8,27 @@
         <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
                 <h:form>
-                    <h4>管理学生信息</h4>
+                    <h:panelGrid columns="4">
+                        <h:selectOneMenu  id="departmentId"  valueChangeListener="#{departclassController.typeDepartmentListener}">
+                            <f:selectItem itemValue="0" itemLabel="-请选择学院-"></f:selectItem>
+                            <f:selectItems value="#{departmentController.itemsAvailableSelectMany}"></f:selectItems>
+                            <f:ajax event="change" render="majorId classId"></f:ajax>
+                        </h:selectOneMenu> 
+                        <h:selectOneMenu id="majorId" valueChangeListener="#{departclassController.typeMajorListener}">
+                            <f:selectItem itemValue="0" itemLabel="-请选择专业-"></f:selectItem>
+                            <f:selectItems value="#{departclassController.majorList}"></f:selectItems>
+                            <f:ajax event="change" render="classId"></f:ajax>
+                        </h:selectOneMenu>
+                        <h:selectOneMenu id="classId"  value="#{departclassController.classId}" >
+                            <f:selectItem itemValue="0" itemLabel="-请选择班级-"></f:selectItem>
+                            <f:selectItems value="#{departclassController.classList}"></f:selectItems>
+                        </h:selectOneMenu>
+                        <h:commandLink  action="#{departclassController.isShow()}" value="查看"  style="text-decoration: none;"/>
+                    </h:panelGrid>
                     <h:panelGroup id="messagePanel" layout="block">
                         <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                     </h:panelGroup>
-                    <h:outputText escape="false" value="#{bundle.ListDepartclassEmpty}" rendered="#{departclassController.items.rowCount == 0}"/>
+                    <h:outputText escape="false" value="无信息，请选择" rendered="#{departclassController.items.rowCount == 0}"/>
                     <h:panelGroup rendered="#{departclassController.items.rowCount > 0}">
                         <h:outputText value="#{departclassController.pagination.pageFirstItem + 1}..#{departclassController.pagination.pageLastItem + 1}/#{departclassController.pagination.itemsCount}"/>&nbsp;
                         <h:commandLink action="#{departclassController.previous}" value="#{bundle.Previous} #{studentinfoController.pagination.pageSize}" rendered="#{departclassController.pagination.hasPreviousPage}"/>&nbsp;
@@ -32,17 +48,10 @@
                             </h:column>
                             <h:column>
                                 <f:facet name="header">
-                                    <h:outputText value="密码"/>
-                                </f:facet>
-                                <h:outputText value="#{item.password}"/>
-                            </h:column>
-                            <h:column>
-                                <f:facet name="header">
                                     <h:outputText value="班级"/>
                                 </f:facet>
                                 <h:outputText value="#{item.classname}"/>
                             </h:column>
-
                             <h:column>
                                 <f:facet name="header">
                                     <h:outputText value="&nbsp;"/>
@@ -52,9 +61,10 @@
                                 <h:commandLink action="#{departclassController.deleted()}" value="删除"/>
                             </h:column>
                         </h:dataTable>
+                        <h:commandLink action="#{studentinfoController.prepareCreate()}" value="添加"/>
                     </h:panelGroup>
                     <br />
-                    <h:commandLink action="#{studentinfoController.prepareCreate()}" value="添加"/>
+
                 </h:form>
             </ui:define>
 
