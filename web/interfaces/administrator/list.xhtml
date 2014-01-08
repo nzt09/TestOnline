@@ -9,7 +9,7 @@
         <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
                 <h:form>
-                    <rich:panel>
+                    <div id="divstyle">
                         <h:selectOneMenu id="departmentId" valueChangeListener="#{teacherController.typeDepartmentListener}" >
                             <f:selectItems value="#{departmentController.itemsAvailableSelectMany}"/>
                         </h:selectOneMenu>
@@ -64,7 +64,7 @@
                                 </rich:column>
                             </rich:dataTable>
                         </h:panelGroup>
-                    </rich:panel>
+                    </div>
                 </h:form>
             </ui:define>
         </ui:composition>

@@ -9,8 +9,8 @@
         <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
                 <h:form>
-                    <rich:panel>
-                        <h:panelGrid columns="2">
+                    <div id="divstyle">
+                        <h:panelGrid columns="2" style="column-width: 100px">
                             <h:outputLabel value="编号" for="id" />
                             <h:inputText id="id" value="#{teacherController.selected.personid}">
                             </h:inputText>
@@ -30,8 +30,8 @@
                                 <f:selectItems value="#{departmentController.itemsAvailableSelectSome}"/>
                             </rich:inplaceSelect>
                         </h:panelGrid>
-                        <h:commandLink action="#{teacherController.create}" value="添加" />
-                    </rich:panel>
+                        <h:commandButton action="#{teacherController.create}" value="添加" />
+                    </div>
                 </h:form>
             </ui:define>
 

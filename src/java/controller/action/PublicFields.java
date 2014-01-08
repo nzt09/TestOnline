@@ -41,7 +41,7 @@ public class PublicFields implements java.io.Serializable {
         
         ResourcelistMap = new LinkedHashMap<>();
        
-        for (int i = 0; i < 2; i++) {//准备第个角色的功能菜单;
+        for (int i = 0; i < 1; i++) {//准备第个角色的功能菜单;
             //准备父菜单
             
             String temSqlString = "select * from RESOURCEINFO where id in (" + roleList.get(i).getResouceids() + ") and parentid is null ";

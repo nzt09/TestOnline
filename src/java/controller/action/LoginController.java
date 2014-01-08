@@ -117,12 +117,12 @@ public class LoginController implements java.io.Serializable {
                 name = currentTea.getName();
                 teaCon.setCurrent(currentTea);
                 if (currentTea.getRolesinfo().getId() == Publicfields.ADMINISTRATOR_ROLE) {
-                    
+
                     return "/interfaces/administrator/list?faces-redirect=true";
                 } //教务老师登陆
                 else if (currentTea.getRolesinfo().getId() == Publicfields.TEACHER_ROLE) {
-                    return "/stylemodel";
-//                    return "/interfaces/teacher/teacherMain";
+
+                    return "/interfaces/teacher/teacherMain";
                 } //任课老师登陆
                 else if (currentTea.getRolesinfo().getId() == Publicfields.EDUTEACHER_ROLE) {
                     teaCon.setCurrent(currentTea);

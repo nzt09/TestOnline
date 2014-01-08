@@ -106,12 +106,12 @@ public class DepartclassController implements Serializable {
 
                 @Override
                 public int getItemsCount() {
-                    return getFacade().findConstrainRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}, departmentId).size();
+                    return getFacade().countHH();
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findConstrainRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}, departmentId));
+                    return new ListDataModel(getFacade().findConstrainRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()},departmentId));
                 }
             };
         }

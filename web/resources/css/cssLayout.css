@@ -49,16 +49,19 @@
 }
 
 .left_content {
-    background-color: #dddddd;
-    padding: 5px;
+    background-color: #F0F6FA;
+    height: 500px;
 }
 
 .right_content {
     background-color:white;
-    height: 500px;;
+    height: 500px;
     margin: 0px 0px 0px 0px;
 }
-
+#top{
+    height: 100px;
+    background:  #F0F6FA;
+}
 #top a:link, #top a:visited {
     color: white;
     font-weight : bold;
@@ -87,3 +90,11 @@
 .divcss1{ padding-top: 20px}
 .divcss4{height: 20px; width: 200px; margin-left: 170px; margin-top: 0px;}
 .divcss5{height: 20px; width: 200px; margin-left: 370px; margin-top: -250px;}
+
+
+
+
+#divstyle{margin-left: 400px;
+          padding-top: 50px;
+           height: 200px;
+           background: #F0F6FA;}
