@@ -46,11 +46,9 @@ public class ChapterinfoController implements Serializable {
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private int courseId;
-   
+
     //新添加的章节的名称
     private String cname;
-    //该课程对应的总章节数
-    private int chapterTotalNum;
     //修改之后新的章节的名字
     private List<SelectItem> chapterList;
     //选取到的章节的Id
@@ -58,7 +56,12 @@ public class ChapterinfoController implements Serializable {
     //新添加的章节的章节号
     private int chapterNum;
 
-    
+    private boolean isDelete = true;
+    private boolean isHasnext = false;
+
+    //判断该章节号是否存在
+    private boolean isExit = true;
+
     public int getChapterNum() {
         return chapterNum;
     }
@@ -69,26 +72,31 @@ public class ChapterinfoController implements Serializable {
 
     public String selectChapterNum() {
         if (chapterNum == 0) {
-            chapterNum=0;
+            chapterNum = 0;
+            isExit = true;
             return "请输入章节";
         } else {
             if (chapterNum < 0 || chapterNum > 50) {
-                chapterNum=0;
+                chapterNum = 0;
+                isExit = true;
                 return "输入的章节号必须在0~50以内的整数";
             } else {
                 if (courseId == 0) {
-                    chapterNum=0;
+                    chapterNum = 0;
+                    isExit = true;
                     return "请先选择课程";
                 } else {
                     List<Chapterinfo> chapters = ejbFacade.findByCourseId(courseId);
                     for (int i = 0; i < chapters.size(); i++) {
                         if (chapters.get(i).getChapternum() == chapterNum) {
-                            chapterNum=0;
+                            chapterNum = 0;
+                            isExit = true;
                             return "已存在该章节号，请重新输入";
                         }
                     }
                 }
-                chapterNum=0;
+                isExit = false;
+                chapterNum = 0;
                 return "可以添加";
             }
         }
@@ -110,10 +118,34 @@ public class ChapterinfoController implements Serializable {
         this.cname = cname;
     }
 
+    //关于是否能删除，存在三种情况
+    public String deleteSituation() {
+        if (isDelete == true && isHasnext == true) {
+            return "该章节中存在知识点,需先删除知识点";
+        } else if (isDelete == false && isHasnext == false) {
+            return "可以删除";
+        } else {
+            return "请先选择章节";
+        }
+
+    }
+
     public void typeChapterListenner(ValueChangeEvent event) {
         chapterId = Integer.parseInt((String) event.getNewValue());
         this.current = ejbFacade.find(chapterId);
-        System.out.println(chapterId);
+        if (chapterId == 0) {
+            isHasnext = false;
+            isDelete = true;
+        } else {
+            System.out.println(knowledgeFacade.findByChapterId(chapterId).toString());
+            if (knowledgeFacade.findByChapterId(chapterId).size() > 0) {
+                isHasnext = true;
+                isDelete = true;
+            } else {
+                isHasnext = false;
+                isDelete = false;
+            }
+        }
     }
 
     public void selectAllChapter() {
@@ -132,11 +164,9 @@ public class ChapterinfoController implements Serializable {
         if (courseId != 0) {
             //获得对应的章节的集合
             this.selectAllChapter();
+        } else {
+            chapterList = null;
         }
-        else{
-            chapterList=null;
-        }
-
     }
 
     public ChapterinfoController() {
@@ -155,7 +185,6 @@ public class ChapterinfoController implements Serializable {
             System.out.println("dddddddddddddd");
         }
         this.current = sele;
-
         return null;
     }
 
@@ -221,8 +250,8 @@ public class ChapterinfoController implements Serializable {
             getFacade().create(cinfo);
             //一定要重新赋值一下吗？
             this.selectAllChapter();
-            chapterNum=0;
-            cname=null;
+            chapterNum = 0;
+            cname = null;
             this.current = null;
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ChapterinfoCreated"));
 
@@ -245,7 +274,6 @@ public class ChapterinfoController implements Serializable {
 
     //删除章节信息
     public void delete() {
-        System.out.println("ddd");
         performDestroy();
         this.cname = null;
         this.current = null;
@@ -353,6 +381,34 @@ public class ChapterinfoController implements Serializable {
 
     public Chapterinfo getChapterinfo(java.lang.Integer id) {
         return ejbFacade.find(id);
+    }
+
+    /**
+     * @return the isDelete
+     */
+    public boolean isIsDelete() {
+        return isDelete;
+    }
+
+    /**
+     * @param isDelete the isDelete to set
+     */
+    public void setIsDelete(boolean isDelete) {
+        this.isDelete = isDelete;
+    }
+
+    /**
+     * @return the isExit
+     */
+    public boolean isIsExit() {
+        return isExit;
+    }
+
+    /**
+     * @param isExit the isExit to set
+     */
+    public void setIsExit(boolean isExit) {
+        this.isExit = isExit;
     }
 
     @FacesConverter(forClass = Chapterinfo.class)

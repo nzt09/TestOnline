@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+        <ui:composition template="./../../stylemodel.xhtml">     
+            <ui:define name="content">
+                <h:form onclick="#{teacherController.showTeachercourseclass()}">
+                    <rich:panel style="height: 70%;margin-left: 200px">
+                        所教课程：
+                        <h:selectOneMenu  id="course" valueChangeListener="#{chapterinfoController.typeCourseListener}" >
+                            <f:selectItem itemLabel="----请选择课程----" itemValue="0"></f:selectItem>
+                            <f:selectItems value="#{teacherController.teacherCourseList}"></f:selectItems>
+                            <f:ajax event="change" render="chapter"></f:ajax>
+                        </h:selectOneMenu><br/>
+                        章：
+                        <h:selectOneMenu id="chapter" value="#{knowledgeController.chapterId}" valueChangeListener="#{chapterinfoController.typeChapterListenner}">
+                            <f:selectItem itemLabel="----请选择对应的章节----" itemValue="0" ></f:selectItem>
+                            <f:selectItems value="#{chapterinfoController.chapterList}" />
+                            <f:ajax event="change" render=" myName newName deleteBtn hint"></f:ajax>
+                        </h:selectOneMenu>
+                    </rich:panel>
+                    <rich:panel style="height: 70%;margin-left: 200px">
+                        <h:panelGrid columns="2" style="column-width: 50px;">
+                            <h:outputText value="当前选中节点信息:" ></h:outputText>
+                            <h:outputText id="myName" value="#{chapterinfoController.selected.name}" style="font-weight: bolder" ></h:outputText>
+                        </h:panelGrid>
+                            <h:panelGrid columns="3" style="column-width: 30px;">
+                                <h:outputLabel value="请选择章节号 (章节号在【1-50】以内)"></h:outputLabel>
+                                <h:inputText value="#{chapterinfoController.chapterNum}" required="true" requiredMessage="输入章节号" >
+                                    <f:ajax event="mouseout" render="message createBtn"></f:ajax>
+                                </h:inputText>
+                                <h:outputLabel id="message" value="#{chapterinfoController.selectChapterNum()}"></h:outputLabel>
+                            </h:panelGrid>
+                        <h:panelGrid columns="2" style="column-width: 50px;">
+                            <rich:inplaceInput id="cname"  defaultLabel="点击输入新添加章节名字"  value="#{chapterinfoController.cname}"/>
+                            <h:commandButton  value="添加" action="#{chapterinfoController.createNewChapter()}" disabled="#{chapterinfoController.isExit}" id="createBtn">
+                            </h:commandButton>
+                            <rich:inplaceInput id="newName" value="#{chapterinfoController.selected.name}" defaultLabel="点击输入章节的新名字"/>
+                            <h:commandButton action="#{chapterinfoController.updateChapter()}" value="修改" >
+                            </h:commandButton>
+                        </h:panelGrid>
+                        <h:commandButton  action="#{chapterinfoController.delete()}" value="删除" disabled="#{chapterinfoController.isDelete}"  id="deleteBtn">
+                        </h:commandButton>
+                        <h:outputLabel value="#{chapterinfoController.deleteSituation()}" id="hint" style="background: #99D1F7"></h:outputLabel>
+                    </rich:panel>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

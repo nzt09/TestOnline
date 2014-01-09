@@ -195,7 +195,7 @@ public class LoginController implements java.io.Serializable {
                 } //任课老师登陆
                 else if (currentTea.getRolesinfo().getId() == Publicfields.EDUTEACHER_ROLE) {
                     teaCon.setCurrent(currentTea);
-                    return "/interfaces/eduteacher/eduMain.xhtml";
+                    return "/interfaces/eduteacher/welcome1?faces-redirect=true";
                 }
 
             } else if (null == currentTea.getName() && null != currentStu.getName()) {

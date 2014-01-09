@@ -42,10 +42,7 @@ public class KnowledgeController implements Serializable {
     //新的子知识点名字
     private String newName;
     //显示或隐藏标志位
-    private boolean chapterIdSelected=false;
-    
-    
-    
+    private boolean chapterIdSelected = false;
 
     public String getNewPname() {
         return newPname;
@@ -69,7 +66,7 @@ public class KnowledgeController implements Serializable {
 
     public void setChapterId(String chapterId) {
         this.chapterId = chapterId;
-        
+
     }
 
     public KnowledgeController() {
@@ -83,10 +80,9 @@ public class KnowledgeController implements Serializable {
         }
         return current;
     }
-    
 
     public void setSelected(Knowledge kl) {
-        this.chapterIdSelected=true;
+        this.chapterIdSelected = true;
         this.current = kl;
     }
 
@@ -136,7 +132,7 @@ public class KnowledgeController implements Serializable {
         myknow.setName(newName);
         myknow.setChapterinfo(current.getChapterinfo());
         getFacade().create(myknow);
-        current=myknow;
+        current = myknow;
     }
 
     //添加父知识点
@@ -175,7 +171,7 @@ public class KnowledgeController implements Serializable {
             return null;
         }
     }
-    
+
     public void updateKnowledge() {
         try {
             getFacade().edit(current);
@@ -184,7 +180,6 @@ public class KnowledgeController implements Serializable {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
     }
-
 
     //删除当前知识点
     public String delete() {

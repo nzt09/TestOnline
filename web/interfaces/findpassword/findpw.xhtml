@@ -12,7 +12,7 @@
         <h:form>
             请输入你的编号:
             <h:inputText value="#{loginController.userId}">
-                <f:ajax event="mouseout" render="message emailpanel"></f:ajax>
+                <f:ajax event="blur" render="message emailpanel"></f:ajax>
             </h:inputText>
             <h:outputLabel value="#{loginController.isAppear()}" id="message"></h:outputLabel>
             <rich:panel id="emailpanel">

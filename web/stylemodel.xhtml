@@ -12,7 +12,7 @@
         <h:outputStylesheet name="./css/left.css"/>
         <h:outputScript name="./javascript/jquery.js"  target="head"></h:outputScript>
         <h:outputScript name="./javascript/left.js" target="head"></h:outputScript>
-        
+
         <title>Facelets Template</title>
     </h:head>
     <h:body>
@@ -47,7 +47,9 @@
                 </ui:insert>
             </div>
             <div id="content" class="left_content">
-                <ui:insert name="content">Content</ui:insert>
+                <div id="content" class="left_content">
+                    <ui:insert name="content">Content</ui:insert>
+                </div>
             </div>
         </div>
     </h:body>

@@ -4,32 +4,87 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:rich="http://richfaces.org/rich"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:a4j="http://richfaces.org/a4j">
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
     <body>
-        <ui:composition template="./model.xhtml">
+
+        <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
-                <h:form>
+                <h:form onclick="#{teacherController.showTeachercourseclass()}">
+                    <rich:panel style="height: 70%;margin-left: 200px">
+                        所教课程：
+                        <h:selectOneMenu  id="course" valueChangeListener="#{chapterinfoController.typeCourseListener}" >
+                            <f:selectItem itemLabel="----请选择课程----" itemValue="0"></f:selectItem>
+                            <f:selectItems value="#{teacherController.teacherCourseList}"></f:selectItems>
+                            <f:ajax event="change" render="chapter"></f:ajax>
+                        </h:selectOneMenu><br/>
+                        章：
+                        <h:selectOneMenu id="chapter" value="#{knowledgeController.chapterId}" valueChangeListener="#{chapterinfoController.typeChapterListenner}">
+                            <f:selectItem itemLabel="----请选择对应的章节----" itemValue="0" ></f:selectItem>
+                            <f:selectItems value="#{chapterinfoController.chapterList}" />
+                            <f:ajax event="change" render="bigtree"></f:ajax>
+                        </h:selectOneMenu>
+                    </rich:panel>
                     <div id="tree">
-                        <rich:panel header="#{chapterinfoController.courseName}" style="height: 100%">
-                            <rich:tree var="item">
-                                <rich:treeModelRecursiveAdaptor roots="#{chapterinfoController.chapterinfoRoot}" nodes="#{item.CCParents}">
+                        <rich:panel header="知识点" style="height: 70%;margin-left: 200px" id="treePanel">
+                            <rich:tree var="item" id="bigtree">
+                                <rich:treeModelRecursiveAdaptor roots="#{knowledgeController.knowledgeRoot}" nodes="#{item.KParents}">
                                     <rich:treeNode>
-                                        <h:outputText value="#{item.cc.name}"/>
+                                        <h:commandLink value="#{item.kl.name}" action="#{knowledgeController.setSelected(item.kl)}">
+                                        </h:commandLink>
                                     </rich:treeNode>
-                                    <rich:treeModelAdaptor  nodes="#{item.CCChildren}">
+                                    <rich:treeModelAdaptor  nodes="#{item.KChildren}">
                                         <rich:treeNode>
-                                            <h:commandLink value="#{item.cc.name}" action="#{knowledgeController.setSelected(item.cc)}">
-                                                <a4j:ajax render="knowledgename point"/>
+                                            <h:commandLink value="#{item.kl.name}" action="#{knowledgeController.setSelected(item.kl)}"> 
                                             </h:commandLink>
                                         </rich:treeNode>      
                                     </rich:treeModelAdaptor>
                                 </rich:treeModelRecursiveAdaptor>
                             </rich:tree>
+                            <div  class="divcss1">
+                                <font  class="font1">题型维护</font>
+                            </div>
+                            <div  class="divcss3">
+                                <div class="divcss4" >
+                                    <rich:inplaceInput value="#{questiontypeinfoController.typeName}" defaultLabel="点击输入新题型的名称"/>
+                                    <h:commandButton  value="添加" action="#{questiontypeinfoController.createNewType()}" style="width: 60px"/>
+                                </div>
+                                <rich:dataTable value="#{questiontypeinfoController.items}" var="item"  rowClasses="jsfcrud_odd_row,jsfcrud_even_row"  style="border:solid 1px">
+                                    <rich:column>
+                                        <h:commandLink value="#{item.name}" action="#{questionsinfoController.selectQuestion(item.id)}">
+                                        </h:commandLink>
+                                    </rich:column>
+                                    <rich:column>
+                                        <h:commandButton action="#{questiontypeinfoController.delete()}" value="删除"/>
+                                    </rich:column>
+                                </rich:dataTable>
+                            </div>
+                            <div class="divcss5" style="width: 400px;height: 300px;background-color: red">
+                                <rich:dataTable  value="#{questionsinfoController.items}" var="item"  rowClasses="jsfcrud_odd_row,jsfcrud_even_row"  style="border:solid 1px">
+                                    <rich:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="编号"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{item.id}"/> 
+                                    </rich:column>
+                                    <rich:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="内容"/>
+                                        </f:facet>
+                                        <h:outputLabel value="#{item.content}"/> 
+                                    </rich:column>
+                                    <rich:column>
+                                        <h:commandButton action="#{questionsinfoController.destroy()}" value="删除"/>
+                                    </rich:column>
+                                    <rich:column>
+                                        <h:commandButton action="#{questionsinfoController.edit}" value="修改"/>
+                                    </rich:column>
+                                </rich:dataTable>
+                            </div>
                         </rich:panel>
                     </div>
                 </h:form>
             </ui:define>
-
         </ui:composition>
 
     </body>
