@@ -143,7 +143,7 @@ public class LoginController implements java.io.Serializable {
         Studentinfo stu=studentFacade.findByStuno(userId);
         stu.setPassword(newPassword);
         stuCon.updateStu(stu);
-        return "已发送";
+        return "sendsuccess";
     }
     //随机生成一个新的密码
     public String getNewpassword(){
