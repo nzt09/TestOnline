@@ -8,7 +8,9 @@
             <ui:define name="content">
                 <h:form>
                     <h:outputText value="添加考场信息"></h:outputText>
-                    <h:panelGrid columns="2">     
+                    <h:panelGrid columns="2">    
+                        <h:outputLabel value="考场编号" for="id" />
+                        <h:inputText id="id" value="#{classroomController.selected.id}" />
                         <h:outputLabel value="考场名称：" />
                         <h:inputText id="name" value="#{classroomController.selected.name}"  />
                     </h:panelGrid>

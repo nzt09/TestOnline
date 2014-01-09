@@ -172,6 +172,9 @@ public class DepartclassController implements Serializable {
     }
 
     public PaginationHelper getPagination() {
+      
+        System.out.println(classId);
+        System.out.println(departmentId);
         if (pagination == null) {
             pagination = new PaginationHelper(10) {
 

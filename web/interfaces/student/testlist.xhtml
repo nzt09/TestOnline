@@ -6,10 +6,13 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
-
-        <ui:composition template="./../../student.xhtml">
+        <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
                 <h:form styleClass="jsfcrud_list_form">
+                    <h:selectOneMenu id="courseId" value="#{testassigninfomController.courseId}">
+                        <f:selectItems value="#{courseinfoController.itemsAvailableSelectA}"></f:selectItems>
+                    </h:selectOneMenu> 
+                    <h:commandLink action="testlist.xhtml" value="进入考试"></h:commandLink><br/>
                     <h:panelGroup id="messagePanel" layout="block">
                         <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                     </h:panelGroup>
@@ -75,6 +78,7 @@
                     <h:outputText value="不在考试时间" rendered="#{!testassigninfomController.isTesting()}"/>
                 </h:form>
             </ui:define>
+
 
         </ui:composition>
 

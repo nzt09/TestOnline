@@ -8,7 +8,7 @@
 
     <body>
 
-        <ui:composition template="./../../template.xhtml">
+        <ui:composition template="./../../stylemodel.xhtml">
 
             <ui:define name="title">
                 学生
@@ -16,11 +16,6 @@
 
             <ui:define name="body">
                 <h:form>
-                    学号：<h:outputText value="#{loginController.userId}"></h:outputText><br/>
-                    姓名：<h:outputText value="#{loginController.name}"></h:outputText><br/>
-                    班级：<h:outputText value="#{loginController.className}"></h:outputText><br/>
-                    班级号码：<h:outputText value="#{loginController.classId}"></h:outputText><br/>
-                  
                     <h:commandLink action="#{loginController.loginout()}" style="text-decoration: none;">退出</h:commandLink><br/>
                     <h:commandLink target="checkContent" action="list.xhtml" value="考试" style="text-decoration: none;"/>
                     <h:outputText value=""></h:outputText><br></br>

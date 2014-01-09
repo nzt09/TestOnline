@@ -219,31 +219,18 @@ public class TeachercourseclassController implements Serializable {
     public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
-//    
-//     public SelectItem[] getItemsAvailableSelectTerm() {
-//      SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
-////       Set<String> term=new HashSet<>();
-////       Iterator it=term.iterator();
-////       String[] tt=new String[10];
-////       int year=Calendar.getInstance().get(Calendar.YEAR);
-////         System.out.println(year);
-////       for(int i=0;i<item.length;i++){
-////           term.add(((Teachercourseclass) item[i].getValue()).getTerm());
-////            System.out.println(term.toString());
-////       }
-////           if(!term.contains(year)){
-////           term.add(year + "-" + year+1 + "-" + 1);
-////           term.add((String)(year + "-" + year+1 + "-" + 2));
-////           }else
-////           System.out.println(term.toString());
-////        for (int i = 0; i <item.length; i++) {
-////            item[i].setLabel(((Teachercourseclass) item[i].getValue()).getTerm());
-////            item[i].setValue(((Teachercourseclass) item[i].getValue()).getTerm());
-////        }
-//     return Publicfields.getTerms();
-//     
-//    }
-//     
+    
+     public SelectItem[] getItemsAvailableSelectTerm() {
+      SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        for (int i = 0; i < item.length; i++) {
+            item[i].setLabel(((Teachercourseclass) item[i].getValue()).getTerm());
+            item[i].setValue(((Teachercourseclass) item[i].getValue()).getTerm());
+        
+        }
+     return item;
+     
+    }
+     
     public Teachercourseclass getTeachercourseclass(java.lang.Integer id) {
         return ejbFacade.find(id);
     }

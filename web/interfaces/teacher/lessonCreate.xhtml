@@ -25,7 +25,7 @@
                         </h:selectOneMenu>
                         <h:outputLabel value="学期" for="term" />
                         <h:selectOneMenu id="term" value="#{teachercourseclassController.selected.term}"  title="#{bundle.CreateTeachercourseclassTitle_classinfo}">
-                            <f:selectItems value="#{publicFields.terms}"/>
+                            <f:selectItems value="#{publicTerm.terms}"/>
                         </h:selectOneMenu>
                     </h:panelGrid>
                     <br />
