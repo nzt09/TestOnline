@@ -1,5 +1,6 @@
 package controller;
 
+import controller.action.LoginController;
 import entities.Teacher;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
@@ -56,6 +57,8 @@ public class TeacherController implements Serializable {
     private ClassinfoFacadeLocal classinfoFacade;
     @Inject
     private ClassinfoController claCon;
+    @Inject
+    private LoginController loginController;
     //专业的列表
     private List<SelectItem> majorList;
     //班级的列表
@@ -276,15 +279,19 @@ public class TeacherController implements Serializable {
         }
     }
 
-    public String updateAdminPassword() {
+    public void updateAdminPassword() {
+        if(loginController.isPwFlag()==true){
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("AdminPasswordChange"));
-            return "adminMain";
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("PasswordChange"));
+           
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
+           
         }
+    }else
+           JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+      
     }
 
     public String admindestroy() {
@@ -384,7 +391,6 @@ public class TeacherController implements Serializable {
         }
         return item;
     }
-
 
 //    public SelectItem[] getItemsAvailableSelecteduTeacher() {
 //        roleId = Publicfields.EDUTEACHER_ROLE;

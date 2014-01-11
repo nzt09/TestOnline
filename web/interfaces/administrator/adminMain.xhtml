@@ -11,9 +11,8 @@
                 <h:form styleClass="jsfcrud_list_form">
                     <div id="left2">
                         <h:commandLink  action="#{teacherController.isShow()}" value="查看教师"  style="text-decoration: none;"/><br/>
-                        <h:commandLink  action="#{teacherController.isCreate()}" value="添加教务教师" style="text-decoration: none;"/><br/>
                     </div>
-                    <rich:panel rendered="#{teacherController.showFlag}">
+                    <rich:panel>
                         <h:selectOneMenu id="departmentId" valueChangeListener="#{teacherController.typeDepartmentListener}" >
                             <f:selectItems value="#{departmentController.itemsAvailableSelectMany}"/>
                         </h:selectOneMenu>
@@ -72,7 +71,7 @@
                         </h:panelGroup>
                         <br />
                     </rich:panel>
-                        <rich:panel rendered="#{teacherController.createFlag}">
+                        <rich:panel>
                             <h:panelGrid columns="2">
                                 <h:outputLabel value="编号" for="id" />
                                 <h:inputText id="id" value="#{teacherController.selected.personid}">

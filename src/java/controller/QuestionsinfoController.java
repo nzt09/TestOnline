@@ -119,7 +119,7 @@ public class QuestionsinfoController implements Serializable {
         typeId = Integer.parseInt((String) event.getNewValue());
         System.out.println("类型" + typeId);
     }
-
+     
     public void selectQuestion(int id) {
         typeId = id;
         knowid = kc.getSelected().getId();
@@ -137,6 +137,7 @@ public class QuestionsinfoController implements Serializable {
 
         System.out.println("对不对" + (String) event.getNewValue());
     }
+    
 
     public Questionsinfo getSelected() {
         if (current == null) {
@@ -221,7 +222,7 @@ public class QuestionsinfoController implements Serializable {
             return null;
         }
     }
-
+    
     public String create() {
         try {
             getFacade().create(current);

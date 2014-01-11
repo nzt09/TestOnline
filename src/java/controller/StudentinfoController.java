@@ -1,5 +1,6 @@
 package controller;
 
+import controller.action.LoginController;
 import entities.Studentinfo;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
@@ -49,7 +50,8 @@ public class StudentinfoController implements Serializable {
     private TeacherFacadeLocal teacherFacade;
     @Inject
     private TeacherController teacherController;
-
+    @Inject
+    private LoginController loginController;
     private Studentinfo current;
     private DataModel items = null;
     @EJB
@@ -60,8 +62,24 @@ public class StudentinfoController implements Serializable {
 
     private List<SelectItem> courseList;// 用于存放该学生的所有课程名
     private int departmentId;
-    private Teacher teacher;
+    private boolean flag = false;
+    private boolean flag1 = false;
 
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
+
+    public boolean isFlag1() {
+        return flag1;
+    }
+
+    public void setFlag1(boolean flag1) {
+        this.flag1 = flag1;
+    }
     private int roleId;
 
     public List<SelectItem> getCourseList() {
@@ -168,10 +186,30 @@ public class StudentinfoController implements Serializable {
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "studentEdit";
     }
-//为学生更新密码
 
     public void updateStu(Studentinfo stu) {
-         getFacade().edit(stu);
+        getFacade().edit(stu);
+    }
+
+//为学生更新密码
+    public void updateStudentPassword() {
+        if (loginController.isPwFlag() == true) {
+            try {
+                getFacade().edit(current);
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("PasswordChange"));
+                System.out.println("dsfds");
+                flag = true;
+                flag1 = false;
+
+            } catch (Exception e) {
+                JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+
+            }
+        } else {
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            System.out.println("222222");
+            flag1 = true;
+        }
     }
 
     public String update() {

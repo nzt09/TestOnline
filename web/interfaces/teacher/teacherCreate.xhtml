@@ -12,17 +12,17 @@
                     <h:outputText value="添加任课老师信息"></h:outputText>
                     <h:panelGrid columns="2">
                         <h:outputLabel value="教师编号" for="personid" />
-                        <h:inputText id="personid" value="#{teacherController.selected.personid}" title="#{bundle.CreateTeacherTitle_personid}" required="true" requiredMessage="#{bundle.CreateTeacherRequiredMessage_personid}"/>
+                        <h:inputText id="personid" value="#{teacherController.selected.personid}"  required="true" requiredMessage="#{bundle.CreateTeacherRequiredMessage_personid}"/>
                         <h:outputLabel value="姓名" for="name" />
-                        <h:inputText id="name" value="#{teacherController.selected.name}" title="#{bundle.CreateTeacherTitle_name}" />
+                        <h:inputText id="name" value="#{teacherController.selected.name}"  />
                         <h:outputLabel value="密码" for="password" />
-                        <h:inputText id="password" value="#{teacherController.selected.password}" title="#{bundle.CreateTeacherTitle_password}" />
+                        <h:inputText id="password" value="#{teacherController.selected.password}"  />
                         <h:outputLabel value="身份" for="rolesinfo" />
-                        <h:selectOneMenu id="rolesinfo" value="#{teacherController.selected.rolesinfo}" title="#{bundle.CreateTeacherTitle_rolesinfo}" >
+                        <h:selectOneMenu id="rolesinfo" value="#{teacherController.selected.rolesinfo}"  >
                             <f:selectItems value="#{rolesinfoController.itemsAvailableSelectEduM}"/>
                         </h:selectOneMenu>
                         <h:outputLabel value="学院" for="department" />
-                        <h:selectOneMenu id="department" value="#{teacherController.selected.department}" title="#{bundle.CreateTeacherTitle_department}" >
+                        <h:selectOneMenu id="department" value="#{teacherController.selected.department}" >
                             <f:selectItems value="#{departmentController.itemsAvailableSelectManyD}"/>
                         </h:selectOneMenu>
                     </h:panelGrid>

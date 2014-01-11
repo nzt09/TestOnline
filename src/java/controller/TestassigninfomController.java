@@ -59,6 +59,33 @@ public class TestassigninfomController implements Serializable {
     private int day;
     private int year;
     private boolean isReady=false;
+
+    public int getMinute() {
+        return minute;
+    }
+
+    public void setMinute(int minute) {
+        this.minute = minute;
+    }
+
+    public int getSecond() {
+        return second;
+    }
+
+    public void setSecond(int second) {
+        this.second = second;
+    }
+
+    public int getHour() {
+        return hour;
+    }
+
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
+    private int minute = 0;
+    private int second = 0;
+    private int hour = 0;
     
 //判断当前时间是否在考试时间内
     public boolean isTesting() {
@@ -86,49 +113,46 @@ public class TestassigninfomController implements Serializable {
         } 
         return isReady;
     }
-//    public String leftTime(){
-//    int minute = 0;
-//        int second = 0;
-//        int hour = 0;
-//        String lefttime = null;
+    public void leftTime(){
+        String lefttime = null;
 //        for (Testassigninfom testa : testAssignList) {
-//            minute = testa.getTestinterval();
-//            if(minute>60){
-//                minute = minute - 60;
-//                hour = hour + 1;
-//            }
-//        }
-//            while (hour * minute * second >= 0) {
-////            System.out.println(hour + ":" + minute + ":" + second);
-//             lefttime = "hour + \":\" + minute + \":\" + second)";
-//            try {
-//                sleep(1000);
-//            } catch (InterruptedException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
-//            if (second != 0) {
-//                second--;
-//
-//            } else {
-//                second = 59;
-//                if (minute > 0) {
-//                    minute--;
-//
-//                } else {
-//                    minute = 59;
-//                    if (hour > 0) {
-//                        hour--;
-//
-//                    } else {
-//
-//                        
-//                    }
-//                }
-//            }
-//        }
-//    return lefttime;
-//    }
+            minute = 120;
+            if(minute>60){
+                minute = minute - 60;
+                hour = hour + 1;
+            }
+        
+            while (hour * minute * second >= 0) {
+//            System.out.println(hour + ":" + minute + ":" + second);
+             lefttime = "hour + \":\" + minute + \":\" + second)";
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            if (second != 0) {
+                second--;
+
+            } else {
+                second = 59;
+                if (minute > 0) {
+                    minute--;
+
+                } else {
+                    minute = 59;
+                    if (hour > 0) {
+                        hour--;
+
+                    } else {
+
+                        
+                    }
+                }
+            }
+        }
+  
+    }
 //拿到班级ID
     public void getBanjiId() {
         classId = stuCon.getCurrent().getClassinfo().getId();

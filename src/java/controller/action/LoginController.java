@@ -56,11 +56,30 @@ public class LoginController implements java.io.Serializable {
     private String userId;
     // 获得login.xhtml中inputSecret的值，用户输入的密码
     private String password;
+    private String oldpw;
     private String className;
+
+    public String getOldpw() {
+        return oldpw;
+    }
+
+    public void setOldpw(String oldpw) {
+        this.oldpw = oldpw;
+    }
     private int classId;
+    //判断密码是否一致
+    private boolean pwFlag = false;
     //判断验证码是否对
     private boolean validateFlag = false;
-    
+
+    public boolean isPwFlag() {
+        return pwFlag;
+    }
+
+    public void setPwFlag(boolean pwFlag) {
+        this.pwFlag = pwFlag;
+    }
+
     //新的密码
     private String newPassword;
 
@@ -103,6 +122,33 @@ public class LoginController implements java.io.Serializable {
     }
     //  用户名并且往后传递
     private String name;
+   //判断密码是否一致
+
+    public String pwApper() {
+        System.out.println(oldpw);
+        System.out.println(password);
+        if (oldpw == null || oldpw.isEmpty()) {
+            pwFlag = false;
+            return "请输入原先密码";
+        } else if (oldpw.equals(password)) {
+            pwFlag = true;
+            return "密码正确";
+        } else {
+            pwFlag = false;
+        }
+        return "密码不匹配";
+
+    }
+
+    //随机生成一个新的密码
+    public String getNewpassword() {
+        Random random = new Random();
+        String newpassword = String.valueOf(random.nextInt(1000000));
+        if (Integer.parseInt(newpassword) < 100000) {
+            this.getNewpassword();
+        }
+        return newpassword;
+    }
 
     //用ajax验证用户是否存在
     public String isAppear() {
@@ -124,7 +170,7 @@ public class LoginController implements java.io.Serializable {
     //验证邮箱
     public String validateEmail() {
         if (userId == null || userId.isEmpty()) {
-               return "";
+            return "";
         } else {
             Teacher currentTea = teaFacade.find(userId);
             Studentinfo currentStu = studentFacade.findByStuno(userId);
@@ -135,24 +181,15 @@ public class LoginController implements java.io.Serializable {
             }
         }
     }
-    
+
     //向邮箱发送密码
-    public String sendPasswordMail(){
-        newPassword=this.getNewpassword();
-        Mail.sendMail(email,newPassword);
-        Studentinfo stu=studentFacade.findByStuno(userId);
+    public String sendPasswordMail() {
+        newPassword = this.getNewpassword();
+        Mail.sendMail(email, newPassword);
+        Studentinfo stu = studentFacade.findByStuno(userId);
         stu.setPassword(newPassword);
         stuCon.updateStu(stu);
         return "sendsuccess";
-    }
-    //随机生成一个新的密码
-    public String getNewpassword(){
-        Random random = new Random();
-        String newpassword = String.valueOf(random.nextInt(1000000));
-        if(Integer.parseInt(newpassword)<100000){
-            this.getNewpassword();
-        }
-        return newpassword;
     }
 
     //用ajax验证验证码
@@ -188,15 +225,16 @@ public class LoginController implements java.io.Serializable {
                 teaCon.setCurrent(currentTea);
                 if (currentTea.getRolesinfo().getId() == Publicfields.ADMINISTRATOR_ROLE) {
 
-                    return "/interfaces/administrator/list?faces-redirect=true";
+                    
                 } //教务老师登陆
                 else if (currentTea.getRolesinfo().getId() == Publicfields.TEACHER_ROLE) {
-                    return "/interfaces/teacher/teacherlist?faces-redirect=true";
+                   
                 } //任课老师登陆
                 else if (currentTea.getRolesinfo().getId() == Publicfields.EDUTEACHER_ROLE) {
                     teaCon.setCurrent(currentTea);
-                    return "/interfaces/eduteacher/welcome1?faces-redirect=true";
+                    
                 }
+                return "/interfaces/public/welcome?faces-redirect=true";
 
             } else if (null == currentTea.getName() && null != currentStu.getName()) {
                 name = currentStu.getName();

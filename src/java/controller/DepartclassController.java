@@ -135,7 +135,7 @@ public class DepartclassController implements Serializable {
     public void typeDepartmentListener(ValueChangeEvent event) {
         departmentId = Integer.parseInt((String) event.getNewValue());
         System.out.print(departmentId);
-        majorList = new ArrayList<>();
+        majorList = new ArrayList<SelectItem>();
         List<Major> currentMaj = majorFacade.findByDepartment(departmentId);
         for (int i = 0; i < currentMaj.size(); i++) {
             SelectItem selectItem = new SelectItem();
@@ -148,7 +148,8 @@ public class DepartclassController implements Serializable {
     public void typeMajorListener(ValueChangeEvent event) {
         majorId = Integer.parseInt((String) event.getNewValue());
         System.out.print("专业" + majorId);
-        classList = new ArrayList<>();
+
+        classList = new ArrayList<SelectItem>();
         List<Classinfo> currentCla = classinfoFacade.findByMajor(majorId);
         for (int i = 0; i < currentCla.size(); i++) {
             SelectItem selectItem = new SelectItem();
