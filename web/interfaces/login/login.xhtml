@@ -31,7 +31,7 @@
                             <h:panelGrid columns="5">
                                 <h:outputText value="验证码(*)：" styleClass="label"></h:outputText>
                                 <h:inputText id="vcode" required="true" value="#{loginController.validate_code}">
-                                    <f:ajax event="mouseout" render="vali"></f:ajax>
+                                    <f:ajax event="blur" render="vali"></f:ajax>
                                 </h:inputText>
                                 <h:graphicImage value="../../../interfaces/login/image.jsp" id="validateImage"></h:graphicImage>
                                 <h:outputLabel value="换一张">

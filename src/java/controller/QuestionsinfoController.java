@@ -7,6 +7,8 @@ import entities.Questiontypeinfo;
 import sessionBean.QuestionsinfoFacadeLocal;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -36,6 +38,74 @@ public class QuestionsinfoController implements Serializable {
     private int selectedItemIndex;
     private int typeId;
     private int knowid;
+    //选择题的四个选项
+    private String selection1;
+    private String selection2;
+    private String selection3;
+    private String selection4;
+    private String selection5;
+    //题目预览内容
+    private String preContent;
+
+    //多选题的答案列表
+    private List answerList;
+
+    public List getAnswerList() {
+        return answerList;
+    }
+
+    public void setAnswerList(List answerList) {
+        this.answerList = answerList;
+    }
+
+    public String getPreContent() {
+        this.preContent = current.getContent();
+        return preContent;
+    }
+
+    public void setPreContent(String preContent) {
+        this.preContent = preContent;
+    }
+
+    public String getSelection1() {
+        return selection1;
+    }
+
+    public void setSelection1(String selection1) {
+        this.selection1 = selection1;
+    }
+
+    public String getSelection2() {
+        return selection2;
+    }
+
+    public void setSelection2(String selection2) {
+        this.selection2 = selection2;
+    }
+
+    public String getSelection3() {
+        return selection3;
+    }
+
+    public void setSelection3(String selection3) {
+        this.selection3 = selection3;
+    }
+
+    public String getSelection4() {
+        return selection4;
+    }
+
+    public void setSelection4(String selection4) {
+        this.selection4 = selection4;
+    }
+
+    public String getSelection5() {
+        return selection5;
+    }
+
+    public void setSelection5(String selection5) {
+        this.selection5 = selection5;
+    }
 
     public int getTypeId() {
         return typeId;
@@ -45,27 +115,28 @@ public class QuestionsinfoController implements Serializable {
         this.typeId = typeId;
     }
 
-    
-    
-    public void typeListener(ValueChangeEvent event){
-        typeId=Integer.parseInt((String)event.getNewValue());
-        System.out.println("类型"+typeId);    
+    public void typeListener(ValueChangeEvent event) {
+        typeId = Integer.parseInt((String) event.getNewValue());
+        System.out.println("类型" + typeId);
     }
-    
-    
+
     public void selectQuestion(int id) {
         typeId = id;
         knowid = kc.getSelected().getId();
-        items = this.getPagination().createPageDataModel();
+        if (knowid > 0) {
+            items = this.getPagination().createPageDataModel();
+        } else {
+
+        }
     }
 
     public QuestionsinfoController() {
     }
-    
-     public void typeAnswerListener(ValueChangeEvent event){
-         
-         System.out.println("对不对"+(String)event.getNewValue());
-     }
+
+    public void typeAnswerListener(ValueChangeEvent event) {
+
+        System.out.println("对不对" + (String) event.getNewValue());
+    }
 
     public Questionsinfo getSelected() {
         if (current == null) {
@@ -91,7 +162,7 @@ public class QuestionsinfoController implements Serializable {
                 @Override
                 public DataModel createPageDataModel() {
                     System.out.println("有没有啊" + typeId);
-                    return new ListDataModel(getFacade().findConstrainRange(typeId,knowid, new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+                    return new ListDataModel(getFacade().findConstrainRange(typeId, knowid, new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
                 }
             };
         }
@@ -114,18 +185,43 @@ public class QuestionsinfoController implements Serializable {
         selectedItemIndex = -1;
         return "Create";
     }
+
     public String addquestion() {
         try {
-            Questiontypeinfo qt=new Questiontypeinfo();
+            Questiontypeinfo qt = new Questiontypeinfo();
             qt.setId(typeId);
+            if (answerList != null) {
+                StringBuffer answers = new StringBuffer();
+                for (int i = 0; i < answerList.size(); i++) {
+                    answers.append(answerList.get(i));
+                }
+                current.setAnswer(answers.toString());
+                answers = null;
+            } else {
+                answerList = new ArrayList();
+            }
+            if (selection1 != null) {
+                if (selection5 == null) {
+                    current.setSelections(selection1 + "#" + selection2 + "#" + selection3 + "#" + selection4);
+                } else {
+                    current.setSelections(selection1 + "#" + selection2 + "#" + selection3 + "#" + selection4 + "#" + selection5);
+                }
+            }
             current.setQuestiontypeinfo(qt);
             getFacade().create(current);
+            current = null;
+            selection1 = null;
+            selection2 = null;
+            selection3 = null;
+            selection4 = null;
+            selection5 = null;
+            answerList = null;
             return null;
         } catch (Exception e) {
             return null;
         }
     }
-    
+
     public String create() {
         try {
             getFacade().create(current);
@@ -148,7 +244,8 @@ public class QuestionsinfoController implements Serializable {
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "editQuestion";
     }
-     public String updateQuestion() {
+
+    public String updateQuestion() {
         try {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("QuestionsinfoUpdated"));
@@ -158,7 +255,7 @@ public class QuestionsinfoController implements Serializable {
             return null;
         }
     }
-    
+
     public String update() {
         try {
             getFacade().edit(current);

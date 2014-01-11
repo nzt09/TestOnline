@@ -133,6 +133,7 @@ public class ChapterinfoController implements Serializable {
     public void typeChapterListenner(ValueChangeEvent event) {
         chapterId = Integer.parseInt((String) event.getNewValue());
         this.current = ejbFacade.find(chapterId);
+        kl.setSelected(null);
         if (chapterId == 0) {
             isHasnext = false;
             isDelete = true;
@@ -161,12 +162,15 @@ public class ChapterinfoController implements Serializable {
 
     public void typeCourseListener(ValueChangeEvent event) {
         courseId = Integer.parseInt((String) event.getNewValue());
+        chapterId=0;
         if (courseId != 0) {
             //获得对应的章节的集合
             this.selectAllChapter();
         } else {
             chapterList = null;
         }
+        kl.setChapterId(null);
+        
     }
 
     public ChapterinfoController() {

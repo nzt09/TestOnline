@@ -7,8 +7,8 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:rich="http://richfaces.org/rich">
     <body>
-        <ui:composition template="./../../template.xhtml">
-            <ui:define name="body">
+        <ui:composition template="./../../stylemodel.xhtml">
+            <ui:define name="content">
                 <body style="font-family:Verdana; font-size:14px; margin:0;">
                     <h:form>
                         <div align="center">
@@ -31,6 +31,7 @@
                                             <h:outputText value="题目类容(填空需填内容处用#号代替)"></h:outputText>
                                         </h:outputLabel>
                                         <h:inputTextarea cols="30" rows="5" id="content"  required="true" requiredMessage="输入内容不能为空" value="#{questionsinfoController.selected.content}">
+                                            <f:ajax event="blur" render="preContent"></f:ajax>
                                         </h:inputTextarea>
                                         <h:message for="content" id="errors" style="color: red"></h:message>
                                         <h:outputLabel for="scores">
@@ -65,22 +66,22 @@
                                             <h:outputLabel for="s1">
                                                 <h:outputText value="A"></h:outputText>
                                             </h:outputLabel>
-                                            <h:inputText id="s1"  required="true" requiredMessage="输入内容不能为空" value="#{questionsinfoController.selected.selections}"></h:inputText>
+                                            <h:inputText id="s1"  required="true" requiredMessage="输入内容不能为空" value="#{questionsinfoController.selection1}"></h:inputText>
                                             <h:message for="s1" style="color: red"/>
                                             <h:outputLabel for="s2">
                                                 <h:outputText value="B"></h:outputText>
                                             </h:outputLabel>
-                                            <h:inputText id="s2"  required="true" requiredMessage="输入内容不能为空" value="#{questionsinfoController.selected.selections}"></h:inputText>
+                                            <h:inputText id="s2"  required="true" requiredMessage="输入内容不能为空" value="#{questionsinfoController.selection2}"></h:inputText>
                                             <h:message for="s2" style="color: red"/>
                                             <h:outputLabel for="s3">
                                                 <h:outputText value="C"></h:outputText>
                                             </h:outputLabel>
-                                            <h:inputText id="s3"  required="true" requiredMessage="输入内容不能为空" value="#{questionsinfoController.selected.selections}"></h:inputText>
+                                            <h:inputText id="s3"  required="true" requiredMessage="输入内容不能为空" value="#{questionsinfoController.selection3}"></h:inputText>
                                             <h:message for="s3" style="color: red"/>
                                             <h:outputLabel for="s4">
                                                 <h:outputText value="D"></h:outputText>
                                             </h:outputLabel>
-                                            <h:inputText id="s4"  required="true" requiredMessage="输入内容不能为空" value="#{questionsinfoController.selected.selections}"></h:inputText>
+                                            <h:inputText id="s4"  required="true" requiredMessage="输入内容不能为空" value="#{questionsinfoController.selection4}"></h:inputText>
                                             <h:message for="s4" style="color: red"/>
                                         </h:panelGrid>
                                         <h:panelGrid style="align:center;margin-left: 300px">
@@ -100,34 +101,34 @@
                                             <h:outputLabel for="s1">
                                                 <h:outputText value="A"></h:outputText>
                                             </h:outputLabel>
-                                            <h:inputText id="s1"  required="true" requiredMessage="输入内容不能为空"></h:inputText>
+                                            <h:inputText id="s1"  required="true" requiredMessage="输入内容不能为空" value="#{questionsinfoController.selection1}"></h:inputText>
                                             <h:message for="s1" style="color: red"/>
                                             <h:outputLabel for="s2">
                                                 <h:outputText value="B"></h:outputText>
                                             </h:outputLabel>
-                                            <h:inputText id="s2"  required="true" requiredMessage="输入内容不能为空"></h:inputText>
+                                            <h:inputText id="s2"  required="true" requiredMessage="输入内容不能为空" value="#{questionsinfoController.selection2}"></h:inputText>
                                             <h:message for="s2" style="color: red"/>
                                             <h:outputLabel for="s3">
                                                 <h:outputText value="C"></h:outputText>
                                             </h:outputLabel>
-                                            <h:inputText id="s3"  required="true" requiredMessage="输入内容不能为空"></h:inputText>
+                                            <h:inputText id="s3"  required="true" requiredMessage="输入内容不能为空" value="#{questionsinfoController.selection3}"></h:inputText>
                                             <h:message for="s3" style="color: red"/>
                                             <h:outputLabel for="s4">
                                                 <h:outputText value="D"></h:outputText>
                                             </h:outputLabel>
-                                            <h:inputText id="s4"  required="true" requiredMessage="输入内容不能为空"></h:inputText>
+                                            <h:inputText id="s4"  required="true" requiredMessage="输入内容不能为空" value="#{questionsinfoController.selection4}"></h:inputText>
                                             <h:message for="s4" style="color: red"/>
                                             <h:outputLabel for="s5">
                                                 <h:outputText value="E"></h:outputText>
                                             </h:outputLabel>
-                                            <h:inputText id="s5"  required="true" requiredMessage="输入内容不能为空"></h:inputText>
+                                            <h:inputText id="s5"  required="true" requiredMessage="输入内容不能为空" value="#{questionsinfoController.selection5}"></h:inputText>
                                             <h:message for="s5" style="color: red"/>
                                         </h:panelGrid>
                                         <h:panelGrid columns="3" style="align:center;margin-left: 300px">
                                             <h:outputLabel for="answer2">
                                                 <h:outputText value="题目答案"></h:outputText>
                                             </h:outputLabel>
-                                            <h:selectManyCheckbox id="answer2"  layout="lineDirection" required="true" requiredMessage="答案内容不能为空">
+                                            <h:selectManyCheckbox id="answer2"  layout="lineDirection" required="true" requiredMessage="答案内容不能为空" value="#{questionsinfoController.answerList}" >
                                                 <f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
                                                 <f:selectItem itemLabel="B" itemValue="B"></f:selectItem>
                                                 <f:selectItem itemLabel="C" itemValue="C"></f:selectItem>
@@ -139,25 +140,38 @@
                                         </h:panelGrid>
                                     </rich:panel>
                                 </c:when>
-                                <c:when test="${questionsinfoController.typeId==3||questionsinfoController.typeId==7}" >
+                                <c:when test="${questionsinfoController.typeId==3}" >
                                     <rich:panel>
                                         <h:panelGrid columns="3" style="align:center;margin-left: 300px">
                                             <h:outputLabel for="answer">
-                                                <h:outputText value="题目答案(不同答案按#号分割)"></h:outputText>
+                                                <h:outputText value="题目答案"></h:outputText>
                                             </h:outputLabel>
-                                            <h:inputTextarea id="answer" cols="30" rows="5"  required="true" requiredMessage="答案内容不能为空"/>
+                                            <h:inputTextarea id="answer" cols="30" rows="5"  required="true" requiredMessage="答案内容不能为空" value="#{questionsinfoController.selected.answer}"/>
                                             <h:message for="answer" style="color: red">
                                             </h:message>
                                         </h:panelGrid>
                                     </rich:panel>
                                 </c:when>
+                                <c:when test="${questionsinfoController.typeId==7}" >
+                                    <rich:panel>
+                                        <h:panelGrid columns="3" style="align:center;margin-left: 300px">
+                                            <h:outputLabel for="answer">
+                                                <h:outputText value="题目答案(不同答案按#号分割)"></h:outputText>
+                                            </h:outputLabel>
+                                            <h:inputTextarea id="answer" cols="30" rows="5"  required="true" requiredMessage="答案内容不能为空" value="#{questionsinfoController.selected.answer}"/>
+                                            <h:message for="answer" style="color: red">
+                                            </h:message>
+                                        </h:panelGrid>
+                                    </rich:panel>
+                                </c:when>
+
                                 <c:when test="${questionsinfoController.typeId==4||questionsinfoController.typeId==5}" >
                                     <rich:panel>
                                         <h:panelGrid columns="3" style="align:center;margin-left: 300px">
                                             <h:outputLabel for="answer">
                                                 <h:outputText value="题目答案"></h:outputText>
                                             </h:outputLabel>
-                                            <h:inputTextarea id="answer" cols="30" rows="5"  required="true" requiredMessage="答案内容不能为空"/>
+                                            <h:inputTextarea id="answer" cols="30" rows="5"  required="true" requiredMessage="答案内容不能为空" value="#{questionsinfoController.selected.answer}"/>
                                             <h:message for="answer" style="color: red">
                                             </h:message>
                                         </h:panelGrid>
@@ -169,7 +183,7 @@
                                             <h:outputLabel for="code">
                                                 <h:outputText value="code"></h:outputText>
                                             </h:outputLabel>
-                                            <h:inputTextarea id="code" cols="30" rows="5" />
+                                            <h:inputTextarea id="code" cols="30" rows="5"  required="true" requiredMessage="答案内容不能为空" value="#{questionsinfoController.selected.code}"/>
                                             <h:message for="code" style="color: red">
                                             </h:message>
                                         </h:panelGrid>
@@ -194,7 +208,7 @@
                                         <h:outputLabel for="preContent">
                                             <h:outputText value="题目预览"></h:outputText>
                                         </h:outputLabel>
-                                        <h:inputTextarea id="preContent" readonly="true" cols="30" rows="5" ></h:inputTextarea>
+                                        <h:inputTextarea id="preContent"  cols="30" rows="5"  value="#{questionsinfoController.preContent}"></h:inputTextarea>
                                         <h:commandButton value="添加" action="#{questionsinfoController.addquestion()}">
                                         </h:commandButton>
                                     </h:panelGrid>

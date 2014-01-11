@@ -30,6 +30,9 @@ public class KnowledgeController implements Serializable {
     private sessionBean.MyKnowledgeFacadeLocal ejbFacade;
     @Inject
     private ChapterinfoController chapterController;
+    @Inject
+    private QuestionsinfoController questionController;
+    
     private Knowledge current;
     private DataModel items = null;
 
@@ -43,6 +46,8 @@ public class KnowledgeController implements Serializable {
     private String newName;
     //显示或隐藏标志位
     private boolean chapterIdSelected = false;
+    
+    
 
     public String getNewPname() {
         return newPname;
@@ -274,7 +279,7 @@ public class KnowledgeController implements Serializable {
     }
 
 //树形结构的遍历（1）
-    public List<WrappedKnowledge> getKnowledgeRoot() {
+        public List<WrappedKnowledge> getKnowledgeRoot() {
         if (chapterId == null) {
             System.out.println("kkkkkkkkkkkkkkk");
             return new LinkedList<WrappedKnowledge>();
