@@ -37,8 +37,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Knowledge.findById", query = "SELECT k FROM Knowledge k WHERE k.id = :id"),
     @NamedQuery(name = "Knowledge.findByName", query = "SELECT k FROM Knowledge k WHERE k.name = :name")})
 public class Knowledge implements Serializable {
-    @OneToMany(mappedBy = "knowledge")
-    private List<Question2knowledge> question2knowledgeList;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,8 +49,6 @@ public class Knowledge implements Serializable {
     @Column(name = "NAME")
     private String name;
     @OneToMany(mappedBy = "knowledge")
-    private List<Questionsinfo> questionsinfoList;
-    @OneToMany(mappedBy = "knowledge")
     private List<Questionbaseinfo> questionbaseinfoList;
     @OneToMany(mappedBy = "knowledge")
     private List<Knowledge> knowledgeList;
@@ -62,6 +58,8 @@ public class Knowledge implements Serializable {
     @JoinColumn(name = "CHAPTER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Chapterinfo chapterinfo;
+    @OneToMany(mappedBy = "knowledge")
+    private List<Question2knowledge> question2knowledgeList;
 
     public Knowledge() {
     }
@@ -89,14 +87,6 @@ public class Knowledge implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-    @XmlTransient
-    public List<Questionsinfo> getQuestionsinfoList() {
-        return questionsinfoList;
-    }
-
-    public void setQuestionsinfoList(List<Questionsinfo> questionsinfoList) {
-        this.questionsinfoList = questionsinfoList;
     }
 
     @XmlTransient
@@ -133,6 +123,15 @@ public class Knowledge implements Serializable {
         this.chapterinfo = chapterinfo;
     }
 
+    @XmlTransient
+    public List<Question2knowledge> getQuestion2knowledgeList() {
+        return question2knowledgeList;
+    }
+
+    public void setQuestion2knowledgeList(List<Question2knowledge> question2knowledgeList) {
+        this.question2knowledgeList = question2knowledgeList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -156,15 +155,6 @@ public class Knowledge implements Serializable {
     @Override
     public String toString() {
         return "entities.Knowledge[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public List<Question2knowledge> getQuestion2knowledgeList() {
-        return question2knowledgeList;
-    }
-
-    public void setQuestion2knowledgeList(List<Question2knowledge> question2knowledgeList) {
-        this.question2knowledgeList = question2knowledgeList;
     }
     
 }

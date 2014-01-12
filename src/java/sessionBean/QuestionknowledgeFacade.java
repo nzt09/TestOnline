@@ -37,11 +37,7 @@ public class QuestionknowledgeFacade extends AbstractFacade<Questionknowledge> i
     public List<Questionknowledge> findRange(int typeid, int knowid, int[] range) {
         javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery(Questionknowledge.class);
         Root<Questionknowledge> questionknowledge = cq.from(Questionknowledge.class);
-        Questiontypeinfo qt = new Questiontypeinfo();
-        qt.setId(typeid);
-        Knowledge kl = new Knowledge();
-        kl.setId(knowid);
-        cq.where(questionknowledge.get(Questionknowledge_.questiontype).in(qt), questionknowledge.get(Questionknowledge_.knowid).in(kl));
+        cq.where(questionknowledge.get(Questionknowledge_.questiontype).in(typeid), questionknowledge.get(Questionknowledge_.knowid).in(knowid));
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         q.setMaxResults(range[1] - range[0]);
         q.setFirstResult(range[0]);
@@ -51,11 +47,7 @@ public class QuestionknowledgeFacade extends AbstractFacade<Questionknowledge> i
     public int count(int typeid, int knowid) {
         javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery(Questionknowledge.class);
         Root<Questionknowledge> questionknowledge = cq.from(Questionknowledge.class);
-        Questiontypeinfo qt = new Questiontypeinfo();
-        qt.setId(typeid);
-        Knowledge kl = new Knowledge();
-        kl.setId(knowid);
-        cq.where(questionknowledge.get(Questionknowledge_.questiontype).in(qt), questionknowledge.get(Questionknowledge_.knowid).in(kl));
+        cq.where(questionknowledge.get(Questionknowledge_.questiontype).in(typeid), questionknowledge.get(Questionknowledge_.knowid).in(knowid));
         cq.select(getEntityManager().getCriteriaBuilder().count(questionknowledge));
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();

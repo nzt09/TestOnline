@@ -36,9 +36,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Courseinfo.findById", query = "SELECT c FROM Courseinfo c WHERE c.id = :id"),
     @NamedQuery(name = "Courseinfo.findByName", query = "SELECT c FROM Courseinfo c WHERE c.name = :name")})
 public class Courseinfo implements Serializable {
-    @JoinColumn(name = "SUBJECTID", referencedColumnName = "ID")
-    @ManyToOne
-    private Subjectinfo subjectinfo;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,6 +55,9 @@ public class Courseinfo implements Serializable {
     private List<Teachercourseclass> teachercourseclassList;
     @OneToMany(mappedBy = "courseinfo")
     private List<Relationcourmaj> relationcourmajList;
+    @JoinColumn(name = "SUBJECTID", referencedColumnName = "ID")
+    @ManyToOne
+    private Subjectinfo subjectinfo;
     @JoinColumn(name = "MAJOR", referencedColumnName = "ID")
     @ManyToOne
     private Major major;
@@ -130,6 +130,14 @@ public class Courseinfo implements Serializable {
         this.relationcourmajList = relationcourmajList;
     }
 
+    public Subjectinfo getSubjectinfo() {
+        return subjectinfo;
+    }
+
+    public void setSubjectinfo(Subjectinfo subjectinfo) {
+        this.subjectinfo = subjectinfo;
+    }
+
     public Major getMajor() {
         return major;
     }
@@ -161,14 +169,6 @@ public class Courseinfo implements Serializable {
     @Override
     public String toString() {
         return "entities.Courseinfo[ id=" + id + " ]";
-    }
-
-    public Subjectinfo getSubjectinfo() {
-        return subjectinfo;
-    }
-
-    public void setSubjectinfo(Subjectinfo subjectinfo) {
-        this.subjectinfo = subjectinfo;
     }
     
 }

@@ -32,10 +32,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Rolesinfo.findAll", query = "SELECT r FROM Rolesinfo r"),
     @NamedQuery(name = "Rolesinfo.findById", query = "SELECT r FROM Rolesinfo r WHERE r.id = :id"),
-    @NamedQuery(name = "Rolesinfo.findByResouceids", query = "SELECT r FROM Rolesinfo r WHERE r.resouceids = :resouceids"),
     @NamedQuery(name = "Rolesinfo.findByName", query = "SELECT r FROM Rolesinfo r WHERE r.name = :name"),
     @NamedQuery(name = "Rolesinfo.findByCanseeall", query = "SELECT r FROM Rolesinfo r WHERE r.canseeall = :canseeall"),
-    @NamedQuery(name = "Rolesinfo.findByPrivilege", query = "SELECT r FROM Rolesinfo r WHERE r.privilege = :privilege")})
+    @NamedQuery(name = "Rolesinfo.findByPrivilege", query = "SELECT r FROM Rolesinfo r WHERE r.privilege = :privilege"),
+    @NamedQuery(name = "Rolesinfo.findByResouceids", query = "SELECT r FROM Rolesinfo r WHERE r.resouceids = :resouceids")})
 public class Rolesinfo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -43,9 +43,6 @@ public class Rolesinfo implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
-    @Size(max = 5000)
-    @Column(name = "RESOUCEIDS")
-    private String resouceids;
     @Size(max = 20)
     @Column(name = "NAME")
     private String name;
@@ -53,6 +50,9 @@ public class Rolesinfo implements Serializable {
     private Integer canseeall;
     @Column(name = "PRIVILEGE")
     private Integer privilege;
+    @Size(max = 500)
+    @Column(name = "RESOUCEIDS")
+    private String resouceids;
     @OneToMany(mappedBy = "rolesinfo")
     private List<Teacher> teacherList;
 
@@ -69,14 +69,6 @@ public class Rolesinfo implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getResouceids() {
-        return resouceids;
-    }
-
-    public void setResouceids(String resouceids) {
-        this.resouceids = resouceids;
     }
 
     public String getName() {
@@ -101,6 +93,14 @@ public class Rolesinfo implements Serializable {
 
     public void setPrivilege(Integer privilege) {
         this.privilege = privilege;
+    }
+
+    public String getResouceids() {
+        return resouceids;
+    }
+
+    public void setResouceids(String resouceids) {
+        this.resouceids = resouceids;
     }
 
     @XmlTransient
