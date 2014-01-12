@@ -43,7 +43,7 @@ public class Rolesinfo implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
-    @Size(max = 200)
+    @Size(max = 5000)
     @Column(name = "RESOUCEIDS")
     private String resouceids;
     @Size(max = 20)

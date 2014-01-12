@@ -33,6 +33,8 @@ public interface StudentinfoFacadeLocal {
     
     Studentinfo findByIdPassword(String userId, String password);
     
+    Studentinfo findByStuno(String userId);
+    
     List<Studentinfo> findById(int id);
     
      

@@ -47,6 +47,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Questionsinfo.findByTestcaseresult", query = "SELECT q FROM Questionsinfo q WHERE q.testcaseresult = :testcaseresult"),
     @NamedQuery(name = "Questionsinfo.findByAnalysis", query = "SELECT q FROM Questionsinfo q WHERE q.analysis = :analysis")})
 public class Questionsinfo implements Serializable {
+    @OneToMany(mappedBy = "questionsinfo")
+    private List<Question2knowledge> question2knowledgeList;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -88,9 +90,6 @@ public class Questionsinfo implements Serializable {
     @JoinColumn(name = "QUESTIONTYPE", referencedColumnName = "ID")
     @ManyToOne
     private Questiontypeinfo questiontypeinfo;
-    @JoinColumn(name = "KNOWID", referencedColumnName = "ID")
-    @ManyToOne
-    private Knowledge knowledge;
     @OneToMany(mappedBy = "questionsinfo")
     private List<Classquestiondifficult> classquestiondifficultList;
 
@@ -213,14 +212,6 @@ public class Questionsinfo implements Serializable {
         this.questiontypeinfo = questiontypeinfo;
     }
 
-    public Knowledge getKnowledge() {
-        return knowledge;
-    }
-
-    public void setKnowledge(Knowledge knowledge) {
-        this.knowledge = knowledge;
-    }
-
     @XmlTransient
     public List<Classquestiondifficult> getClassquestiondifficultList() {
         return classquestiondifficultList;
@@ -253,6 +244,15 @@ public class Questionsinfo implements Serializable {
     @Override
     public String toString() {
         return "entities.Questionsinfo[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public List<Question2knowledge> getQuestion2knowledgeList() {
+        return question2knowledgeList;
+    }
+
+    public void setQuestion2knowledgeList(List<Question2knowledge> question2knowledgeList) {
+        this.question2knowledgeList = question2knowledgeList;
     }
     
 }

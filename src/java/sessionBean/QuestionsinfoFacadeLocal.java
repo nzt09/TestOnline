@@ -27,9 +27,7 @@ public interface QuestionsinfoFacadeLocal {
     List<Questionsinfo> findAll();
 
     List<Questionsinfo> findRange(int[] range);
-
-    List<Questionsinfo> findConstrainRange(int typeid, int knowid, int[] range);
-
+    
     int count();
 
 }

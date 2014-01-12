@@ -30,9 +30,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Departclass.findById", query = "SELECT d FROM Departclass d WHERE d.id = :id"),
     @NamedQuery(name = "Departclass.findByName", query = "SELECT d FROM Departclass d WHERE d.name = :name"),
     @NamedQuery(name = "Departclass.findByPassword", query = "SELECT d FROM Departclass d WHERE d.password = :password"),
+    @NamedQuery(name = "Departclass.findByMajorid", query = "SELECT d FROM Departclass d WHERE d.majorid = :majorid"),
+    @NamedQuery(name = "Departclass.findByClassname", query = "SELECT d FROM Departclass d WHERE d.classname = :classname"),
     @NamedQuery(name = "Departclass.findByStuno", query = "SELECT d FROM Departclass d WHERE d.stuno = :stuno"),
     @NamedQuery(name = "Departclass.findByClassid", query = "SELECT d FROM Departclass d WHERE d.classid = :classid"),
-    @NamedQuery(name = "Departclass.findByClassname", query = "SELECT d FROM Departclass d WHERE d.classname = :classname"),
     @NamedQuery(name = "Departclass.findByDepartment", query = "SELECT d FROM Departclass d WHERE d.department = :department")})
 public class Departclass implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -47,14 +48,18 @@ public class Departclass implements Serializable {
     @Size(max = 20)
     @Column(name = "PASSWORD")
     private String password;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "MAJORID")
+    private int majorid;
+    @Size(max = 20)
+    @Column(name = "CLASSNAME")
+    private String classname;
     @Size(max = 20)
     @Column(name = "STUNO")
     private String stuno;
     @Column(name = "CLASSID")
     private Integer classid;
-    @Size(max = 20)
-    @Column(name = "CLASSNAME")
-    private String classname;
     @Column(name = "DEPARTMENT")
     private Integer department;
 
@@ -85,6 +90,22 @@ public class Departclass implements Serializable {
         this.password = password;
     }
 
+    public int getMajorid() {
+        return majorid;
+    }
+
+    public void setMajorid(int majorid) {
+        this.majorid = majorid;
+    }
+
+    public String getClassname() {
+        return classname;
+    }
+
+    public void setClassname(String classname) {
+        this.classname = classname;
+    }
+
     public String getStuno() {
         return stuno;
     }
@@ -99,14 +120,6 @@ public class Departclass implements Serializable {
 
     public void setClassid(Integer classid) {
         this.classid = classid;
-    }
-
-    public String getClassname() {
-        return classname;
-    }
-
-    public void setClassname(String classname) {
-        this.classname = classname;
     }
 
     public Integer getDepartment() {

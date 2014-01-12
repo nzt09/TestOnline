@@ -6,8 +6,7 @@
 
 package sessionBean;
 
-import entities.Questionsinfo;
-import java.util.List;
+import entities.Question2knowledge;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,17 +16,17 @@ import javax.persistence.PersistenceContext;
  * @author Administrator
  */
 @Stateless
-public class QuestionsinfoFacade extends AbstractFacade<Questionsinfo> implements QuestionsinfoFacadeLocal {
+public class Question2knowledgeFacade extends AbstractFacade<Question2knowledge> implements Question2knowledgeFacadeLocal {
     @PersistenceContext(unitName = "TestOnlineFree-ejbPU")
     private EntityManager em;
 
     @Override
-        protected EntityManager getEntityManager() {
+    protected EntityManager getEntityManager() {
         return em;
     }
 
-    public QuestionsinfoFacade() {
-        super(Questionsinfo.class);
+    public Question2knowledgeFacade() {
+        super(Question2knowledge.class);
     }
-
+    
 }
