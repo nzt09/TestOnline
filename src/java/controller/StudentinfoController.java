@@ -41,7 +41,8 @@ public class StudentinfoController implements Serializable {
     private DepartclassFacadeLocal DepartclassFacade;
     @Inject
     private DepartclassController DepartclassController;
- 
+    @EJB
+    private TeacherFacadeLocal teacherFacade;
     @Inject
     private TeacherController teacherController;
     @Inject
@@ -56,8 +57,25 @@ public class StudentinfoController implements Serializable {
 
     private List<SelectItem> courseList;// 用于存放该学生的所有课程名
     private int departmentId;
+    private String rpw;
     private boolean flag = false;
     private boolean flag1 = false;
+
+    public boolean isRflag() {
+        return rflag;
+    }
+
+    public void setRflag(boolean rflag) {
+        this.rflag = rflag;
+    }
+    private boolean rflag = false;
+    public String getRpw() {
+        return rpw;
+    }
+
+    public void setRpw(String rpw) {
+        this.rpw = rpw;
+    }
 
     public boolean isFlag() {
         return flag;
@@ -185,7 +203,21 @@ public class StudentinfoController implements Serializable {
         getFacade().edit(stu);
     }
 
+    //核对两遍新密码是否一致
+    public String checkNewPassword() {
+       if(rpw == null || rpw.isEmpty()){
+           
+            return "请输入密码";
+        }else if(rpw.equals(this.getSelected().getPassword())){
+            
+            return "密码正确";
+        }else
+            
+           return "密码不匹配";
+        
+    }
 //为学生更新密码
+
     public void updateStudentPassword() {
         if (loginController.isPwFlag() == true) {
             try {

@@ -68,7 +68,7 @@ public class LoginController implements java.io.Serializable {
     }
     private int classId;
     //判断密码是否一致
-    private boolean pwFlag = false;
+    private boolean  pwFlag = false;
     //判断验证码是否对
     private boolean validateFlag = false;
 
@@ -79,7 +79,7 @@ public class LoginController implements java.io.Serializable {
     public void setPwFlag(boolean pwFlag) {
         this.pwFlag = pwFlag;
     }
-
+    
     //新的密码
     private String newPassword;
 

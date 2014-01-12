@@ -40,6 +40,14 @@ public class TestassigninfomController implements Serializable {
     private ClassinfoController claCon;
     @EJB
     private StudentinfoFacadeLocal studentFacade;
+
+    public boolean isIsReady() {
+        return isReady;
+    }
+
+    public void setIsReady(boolean isReady) {
+        this.isReady = isReady;
+    }
     @Inject
     private StudentinfoController stuCon;
 
@@ -59,9 +67,18 @@ public class TestassigninfomController implements Serializable {
     private int day;
     private int year;
     private boolean isReady=false;
+    private boolean isReady1=false;
 
     public int getMinute() {
         return minute;
+    }
+
+    public boolean isIsReady1() {
+        return isReady1;
+    }
+
+    public void setIsReady1(boolean isReady1) {
+        this.isReady1 = isReady1;
     }
 
     public void setMinute(int minute) {
@@ -88,12 +105,12 @@ public class TestassigninfomController implements Serializable {
     private int hour = 0;
     
 //判断当前时间是否在考试时间内
-    public boolean isTesting() {
+    public void isTesting() {
         Calendar c = Calendar.getInstance();
         Calendar beginTime = Calendar.getInstance();
         Calendar endTime = Calendar.getInstance();
         if (testAssignList == null || testAssignList.isEmpty()) {
-            return false;
+         
         } else {
             for (Testassigninfom testa : testAssignList) {
                 beginTime.setTime(testa.getTesttime());
@@ -109,49 +126,8 @@ public class TestassigninfomController implements Serializable {
         System.out.println(endTime.toString());
         if (c.before(endTime) && c.after(beginTime)) {
             isReady=true;
-
-        } 
-        return isReady;
-    }
-    public void leftTime(){
-        String lefttime = null;
-//        for (Testassigninfom testa : testAssignList) {
-            minute = 120;
-            if(minute>60){
-                minute = minute - 60;
-                hour = hour + 1;
-            }
-        
-            while (hour * minute * second >= 0) {
-//            System.out.println(hour + ":" + minute + ":" + second);
-             lefttime = "hour + \":\" + minute + \":\" + second)";
-            try {
-                sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            if (second != 0) {
-                second--;
-
-            } else {
-                second = 59;
-                if (minute > 0) {
-                    minute--;
-
-                } else {
-                    minute = 59;
-                    if (hour > 0) {
-                        hour--;
-
-                    } else {
-
-                        
-                    }
-                }
-            }
-        }
-  
+        } else 
+            isReady1=true;
     }
 //拿到班级ID
     public void getBanjiId() {

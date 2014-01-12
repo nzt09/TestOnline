@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+   <script language="javascript">
+				
+				function leftT()
+				{
+                                    var hour = 0, minute = 0, second = 0;
+				    var t = 7200;
+				    hour=parseInt(t/60/60);
+				    minute=parseInt(t/60%60);
+				    second=parseInt(t%60);
+			            document.getElementById("HOUR").innerHTML=hour;
+				    document.getElementById("SECOND").innerHTML=second;
+				    document.getElementById("MINUTE").innerHTML=minute;
+				 
+				} 
+	</script>
+    <body>
+
+        <ui:composition template="./../../stylemodel.xhtml">
+            <ui:define name="content">
+                <div>
+                    <h1 style="font-style: oblique;color:black">江苏师范大学欢迎你</h1>
+                    <h4>教务通知：加强精神文明建设</h4>
+                </div>
+                <div align="right" >
+                    <form name="frmtimer" action="" method="post">
+                       
+                            剩余时间：<h:outputLabel id="HOUR" ></h:outputLabel>:<h:outputLabel id="MINUTE"></h:outputLabel>:<h:outputLabel id="SECOND"></h:outputLabel>
+			<br/>
+			<hr/>
+		</form>
+		</div>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

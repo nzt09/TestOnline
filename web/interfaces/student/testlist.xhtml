@@ -12,7 +12,7 @@
                     <h:selectOneMenu id="courseId" value="#{testassigninfomController.courseId}">
                         <f:selectItems value="#{courseinfoController.itemsAvailableSelectA}"></f:selectItems>
                     </h:selectOneMenu> 
-                    <h:commandLink action="testlist.xhtml" value="进入考试"></h:commandLink><br/>
+                    <h:commandLink action="#{testassigninfomController.isTesting()}" value="进入考试"></h:commandLink><br/>
                     <h:panelGroup id="messagePanel" layout="block">
                         <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                     </h:panelGroup>
@@ -74,8 +74,8 @@
                             </h:column>
                         </h:dataTable>
                     </h:panelGroup>
-                    <h:commandLink action="main.xhtml"    value="开始考试" rendered="#{testassigninfomController.isTesting()}"></h:commandLink>
-                    <h:outputText value="不在考试时间" rendered="#{!testassigninfomController.isTesting()}"/>
+                    <h:commandLink action="test1.xhtml"    value="开始考试" rendered="#{testassigninfomController.isReady}"></h:commandLink>
+                    <h:outputText value="不在考试时间" rendered="#{testassigninfomController.isReady1}"/>
                 </h:form>
             </ui:define>
 

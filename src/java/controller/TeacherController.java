@@ -392,14 +392,15 @@ public class TeacherController implements Serializable {
         return item;
     }
 
-//    public SelectItem[] getItemsAvailableSelecteduTeacher() {
-//        roleId = Publicfields.EDUTEACHER_ROLE;
-//        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByRoleId(roleId), false);
-//        for (int i = 0; i < item.length; i++) {
-//            item[i].setLabel(((Teacher) item[i].getValue()).getName());
-//        }
-//        return item;
-//    }
+    public SelectItem[] getItemsAvailableSelecteduTeacher() {
+        roleId = Publicfields.EDUTEACHER_ROLE;
+        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByRoleId(roleId), false);
+        for (int i = 0; i < item.length; i++) {
+            item[i].setLabel(((Teacher) item[i].getValue()).getName());
+        }
+        return item;
+    }
+
 
     public Teacher getTeacher(java.lang.String id) {
         return ejbFacade.find(id);
