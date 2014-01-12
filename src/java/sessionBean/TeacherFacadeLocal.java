@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package sessionBean;
 
 import entities.Teacher;
@@ -30,9 +29,11 @@ public interface TeacherFacadeLocal {
     List<Teacher> findRange(int[] range);
 
     int count();
-    
+
     List<Teacher> findConstrainRange(int[] range, int roleId, int departmentId);
-    
+
     Teacher findByIdPassword(String userId, String password);
-    
+
+     List<Teacher> findByRoleId(int roleId);
+
 }

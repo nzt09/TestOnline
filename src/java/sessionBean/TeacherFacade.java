@@ -38,6 +38,7 @@ public class TeacherFacade extends AbstractFacade<Teacher> implements TeacherFac
         }
         return tem;
     }
+
     public Teacher findByIdPassword(String userId, String password) {
         List<Teacher> tem = em.createNativeQuery("select * from teacher where  personId='" + userId + "'and password='" + password + "'", Teacher.class).getResultList();
         if (null == tem || tem.isEmpty()) {
@@ -46,4 +47,14 @@ public class TeacherFacade extends AbstractFacade<Teacher> implements TeacherFac
             return (Teacher) tem.get(0);
         }
     }
+ public List<Teacher> findByRoleId(int roleId) {
+        List<Teacher> tem = em.createNativeQuery("select * from teacher where roleid=" + roleId + "", Teacher.class).getResultList();
+        if (tem.isEmpty()) {
+            return null;
+        }
+        return tem;
+    }
+  
+    
+
 }

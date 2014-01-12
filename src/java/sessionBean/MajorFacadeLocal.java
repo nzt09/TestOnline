@@ -30,7 +30,7 @@ public interface MajorFacadeLocal {
 
     int count();
 
-    List<Major> findByDepartment(int id);
+    List<Major> findByDepartment(int departmentId);
     
     List<Major> findByDepartmentId(int department);
 }
