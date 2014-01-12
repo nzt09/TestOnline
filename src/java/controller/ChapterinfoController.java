@@ -30,8 +30,7 @@ import sessionBean.MyKnowledgeFacadeLocal;
 @SessionScoped
 public class ChapterinfoController implements Serializable {
 
-    @EJB
-    private CourseinfoFacadeLocal courseinfoFacade;
+
     @Inject
     private CourseinfoController courseCon;
     @EJB

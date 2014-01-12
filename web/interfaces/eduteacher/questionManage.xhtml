@@ -26,7 +26,7 @@
                         </h:selectOneMenu>
                     </rich:panel>
                     <div id="tree">
-                        <rich:panel header="知识点" style="height: 350px;margin-left: 200px;width: 200px" id="treePanel">
+                        <rich:panel header="知识点" style="height: 400px;margin-left: 200px;width: 200px" id="treePanel">
                             <rich:tree var="item" id="bigtree">
                                 <rich:treeModelRecursiveAdaptor roots="#{knowledgeController.knowledgeRoot}" nodes="#{item.KParents}">
                                     <rich:treeNode>
@@ -42,48 +42,51 @@
                                 </rich:treeModelRecursiveAdaptor>
                             </rich:tree>
                         </rich:panel>
-                        <rich:panel header="题目" style="margin-left: 405px;margin-top: -355px;height: 350px" id="questionPanel">
+                        <rich:panel header="题目" style="margin-left: 405px;margin-top: -405px;height: 400px" id="questionPanel">
                             <h:commandButton value="添加题目" action="/interfaces/public/addQuestion.xhtml"></h:commandButton>
                             <c:if test="#{knowledgeController.selected.id>0}">
                                 <div  class="divcss1">
                                     <font  class="font1">题型维护</font>
                                 </div>
                                 <div  class="divcss3">
-                                    <div class="divcss4" >
-                                        <rich:inplaceInput value="#{questiontypeinfoController.typeName}" defaultLabel="点击输入新题型的名称"/>
-                                        <h:commandButton  value="添加" action="#{questiontypeinfoController.createNewType()}" style="width: 60px"/>
-                                    </div>
                                     <rich:dataTable value="#{questiontypeinfoController.items}" var="item"  rowClasses="jsfcrud_odd_row,jsfcrud_even_row"  style="border:solid 1px">
                                         <rich:column>
-                                            <h:commandLink value="#{item.name}" action="#{questionsinfoController.selectQuestion(item.id)}" >
+                                            <h:commandLink value="#{item.name}" action="#{questionknowledgeController.selectQuestion(item.id)}" >
                                             </h:commandLink>
                                         </rich:column>
                                         <rich:column>
                                             <h:commandButton action="#{questiontypeinfoController.delete()}" value="删除"/>
                                         </rich:column>
                                     </rich:dataTable>
+                                    <rich:inplaceInput value="#{questiontypeinfoController.typeName}" defaultLabel="点击输入新题型的名称"/>
+                                    <h:commandButton  value="添加" action="#{questiontypeinfoController.createNewType()}" style="width: 60px"/>
                                 </div>
                                 <div class="divcss5" style="width: 400px;height: 330px;">
-                                    <rich:dataTable  value="#{questionsinfoController.items}" var="item"  rowClasses="jsfcrud_odd_row,jsfcrud_even_row"  style="border:solid 1px;" rendered="#{questionsinfoController.items.rowCount > 0}">
-                                        <rich:column>
-                                            <f:facet name="header">
-                                                <h:outputText value="编号"/>
-                                            </f:facet>
-                                            <h:outputLabel value="#{item.id}"/> 
-                                        </rich:column>
-                                        <rich:column>
-                                            <f:facet name="header">
-                                                <h:outputText value="内容"/>
-                                            </f:facet>
-                                            <h:outputLabel value="#{item.content}"/> 
-                                        </rich:column>
-                                        <rich:column>
-                                            <h:commandButton action="#{questionsinfoController.destroy()}" value="删除"/>
-                                        </rich:column>
-                                        <rich:column>
-                                            <h:commandButton action="#{questionsinfoController.edit}" value="修改"/>
-                                        </rich:column>
-                                    </rich:dataTable>
+                                    <h:panelGroup rendered="#{questionknowledgeController.items.rowCount > 0}">
+                                        <h:outputText value="#{questionknowledgeController.pagination.pageFirstItem + 1}..#{questionknowledgeController.pagination.pageLastItem + 1}/#{questionknowledgeController.pagination.itemsCount}"/>&nbsp;
+                                        <h:commandLink action="#{questionknowledgeController.previous}" value="#{bundle.Previous} #{questionknowledgeController.pagination.pageSize}" rendered="#{questionknowledgeController.pagination.hasPreviousPage}"/>&nbsp;
+                                        <h:commandLink action="#{questionknowledgeController.next}" value="#{bundle.Next} #{questionknowledgeController.pagination.pageSize}" rendered="#{questionknowledgeController.pagination.hasNextPage}"/>&nbsp;
+                                        <rich:dataTable  value="#{questionknowledgeController.items}" var="item"  rowClasses="jsfcrud_odd_row,jsfcrud_even_row"  style="border:solid 1px;" rendered="#{questionknowledgeController.items.rowCount > 0}">
+                                            <rich:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="编号"/>
+                                                </f:facet>
+                                                <h:outputLabel value="#{item.id}"/> 
+                                            </rich:column>
+                                            <rich:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="内容"/>
+                                                </f:facet>
+                                                <h:outputLabel value="#{item.content}"/> 
+                                            </rich:column>
+                                            <rich:column>
+                                                <h:commandButton action="#{questionsinfoController.destroy()}" value="删除"/>
+                                            </rich:column>
+                                            <rich:column>
+                                                <h:commandButton action="#{questionsinfoController.edit}" value="修改"/>
+                                            </rich:column>
+                                        </rich:dataTable>
+                                    </h:panelGroup>
                                 </div>
                             </c:if>
                         </rich:panel>

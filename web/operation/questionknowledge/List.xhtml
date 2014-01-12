@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListQuestionknowledgeTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListQuestionknowledgeEmpty}" rendered="#{questionknowledgeController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{questionknowledgeController.items.rowCount > 0}">
+                    <h:outputText value="#{questionknowledgeController.pagination.pageFirstItem + 1}..#{questionknowledgeController.pagination.pageLastItem + 1}/#{questionknowledgeController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{questionknowledgeController.previous}" value="#{bundle.Previous} #{questionknowledgeController.pagination.pageSize}" rendered="#{questionknowledgeController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{questionknowledgeController.next}" value="#{bundle.Next} #{questionknowledgeController.pagination.pageSize}" rendered="#{questionknowledgeController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{questionknowledgeController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListQuestionknowledgeTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListQuestionknowledgeTitle_content}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.content}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListQuestionknowledgeTitle_score}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.score}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListQuestionknowledgeTitle_difficulty}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.difficulty}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListQuestionknowledgeTitle_selections}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.selections}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListQuestionknowledgeTitle_questiontype}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.questiontype}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListQuestionknowledgeTitle_answer}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.answer}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListQuestionknowledgeTitle_averagetime}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.averagetime}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListQuestionknowledgeTitle_code}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.code}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListQuestionknowledgeTitle_insequence}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.insequence}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListQuestionknowledgeTitle_count}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.count}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListQuestionknowledgeTitle_testcasepara}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.testcasepara}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListQuestionknowledgeTitle_testcaseresult}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.testcaseresult}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListQuestionknowledgeTitle_analysis}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.analysis}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListQuestionknowledgeTitle_knowid}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.knowid}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{questionknowledgeController.prepareView}" value="#{bundle.ListQuestionknowledgeViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{questionknowledgeController.prepareEdit}" value="#{bundle.ListQuestionknowledgeEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{questionknowledgeController.destroy}" value="#{bundle.ListQuestionknowledgeDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{questionknowledgeController.prepareCreate}" value="#{bundle.ListQuestionknowledgeCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListQuestionknowledgeIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

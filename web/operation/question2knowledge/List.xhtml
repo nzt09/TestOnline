@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListQuestion2knowledgeTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListQuestion2knowledgeEmpty}" rendered="#{question2knowledgeController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{question2knowledgeController.items.rowCount > 0}">
+                    <h:outputText value="#{question2knowledgeController.pagination.pageFirstItem + 1}..#{question2knowledgeController.pagination.pageLastItem + 1}/#{question2knowledgeController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{question2knowledgeController.previous}" value="#{bundle.Previous} #{question2knowledgeController.pagination.pageSize}" rendered="#{question2knowledgeController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{question2knowledgeController.next}" value="#{bundle.Next} #{question2knowledgeController.pagination.pageSize}" rendered="#{question2knowledgeController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{question2knowledgeController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListQuestion2knowledgeTitle_id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListQuestion2knowledgeTitle_questionsinfo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.questionsinfo}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListQuestion2knowledgeTitle_knowledge}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.knowledge}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{question2knowledgeController.prepareView}" value="#{bundle.ListQuestion2knowledgeViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{question2knowledgeController.prepareEdit}" value="#{bundle.ListQuestion2knowledgeEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{question2knowledgeController.destroy}" value="#{bundle.ListQuestion2knowledgeDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{question2knowledgeController.prepareCreate}" value="#{bundle.ListQuestion2knowledgeCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListQuestion2knowledgeIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

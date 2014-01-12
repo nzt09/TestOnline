@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateQuestionknowledgeTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateQuestionknowledgeLabel_id}" for="id" />
+                    <h:inputText id="id" value="#{questionknowledgeController.selected.id}" title="#{bundle.CreateQuestionknowledgeTitle_id}" required="true" requiredMessage="#{bundle.CreateQuestionknowledgeRequiredMessage_id}"/>
+                    <h:outputLabel value="#{bundle.CreateQuestionknowledgeLabel_content}" for="content" />
+                    <h:inputText id="content" value="#{questionknowledgeController.selected.content}" title="#{bundle.CreateQuestionknowledgeTitle_content}" />
+                    <h:outputLabel value="#{bundle.CreateQuestionknowledgeLabel_score}" for="score" />
+                    <h:inputText id="score" value="#{questionknowledgeController.selected.score}" title="#{bundle.CreateQuestionknowledgeTitle_score}" />
+                    <h:outputLabel value="#{bundle.CreateQuestionknowledgeLabel_difficulty}" for="difficulty" />
+                    <h:inputText id="difficulty" value="#{questionknowledgeController.selected.difficulty}" title="#{bundle.CreateQuestionknowledgeTitle_difficulty}" />
+                    <h:outputLabel value="#{bundle.CreateQuestionknowledgeLabel_selections}" for="selections" />
+                    <h:inputText id="selections" value="#{questionknowledgeController.selected.selections}" title="#{bundle.CreateQuestionknowledgeTitle_selections}" />
+                    <h:outputLabel value="#{bundle.CreateQuestionknowledgeLabel_questiontype}" for="questiontype" />
+                    <h:inputText id="questiontype" value="#{questionknowledgeController.selected.questiontype}" title="#{bundle.CreateQuestionknowledgeTitle_questiontype}" />
+                    <h:outputLabel value="#{bundle.CreateQuestionknowledgeLabel_answer}" for="answer" />
+                    <h:inputText id="answer" value="#{questionknowledgeController.selected.answer}" title="#{bundle.CreateQuestionknowledgeTitle_answer}" />
+                    <h:outputLabel value="#{bundle.CreateQuestionknowledgeLabel_averagetime}" for="averagetime" />
+                    <h:inputText id="averagetime" value="#{questionknowledgeController.selected.averagetime}" title="#{bundle.CreateQuestionknowledgeTitle_averagetime}" />
+                    <h:outputLabel value="#{bundle.CreateQuestionknowledgeLabel_code}" for="code" />
+                    <h:inputText id="code" value="#{questionknowledgeController.selected.code}" title="#{bundle.CreateQuestionknowledgeTitle_code}" />
+                    <h:outputLabel value="#{bundle.CreateQuestionknowledgeLabel_insequence}" for="insequence" />
+                    <h:inputText id="insequence" value="#{questionknowledgeController.selected.insequence}" title="#{bundle.CreateQuestionknowledgeTitle_insequence}" />
+                    <h:outputLabel value="#{bundle.CreateQuestionknowledgeLabel_count}" for="count" />
+                    <h:inputText id="count" value="#{questionknowledgeController.selected.count}" title="#{bundle.CreateQuestionknowledgeTitle_count}" />
+                    <h:outputLabel value="#{bundle.CreateQuestionknowledgeLabel_testcasepara}" for="testcasepara" />
+                    <h:inputText id="testcasepara" value="#{questionknowledgeController.selected.testcasepara}" title="#{bundle.CreateQuestionknowledgeTitle_testcasepara}" />
+                    <h:outputLabel value="#{bundle.CreateQuestionknowledgeLabel_testcaseresult}" for="testcaseresult" />
+                    <h:inputText id="testcaseresult" value="#{questionknowledgeController.selected.testcaseresult}" title="#{bundle.CreateQuestionknowledgeTitle_testcaseresult}" />
+                    <h:outputLabel value="#{bundle.CreateQuestionknowledgeLabel_analysis}" for="analysis" />
+                    <h:inputText id="analysis" value="#{questionknowledgeController.selected.analysis}" title="#{bundle.CreateQuestionknowledgeTitle_analysis}" />
+                    <h:outputLabel value="#{bundle.CreateQuestionknowledgeLabel_knowid}" for="knowid" />
+                    <h:inputText id="knowid" value="#{questionknowledgeController.selected.knowid}" title="#{bundle.CreateQuestionknowledgeTitle_knowid}" />
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{questionknowledgeController.create}" value="#{bundle.CreateQuestionknowledgeSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{questionknowledgeController.prepareList}" value="#{bundle.CreateQuestionknowledgeShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateQuestionknowledgeIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

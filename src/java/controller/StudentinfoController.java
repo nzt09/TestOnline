@@ -4,10 +4,6 @@ import controller.action.LoginController;
 import entities.Studentinfo;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
-import entities.Departclass;
-import entities.Department;
-import entities.Rolesinfo;
-import entities.Teacher;
 import entities.Teachercourseclass;
 import sessionBean.StudentinfoFacadeLocal;
 
@@ -30,7 +26,6 @@ import javax.inject.Inject;
 import sessionBean.DepartclassFacadeLocal;
 import sessionBean.TeacherFacadeLocal;
 import sessionBean.TeachercourseclassFacadeLocal;
-import static tools.Publicfields.EDUTEACHER_ROLE;
 
 @Named("studentinfoController")
 @SessionScoped
@@ -46,8 +41,7 @@ public class StudentinfoController implements Serializable {
     private DepartclassFacadeLocal DepartclassFacade;
     @Inject
     private DepartclassController DepartclassController;
-    @EJB
-    private TeacherFacadeLocal teacherFacade;
+ 
     @Inject
     private TeacherController teacherController;
     @Inject

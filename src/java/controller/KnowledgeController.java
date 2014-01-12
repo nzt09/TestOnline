@@ -3,7 +3,6 @@ package controller;
 import entities.Knowledge;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
-import entities.Chapterinfo;
 import sessionBean.MyKnowledgeFacadeLocal;
 
 import java.io.Serializable;

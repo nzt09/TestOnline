@@ -238,8 +238,6 @@ public class DepartclassController implements Serializable {
         s1 = studentinfoFacade.find(current.getId());
         System.out.println(s1);
         studentinfoController.setCurrent(s1);
-
-//        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         recreateModel();
         return "studentEdit";
     }
@@ -262,10 +260,6 @@ public class DepartclassController implements Serializable {
         Studentinfo s = new Studentinfo();
         s = studentinfoFacade.find(current.getId());
         studentinfoController.delete(s);
-//        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-//        performDestroy();
-//        recreatePagination();
-//        recreateModel();
         recreateModel();
         return "studentlist";
 

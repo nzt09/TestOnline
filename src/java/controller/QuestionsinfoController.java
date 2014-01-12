@@ -153,7 +153,7 @@ public class QuestionsinfoController implements Serializable {
 
     public PaginationHelper getPagination() {
         if (pagination == null) {
-            pagination = new PaginationHelper(10) {
+            pagination = new PaginationHelper(5) {
 
                 @Override
                 public int getItemsCount() {
@@ -163,7 +163,7 @@ public class QuestionsinfoController implements Serializable {
                 @Override
                 public DataModel createPageDataModel() {
                     System.out.println("有没有啊" + typeId);
-                    return new ListDataModel(getFacade().findConstrainRange(typeId, knowid, new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
                 }
             };
         }
@@ -329,16 +329,14 @@ public class QuestionsinfoController implements Serializable {
         pagination = null;
     }
 
-    public String next() {
+    public void next() {
         getPagination().nextPage();
         recreateModel();
-        return "List";
     }
 
-    public String previous() {
+    public void previous() {
         getPagination().previousPage();
         recreateModel();
-        return "List";
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
