@@ -32,7 +32,7 @@ public class DepartclassFacade extends AbstractFacade<Departclass> implements De
         super(Departclass.class);
     }
 
-    public List<Departclass> findRange( int[] range,int departmentId,int classId,int majorId) {
+    public List<Departclass> findRange(int departmentId,int classId,int majorId) {
         javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery(Departclass.class);
         Root<Departclass> departclass = cq.from(Departclass.class);
         if(classId==0){
@@ -47,26 +47,6 @@ public class DepartclassFacade extends AbstractFacade<Departclass> implements De
             cq.where(departclass.get(Departclass_.classid).in(classId));
         } 
         javax.persistence.Query q = getEntityManager().createQuery(cq);
-        q.setMaxResults(range[1] - range[0]);
-        q.setFirstResult(range[0]);
         return q.getResultList();
-    }
-    public int count(int classId,int departmentId,int majorId) {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery(Departclass.class);
-        Root<Departclass> departclass = cq.from(Departclass.class);
-        if(classId==0){
-             if(majorId==0){
-                 cq.where(departclass.get(Departclass_.department).in(departmentId));
-             }  
-             else{
-                 cq.where(departclass.get(Departclass_.majorid).in(majorId));
-             }
-        }
-        else{ 
-            cq.where(departclass.get(Departclass_.classid).in(classId));
-        } 
-        cq.select(getEntityManager().getCriteriaBuilder().count(departclass));
-        javax.persistence.Query q = getEntityManager().createQuery(cq);
-        return ((Long) q.getSingleResult()).intValue();
     }
 }

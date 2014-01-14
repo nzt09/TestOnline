@@ -5,10 +5,8 @@
  */
 package sessionBean;
 
-import entities.Knowledge;
 import entities.Questionknowledge;
 import entities.Questionknowledge_;
-import entities.Questiontypeinfo;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -34,23 +32,12 @@ public class QuestionknowledgeFacade extends AbstractFacade<Questionknowledge> i
         super(Questionknowledge.class);
     }
 
-    public List<Questionknowledge> findRange(int typeid, int knowid, int[] range) {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery(Questionknowledge.class);
-        Root<Questionknowledge> questionknowledge = cq.from(Questionknowledge.class);
-        cq.where(questionknowledge.get(Questionknowledge_.questiontype).in(typeid), questionknowledge.get(Questionknowledge_.knowid).in(knowid));
-        javax.persistence.Query q = getEntityManager().createQuery(cq);
-        q.setMaxResults(range[1] - range[0]);
-        q.setFirstResult(range[0]);
-        return q.getResultList();
+    public List<Questionknowledge> findRange(int typeid, int knowid) {
+        List<Questionknowledge> tem = em.createNativeQuery("select * from questionknowledge where questiontype=" + typeid + "and knowid=" + knowid, Questionknowledge.class).getResultList();
+        System.out.println("select * from questionknowledge where questiontype=" + typeid + "and knowid=" + knowid);
+        if (tem.isEmpty()) {
+            return null;
+        }
+        return tem;
     }
-
-    public int count(int typeid, int knowid) {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery(Questionknowledge.class);
-        Root<Questionknowledge> questionknowledge = cq.from(Questionknowledge.class);
-        cq.where(questionknowledge.get(Questionknowledge_.questiontype).in(typeid), questionknowledge.get(Questionknowledge_.knowid).in(knowid));
-        cq.select(getEntityManager().getCriteriaBuilder().count(questionknowledge));
-        javax.persistence.Query q = getEntityManager().createQuery(cq);
-        return ((Long) q.getSingleResult()).intValue();
-    }
-
 }

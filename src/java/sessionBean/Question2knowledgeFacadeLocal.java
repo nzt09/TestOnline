@@ -31,4 +31,6 @@ public interface Question2knowledgeFacadeLocal {
 
     int count();
     
+    Question2knowledge findByQusetionId(int id);
+    
 }
