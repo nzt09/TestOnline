@@ -3,66 +3,61 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:rich="http://richfaces.org/rich">
 
     <body>
         <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
                 <h:form>
-                    <h4>授课信息</h4>
                     <h:panelGroup id="messagePanel" layout="block">
                         <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                     </h:panelGroup>
                     <h:outputText escape="false" value="#{bundle.ListTeachercourseclassEmpty}" rendered="#{teachercourseclassController.items.rowCount == 0}"/>
-                    <h:panelGroup rendered="#{teachercourseclassController.items.rowCount > 0}">
-                        <h:outputText value="#{teachercourseclassController.pagination.pageFirstItem + 1}..#{teachercourseclassController.pagination.pageLastItem + 1}/#{teachercourseclassController.pagination.itemsCount}"/>&nbsp;
-                        <h:commandLink action="#{teachercourseclassController.previous}" value="#{bundle.Previous} #{teachercourseclassController.pagination.pageSize}" rendered="#{teachercourseclassController.pagination.hasPreviousPage}"/>&nbsp;
-                        <h:commandLink action="#{teachercourseclassController.next}" value="#{bundle.Next} #{teachercourseclassController.pagination.pageSize}" rendered="#{teachercourseclassController.pagination.hasNextPage}"/>&nbsp;
-                        <h:dataTable value="#{teachercourseclassController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
-                            <h:column>
-                                <f:facet name="header">
-                                    <h:outputText value="编号"/>
-                                </f:facet>
-                                <h:outputText value="#{item.id}"/>
-                            </h:column>
-                            <h:column>
-                                <f:facet name="header">
-                                    <h:outputText value="任课老师"/>
-                                </f:facet>
-                                <h:outputText value="#{item.teacher.name}"/>
-                            </h:column>
-                            <h:column>
-                                <f:facet name="header">
-                                    <h:outputText value="课程"/>
-                                </f:facet>
-                                <h:outputText value="#{item.courseinfo.name}"/>
-                            </h:column>
-                            <h:column>
-                                <f:facet name="header">
-                                    <h:outputText value="班级"/>
-                                </f:facet>
-                                <h:outputText value="#{item.classinfo.classname}"/>
-                            </h:column>
-                            <h:column>
-                                <f:facet name="header">
-                                    <h:outputText value="学期"/>
-                                </f:facet>
-                                <h:outputText value="#{item.term}"/>
-                            </h:column>
-                            <h:column>
-                                <f:facet name="header">
-                                    <h:outputText value="&nbsp;"/>
-                                </f:facet>
-                                <h:commandLink action="#{teachercourseclassController.prepareEdit}" value="修改"/>
-                                <h:outputText value=" "/>
-                                <h:commandLink action="#{teachercourseclassController.destroy}" value="删除"/>
-                            </h:column>
-                        </h:dataTable>
-                    </h:panelGroup>
-                    <br />
+                    <rich:dataTable value="#{teachercourseclassController.items}" var="item"  rowClasses="jsfcrud_odd_row,jsfcrud_even_row" style="border:solid 1px" rows="10">
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="编号"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </rich:column>
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="任课老师"/>
+                            </f:facet>
+                            <h:outputText value="#{item.teacher.name}"/>
+                        </rich:column>
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="课程"/>
+                            </f:facet>
+                            <h:outputText value="#{item.courseinfo.name}"/>
+                        </rich:column>
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="班级"/>
+                            </f:facet>
+                            <h:outputText value="#{item.classinfo.classname}"/>
+                        </rich:column>
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="学期"/>
+                            </f:facet>
+                            <h:outputText value="#{item.term}"/>
+                        </rich:column>
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{teachercourseclassController.prepareEdit}" value="修改"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{teachercourseclassController.destroy}" value="删除"/>
+                        </rich:column>
+                        <f:facet name="footer">
+                            <rich:dataScroller/>
+                        </f:facet>
+                    </rich:dataTable>
                     <h:commandLink action="#{teachercourseclassController.prepareCreate}" value="添加"/>
-                    <br />
-
                 </h:form>
             </ui:define>
 

@@ -70,7 +70,6 @@ public class DepartclassController implements Serializable {
     public void setCurrent(Departclass current) {
         this.current = current;
     }
-    private Rolesinfo rolesinfo;
 
     private Departclass current;
     private DataModel items = null;
@@ -149,7 +148,7 @@ public class DepartclassController implements Serializable {
         majorId = Integer.parseInt((String) event.getNewValue());
         System.out.print("专业" + majorId);
 
-        classList = new ArrayList<SelectItem>();
+        classList = new ArrayList<>();
         List<Classinfo> currentCla = classinfoFacade.findByMajor(majorId);
         for (int i = 0; i < currentCla.size(); i++) {
             SelectItem selectItem = new SelectItem();
@@ -181,12 +180,12 @@ public class DepartclassController implements Serializable {
 
                 @Override
                 public int getItemsCount() {
-                    return getFacade().count(classId,departmentId,majorId);
+                    return getFacade().findRange(departmentId,classId,majorId).size();
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}, departmentId,classId,majorId));
+                    return new ListDataModel(getFacade().findRange(departmentId,classId,majorId));
                 }
             };
         }
@@ -284,7 +283,7 @@ public class DepartclassController implements Serializable {
     }
 
     private void updateCurrentItem() {
-        int count = getFacade().count(classId,departmentId,majorId);
+        int count = getFacade().count();
         if (selectedItemIndex >= count) {
             // selected index cannot be bigger than number of items:
             selectedItemIndex = count - 1;
@@ -294,7 +293,7 @@ public class DepartclassController implements Serializable {
             }
         }
         if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1},classId,departmentId,majorId).get(0);
+            current = getFacade().findRange(departmentId,classId,majorId).get(0);
         }
     }
 

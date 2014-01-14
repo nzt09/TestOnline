@@ -31,6 +31,8 @@ public class KnowledgeController implements Serializable {
     private ChapterinfoController chapterController;
     @Inject
     private QuestionsinfoController questionController;
+    @Inject
+    private QuestionknowledgeController qkController;
     
     private Knowledge current;
     private DataModel items = null;
@@ -88,6 +90,8 @@ public class KnowledgeController implements Serializable {
     public void setSelected(Knowledge kl) {
         this.chapterIdSelected = true;
         this.current = kl;
+        qkController.deleteItem();
+        
     }
 
     private MyKnowledgeFacadeLocal getFacade() {

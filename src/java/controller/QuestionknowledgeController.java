@@ -6,6 +6,7 @@ import controller.util.PaginationHelper;
 import sessionBean.QuestionknowledgeFacadeLocal;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -14,11 +15,12 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
+import sessionBean.Question2knowledgeFacadeLocal;
+import sessionBean.QuestionsinfoFacadeLocal;
 
 @Named("questionknowledgeController")
 @SessionScoped
@@ -26,6 +28,13 @@ public class QuestionknowledgeController implements Serializable {
 
     @Inject
     private KnowledgeController kc;
+    @EJB
+    private QuestionsinfoFacadeLocal questionFacade;
+    @Inject
+    private QuestionsinfoController questionController;
+
+    @EJB
+    private Question2knowledgeFacadeLocal q2kFacade;
     private Questionknowledge current;
     private DataModel items = null;
     @EJB
@@ -33,12 +42,20 @@ public class QuestionknowledgeController implements Serializable {
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
+    public int getSelectedItemIndex() {
+        return selectedItemIndex;
+    }
+
+    public void setSelectedItemIndex(int selectedItemIndex) {
+        this.selectedItemIndex = selectedItemIndex;
+    }
+   
     private int typeId, knowId;
 
     public void selectQuestion(int id) {
         typeId = id;
         knowId = kc.getSelected().getId();
-        System.out.println("dddddddddddddddddddddddddddddd"+typeId);
+        System.out.println("dddddddddddddddddddddddddddddd" + typeId);
         if (knowId > 0) {
             items = this.getPagination().createPageDataModel();
         } else {
@@ -67,12 +84,12 @@ public class QuestionknowledgeController implements Serializable {
 
                 @Override
                 public int getItemsCount() {
-                    return getFacade().count(typeId, knowId);
+                    return getFacade().count();
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findRange(typeId, knowId, new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+                    return new ListDataModel(getFacade().findRange(typeId, knowId));
                 }
             };
         }
@@ -124,6 +141,19 @@ public class QuestionknowledgeController implements Serializable {
         }
     }
 
+    //删除题目
+    public void delete() {
+        q2kFacade.remove(q2kFacade.findByQusetionId(selectedItemIndex));
+        questionFacade.remove(questionFacade.find(selectedItemIndex));
+        items = null;
+    }
+
+    //清空items
+    public void deleteItem() {
+        items = null;
+        typeId = 0;
+    }
+
     public String destroy() {
         current = (Questionknowledge) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
@@ -156,7 +186,7 @@ public class QuestionknowledgeController implements Serializable {
     }
 
     private void updateCurrentItem() {
-        int count = getFacade().count(typeId, knowId);
+        int count = getFacade().count();
         if (selectedItemIndex >= count) {
             // selected index cannot be bigger than number of items:
             selectedItemIndex = count - 1;
@@ -166,7 +196,7 @@ public class QuestionknowledgeController implements Serializable {
             }
         }
         if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(typeId, knowId, new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+            current = getFacade().findRange(typeId, knowId).get(0);
         }
     }
 

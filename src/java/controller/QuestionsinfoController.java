@@ -268,15 +268,14 @@ public class QuestionsinfoController implements Serializable {
         }
     }
 
-    public String destroy() {
+    public void destroy() {
         current = (Questionsinfo) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
         recreateModel();
-        return "List";
     }
 
+    
     public String destroyAndView() {
         performDestroy();
         recreateModel();
