@@ -66,6 +66,34 @@ public class TeacherController implements Serializable {
     //显示该老师所交课程
     private List<SelectItem> teacherCourseList;
     private int majorId;
+    private String rpw;
+    private boolean flag;
+    private boolean flag1;
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
+
+    public boolean isFlag1() {
+        return flag1;
+    }
+
+    public void setFlag1(boolean flag1) {
+        this.flag1 = flag1;
+    }
+   
+
+    public String getRpw() {
+        return rpw;
+    }
+
+    public void setRpw(String rpw) {
+        this.rpw = rpw;
+    }
     
 
     public void isShow() {
@@ -116,6 +144,20 @@ public class TeacherController implements Serializable {
 
     public void setRoleId(int roleId) {
         this.roleId = roleId;
+    }
+    
+     //核对两遍新密码是否一致
+    public String checkNewPassword() {
+       if(rpw == null || rpw.isEmpty()){
+           
+            return "请输入密码";
+        }else if(rpw.equals(this.getSelected().getPassword())){
+            
+            return "密码正确";
+        }else
+            
+           return "密码不匹配";
+        
     }
     private int selectedItemIndex, roleId, departmentId;
 
@@ -284,14 +326,16 @@ public class TeacherController implements Serializable {
         try {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("PasswordChange"));
-           
+            flag1 = true;
+            flag = false;
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
            
         }
-    }else
+    }else{
            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-      
+           flag = true;
+    }
     }
 
     public String admindestroy() {
