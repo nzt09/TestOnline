@@ -67,7 +67,7 @@ body { font-family:Verdana; font-size:14px; margin:0;}
 #mainContent { height:500px; margin-bottom:5px;}
 #tree{ float:left; width:250px; height:500px; background:#cf9;}
 #sidebar { float:left; width:100%;height: 100%; background:#cf9;}
-#content { margin-left:250px;margin-right:205px !important; margin-left:202px; height:500px; background:#9c6 ;border-style: none;}
+#content { margin-left:250px;margin-right:205px !important; margin-left:202px; height:100%; background:#9c6 ;border-style: none;}
 
 #header1 { height:100px; background:#9c6; margin-bottom:5px; float: inherit;}
 

@@ -5,7 +5,8 @@
       xmlns:rich="http://richfaces.org/rich"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:a4j="http://richfaces.org/a4j">
 
     <body>
         <ui:composition template="./../../stylemodel.xhtml">
@@ -16,7 +17,7 @@
                         <h:selectOneMenu  id="course" valueChangeListener="#{chapterinfoController.typeCourseListener}" >
                             <f:selectItem itemLabel="----请选择课程----" itemValue="0"></f:selectItem>
                             <f:selectItems value="#{teacherController.teacherCourseList}"></f:selectItems>
-                            <f:ajax event="change" render="chapter bigtree"></f:ajax>
+                            <f:ajax event="change" render="chapter bigtree questionPanel"></f:ajax>
                         </h:selectOneMenu><br/>
                         章：
                         <h:selectOneMenu id="chapter" value="#{knowledgeController.chapterId}" valueChangeListener="#{chapterinfoController.typeChapterListenner}">
@@ -62,11 +63,8 @@
                                     <h:commandButton  value="添加" action="#{questiontypeinfoController.createNewType()}" style="width: 60px"/>
                                 </div>
                                 <div class="divcss5" style="width: 400px;height: 330px;">
-                                    <h:panelGroup rendered="#{questionknowledgeController.items.rowCount > 0}">
-                                        <h:outputText value="#{questionknowledgeController.pagination.pageFirstItem + 1}..#{questionknowledgeController.pagination.pageLastItem + 1}/#{questionknowledgeController.pagination.itemsCount}"/>&nbsp;
-                                        <h:commandLink action="#{questionknowledgeController.previous}" value="#{bundle.Previous} #{questionknowledgeController.pagination.pageSize}" rendered="#{questionknowledgeController.pagination.hasPreviousPage}"/>&nbsp;
-                                        <h:commandLink action="#{questionknowledgeController.next}" value="#{bundle.Next} #{questionknowledgeController.pagination.pageSize}" rendered="#{questionknowledgeController.pagination.hasNextPage}"/>&nbsp;
-                                        <rich:dataTable  value="#{questionknowledgeController.items}" var="item"  rowClasses="jsfcrud_odd_row,jsfcrud_even_row"  style="border:solid 1px;" rendered="#{questionknowledgeController.items.rowCount > 0}">
+                                    <rich:panel style="height: 300px">
+                                        <rich:dataTable  value="#{questionknowledgeController.items}" iterationStatusVar="it"  id="table"  var="item"  rowClasses="jsfcrud_odd_row,jsfcrud_even_row"  style="border:solid 1px;" rendered="#{questionknowledgeController.items.rowCount > 0}" rows="5">
                                             <rich:column>
                                                 <f:facet name="header">
                                                     <h:outputText value="编号"/>
@@ -80,13 +78,32 @@
                                                 <h:outputLabel value="#{item.content}"/> 
                                             </rich:column>
                                             <rich:column>
-                                                <h:commandButton action="#{questionsinfoController.destroy()}" value="删除"/>
+                                                <a4j:commandLink styleClass="no-decor" execute="@this"
+                                                                 render="@none" oncomplete="#{rich:component('confirmPane')}.show()">删除
+                                                    <a4j:param value="#{item.id}"
+                                                               assignTo="#{questionknowledgeController.selectedItemIndex}" />
+                                                </a4j:commandLink>
                                             </rich:column>
                                             <rich:column>
                                                 <h:commandButton action="#{questionsinfoController.edit}" value="修改"/>
                                             </rich:column>
+                                            <f:facet name="footer">
+                                                <rich:dataScroller />
+                                            </f:facet>
                                         </rich:dataTable>
-                                    </h:panelGroup>
+                                        <a4j:jsFunction name="remove" action="#{questionknowledgeController.delete()}"
+                                                        render="table" execute="@this"
+                                                        oncomplete="#{rich:component('confirmPane')}.hide();" />
+                                        <rich:popupPanel id="confirmPane" autosized="true"> 
+                                            Are you sure you want to delete the row?
+                                            <a4j:commandButton value="Cancel"
+                                                               onclick="#{rich:component('confirmPane')}.hide();
+                                                                       return false;" />
+                                            <a4j:commandButton value="Delete" onclick="remove();
+                                                    return false;" />
+                                        </rich:popupPanel>
+
+                                    </rich:panel>
                                 </div>
                             </c:if>
                         </rich:panel>

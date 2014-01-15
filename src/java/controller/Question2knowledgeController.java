@@ -115,6 +115,11 @@ public class Question2knowledgeController implements Serializable {
         recreateModel();
         return "List";
     }
+    
+    //删除题目对应的关系
+    public void delete(Question2knowledge question2knowledge){
+        getFacade().remove(question2knowledge);
+    }
 
     public String destroyAndView() {
         performDestroy();

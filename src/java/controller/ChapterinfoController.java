@@ -30,7 +30,6 @@ import sessionBean.MyKnowledgeFacadeLocal;
 @SessionScoped
 public class ChapterinfoController implements Serializable {
 
-
     @Inject
     private CourseinfoController courseCon;
     @EJB
@@ -132,6 +131,11 @@ public class ChapterinfoController implements Serializable {
     public void typeChapterListenner(ValueChangeEvent event) {
         chapterId = Integer.parseInt((String) event.getNewValue());
         this.current = ejbFacade.find(chapterId);
+        this.setNull();
+    }
+
+    //清空
+    public void setNull() {
         kl.setSelected(null);
         if (chapterId == 0) {
             isHasnext = false;
@@ -161,7 +165,7 @@ public class ChapterinfoController implements Serializable {
 
     public void typeCourseListener(ValueChangeEvent event) {
         courseId = Integer.parseInt((String) event.getNewValue());
-        chapterId=0;
+        chapterId = 0;
         if (courseId != 0) {
             //获得对应的章节的集合
             this.selectAllChapter();
@@ -169,7 +173,9 @@ public class ChapterinfoController implements Serializable {
             chapterList = null;
         }
         kl.setChapterId(null);
+        this.setNull();
         
+
     }
 
     public ChapterinfoController() {
