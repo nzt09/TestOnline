@@ -27,8 +27,8 @@ public interface QuestionknowledgeFacadeLocal {
 
     List<Questionknowledge> findAll();
 
-    int count(int typeid,int knowid);
-    
-    List<Questionknowledge> findRange(int typeid,int knowid, int[] range);
+    int count();
+      
+    List<Questionknowledge> findRange(int typeid, int knowid);
     
 }
