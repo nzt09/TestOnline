@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Administrator
+ * @author hgs
  */
 @Entity
 @Table(name = "QUESTIONTYPEINFO")

@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Administrator
+ * @author hgs
  */
 @Entity
 @Table(name = "CLASSQUESTIONDIFFICULT")
