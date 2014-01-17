@@ -63,7 +63,7 @@
                                     <h:commandButton  value="添加" action="#{questiontypeinfoController.createNewType()}" style="width: 60px"/>
                                 </div>
                                 <div class="divcss5" style="width: 400px;height: 330px;">
-                                    <rich:panel style="height: 300px">
+                                    <rich:panel style="height: 300px" >
                                         <rich:dataTable  value="#{questionknowledgeController.items}" iterationStatusVar="it"  id="table"  var="item"  rowClasses="jsfcrud_odd_row,jsfcrud_even_row"  style="border:solid 1px;" rendered="#{questionknowledgeController.items.rowCount > 0}" rows="5">
                                             <rich:column>
                                                 <f:facet name="header">
@@ -85,6 +85,14 @@
                                                 </a4j:commandLink>
                                             </rich:column>
                                             <rich:column>
+                                                <!--如下须重新渲染题目类型的列表，使其重新向后台传值-->
+                                                <a4j:commandLink styleClass="no-decor" render="editGrid questionPanel"   
+                                                                 execute="@this" oncomplete="#{rich:component('editPane')}.show()">修改
+                                                    <a4j:param value="#{item.id}"
+                                                               assignTo="#{questionknowledgeController.selectedItemIndex}" />
+                                                    <f:setPropertyActionListener target="#{questionknowledgeController.selected}" value="#{item}">
+                                                    </f:setPropertyActionListener>
+                                                </a4j:commandLink>
                                                 <h:commandButton action="#{questionsinfoController.edit}" value="修改"/>
                                             </rich:column>
                                             <f:facet name="footer">
@@ -95,14 +103,63 @@
                                                         render="table" execute="@this"
                                                         oncomplete="#{rich:component('confirmPane')}.hide();" />
                                         <rich:popupPanel id="confirmPane" autosized="true"> 
-                                            Are you sure you want to delete the row?
-                                            <a4j:commandButton value="Cancel"
+                                            你确定要删除这条题目？
+                                            <a4j:commandButton value="取消"
                                                                onclick="#{rich:component('confirmPane')}.hide();
-                                                                       return false;" />
-                                            <a4j:commandButton value="Delete" onclick="remove();
-                                                    return false;" />
+                                                                                       return false;" />
+                                            <a4j:commandButton value="删除" onclick="remove();
+                                                            return false;" />
                                         </rich:popupPanel>
 
+                                        <rich:popupPanel header="修改题目"  id="editPane" domElementAttachment="parent" height="500" width="600" style="margin-right: 300px">
+                                           
+                                                <h:panelGrid columns="3" style="width: 100%">
+                                                    <h:outputLabel value="内容"></h:outputLabel>
+                                                    <h:inputTextarea id="content" rendered="true"  requiredMessage="输入内容不能为空" value="#{questionknowledgeController.selected.content}" rows="5" cols="80"/>
+                                                    <rich:message for="content"  style="color: red"/>
+                                                </h:panelGrid>
+                                                <h:panelGrid columns="3" id="editGrid">
+                                                    <h:outputLabel for="scores">
+                                                        <h:outputText value="题目分数(1~100)"></h:outputText>
+                                                    </h:outputLabel>
+                                                    <h:inputText id="scores" rendered="true" requiredMessage="输入内容不能为空" validatorMessage="分数值必须在0~100之间" value="#{questionknowledgeController.selected.score}">
+                                                        <f:validateLongRange minimum="1" maximum="100"></f:validateLongRange>
+                                                    </h:inputText>
+                                                    <rich:message for="scores"  style="color: red"/>
+                                                    <h:outputLabel for="difficulty">
+                                                        <h:outputText value="题目难度(0~1)"></h:outputText>
+                                                    </h:outputLabel>
+                                                    <h:inputText id="difficulty" rendered="true"  requiredMessage="输入内容不能为空" validatorMessage="难度值必须在0~1之间"  value="#{questionknowledgeController.selected.difficulty}"> 
+                                                        <f:validateDoubleRange minimum="0" maximum="1"></f:validateDoubleRange>
+                                                    </h:inputText>
+                                                    <rich:message for="difficulty"  style="color: red"/>
+                                                    <h:outputLabel for="averagetime">
+                                                        <h:outputText value="平均时间"></h:outputText>
+                                                    </h:outputLabel>
+                                                    <h:inputText value="#{questionknowledgeController.selected.averagetime}" rendered="true"  requiredMessage="平均时间必须填写" id="averagetime">
+                                                    </h:inputText>
+                                                    <rich:message id="priceMsg" for="averagetime" />
+                                                </h:panelGrid>
+
+                                                <c:choose>
+                                                    <c:when test="#{questionknowledgeController.typeId==1}">
+                                                        dddddddddddd
+                                                    </c:when>
+                                                    <c:when test="#{questionknowledgeController.typeId==3}">
+
+                                                        <h:panelGrid columns="3" style="align:center;">
+                                                            <h:inputTextarea  cols="30" rows="5"  value="#{questionknowledgeController.selected.answer}"/>
+                                                        </h:panelGrid>
+
+                                                    </c:when>
+                                                </c:choose>
+                                                <a4j:commandButton value="保存" action="#{questionknowledgeController.store}"
+                                                                   render="table" execute="editPane"
+                                                                   oncomplete="if (#{facesContext.maximumSeverity==null}) {#{rich:component('editPane')}.hide();}" />
+                                                <a4j:commandButton value="取消" 
+                                                                   onclick="#{rich:component('editPane')}.hide(); return false;" />
+                                            
+                                        </rich:popupPanel>
                                     </rich:panel>
                                 </div>
                             </c:if>
@@ -111,6 +168,5 @@
                 </h:form>
             </ui:define>
         </ui:composition>
-
     </body>
 </html>

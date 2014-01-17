@@ -50,6 +50,14 @@ public class QuestionsinfoController implements Serializable {
     //多选题的答案列表
     private List answerList;
 
+    public Questionsinfo getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(Questionsinfo current) {
+        this.current = current;
+    }
+
     public List getAnswerList() {
         return answerList;
     }
@@ -119,7 +127,7 @@ public class QuestionsinfoController implements Serializable {
         typeId = Integer.parseInt((String) event.getNewValue());
         System.out.println("类型" + typeId);
     }
-     
+
     public void selectQuestion(int id) {
         typeId = id;
         knowid = kc.getSelected().getId();
@@ -137,7 +145,6 @@ public class QuestionsinfoController implements Serializable {
 
         System.out.println("对不对" + (String) event.getNewValue());
     }
-    
 
     public Questionsinfo getSelected() {
         if (current == null) {
@@ -222,7 +229,7 @@ public class QuestionsinfoController implements Serializable {
             return null;
         }
     }
-    
+
     public String create() {
         try {
             getFacade().create(current);
@@ -246,26 +253,14 @@ public class QuestionsinfoController implements Serializable {
         return "editQuestion";
     }
 
-    public String updateQuestion() {
-        try {
-            getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("QuestionsinfoUpdated"));
-            return "eduMain";
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
-        }
+    //给current置为空
+    public void setNull() {
+        this.current = null;
     }
 
-    public String update() {
-        try {
-            getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("QuestionsinfoUpdated"));
-            return "View";
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
-        }
+    public void update() {
+        current = this.getCurrent();
+        getFacade().edit(current);
     }
 
     public void destroy() {
@@ -275,7 +270,6 @@ public class QuestionsinfoController implements Serializable {
         recreateModel();
     }
 
-    
     public String destroyAndView() {
         performDestroy();
         recreateModel();

@@ -3,10 +3,11 @@ package controller;
 import entities.Questionknowledge;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
+import entities.Questionsinfo;
+import entities.Questiontypeinfo;
 import sessionBean.QuestionknowledgeFacadeLocal;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -41,6 +42,15 @@ public class QuestionknowledgeController implements Serializable {
     private QuestionknowledgeFacadeLocal ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    private int typeId, knowId;
+
+    public int getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
+    }
 
     public int getSelectedItemIndex() {
         return selectedItemIndex;
@@ -49,13 +59,10 @@ public class QuestionknowledgeController implements Serializable {
     public void setSelectedItemIndex(int selectedItemIndex) {
         this.selectedItemIndex = selectedItemIndex;
     }
-   
-    private int typeId, knowId;
 
     public void selectQuestion(int id) {
         typeId = id;
         knowId = kc.getSelected().getId();
-        System.out.println("dddddddddddddddddddddddddddddd" + typeId);
         if (knowId > 0) {
             items = this.getPagination().createPageDataModel();
         } else {
@@ -72,6 +79,10 @@ public class QuestionknowledgeController implements Serializable {
             selectedItemIndex = -1;
         }
         return current;
+    }
+
+    public void setSelected(Questionknowledge questionknowledge) {
+        this.current = questionknowledge;
     }
 
     private QuestionknowledgeFacadeLocal getFacade() {
@@ -111,6 +122,30 @@ public class QuestionknowledgeController implements Serializable {
         current = new Questionknowledge();
         selectedItemIndex = -1;
         return "Create";
+    }
+
+    public void store() {
+        Questionsinfo q = new Questionsinfo();
+        q.setId(current.getId());//ID千万不能忘掉，否则只会一直创建新的对象，而不是修改
+        q.setContent(current.getContent());
+        q.setScore(current.getScore());
+        q.setDifficulty(current.getDifficulty());
+        q.setSelections(current.getSelections());
+        Questiontypeinfo qt = new Questiontypeinfo();
+        qt.setId(current.getQuestiontype());
+        q.setQuestiontypeinfo(qt);
+        q.setAnswer(current.getAnswer());
+        q.setAveragetime(current.getAveragetime());
+        q.setCode(current.getCode());
+        q.setInsequence(current.getInsequence());
+        q.setCount(current.getCount());
+        q.setTestcasepara(current.getTestcasepara());
+        q.setTestcaseresult(current.getTestcaseresult());
+        q.setAnalysis(current.getAnalysis());
+        questionController.setCurrent(q);
+        questionController.update();
+        questionController.setCurrent(null);
+
     }
 
     public String create() {
