@@ -33,7 +33,7 @@ public class KnowledgeController implements Serializable {
     private QuestionsinfoController questionController;
     @Inject
     private QuestionknowledgeController qkController;
-    
+
     private Knowledge current;
     private DataModel items = null;
 
@@ -47,8 +47,6 @@ public class KnowledgeController implements Serializable {
     private String newName;
     //显示或隐藏标志位
     private boolean chapterIdSelected = false;
-    
-    
 
     public String getNewPname() {
         return newPname;
@@ -91,7 +89,18 @@ public class KnowledgeController implements Serializable {
         this.chapterIdSelected = true;
         this.current = kl;
         qkController.deleteItem();
-        
+
+        //给当前一个默认值，否在页面无法显示
+        qkController.getSelected().setContent("---");
+        qkController.getSelected().setScore(1);
+        qkController.getSelected().setDifficulty(0.0);
+//        qkController.getSelected().setSelections("---");
+//        qkController.getSelected().setQuestiontype(0);
+        qkController.getSelected().setAnswer("A");
+        qkController.getSelected().setAveragetime(0.0);
+//        qkController.getSelected().setCode("---");
+//        qkController.getSelected().setAnalysis("---");
+
     }
 
     private MyKnowledgeFacadeLocal getFacade() {
@@ -282,7 +291,7 @@ public class KnowledgeController implements Serializable {
     }
 
 //树形结构的遍历（1）
-        public List<WrappedKnowledge> getKnowledgeRoot() {
+    public List<WrappedKnowledge> getKnowledgeRoot() {
         if (chapterId == null) {
             System.out.println("kkkkkkkkkkkkkkk");
             return new LinkedList<WrappedKnowledge>();

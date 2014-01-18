@@ -16,6 +16,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
@@ -43,6 +44,13 @@ public class QuestionknowledgeController implements Serializable {
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private int typeId, knowId;
+    //选择题的四个选项
+    private String selection1="---";
+    private String selection2="---";
+    private String selection3="---";
+    private String selection4="---";
+
+    private String[] arrSelections;
 
     public int getTypeId() {
         return typeId;
@@ -50,6 +58,66 @@ public class QuestionknowledgeController implements Serializable {
 
     public void setTypeId(int typeId) {
         this.typeId = typeId;
+    }
+
+    public void typeListener(ValueChangeEvent event) {
+        typeId = Integer.parseInt((String) event.getNewValue());
+        System.out.println("类型" + typeId);
+    }
+
+    //将答案拆分
+    public void divideSelections() {
+        Questionknowledge qk = getFacade().findById(current.getId());//此处涉及数据库的lazy模式,所以执行SQL语句会更灵活
+        arrSelections = qk.getSelections().split("#");
+    }
+
+    public String getSelection1() {
+        if (current.getSelections() == null) {
+            return selection1;
+        } else {
+            this.divideSelections();
+            return selection1 = arrSelections[0];
+        }
+    }
+
+    public void setSelection1(String selection1) {
+        this.selection1 = selection1;
+    }
+
+    public String getSelection2() {
+        if (current.getSelections() == null) {
+            return selection2;
+        } else {
+            return selection2 = arrSelections[1];
+        }
+    }
+
+    public void setSelection2(String selection2) {
+        this.selection2 = selection2;
+    }
+
+    public String getSelection3() {
+        if (current.getSelections() == null) {
+            return selection3;
+        } else {
+            return selection3 = arrSelections[2];
+        }
+    }
+
+    public void setSelection3(String selection3) {
+        this.selection3 = selection3;
+    }
+
+    public String getSelection4() {
+        if (current.getSelections() == null) {
+            return selection4;
+        } else {
+            return selection4 = arrSelections[3];
+        }
+    }
+
+    public void setSelection4(String selection4) {
+        this.selection4 = selection4;
     }
 
     public int getSelectedItemIndex() {
@@ -60,8 +128,7 @@ public class QuestionknowledgeController implements Serializable {
         this.selectedItemIndex = selectedItemIndex;
     }
 
-    public void selectQuestion(int id) {
-        typeId = id;
+    public void selectQuestion() {
         knowId = kc.getSelected().getId();
         if (knowId > 0) {
             items = this.getPagination().createPageDataModel();
@@ -130,7 +197,7 @@ public class QuestionknowledgeController implements Serializable {
         q.setContent(current.getContent());
         q.setScore(current.getScore());
         q.setDifficulty(current.getDifficulty());
-        q.setSelections(current.getSelections());
+        q.setSelections(selection1 + "#" + selection2 + "#" + selection3 + "#" + selection4);
         Questiontypeinfo qt = new Questiontypeinfo();
         qt.setId(current.getQuestiontype());
         q.setQuestiontypeinfo(qt);
@@ -145,7 +212,6 @@ public class QuestionknowledgeController implements Serializable {
         questionController.setCurrent(q);
         questionController.update();
         questionController.setCurrent(null);
-
     }
 
     public String create() {

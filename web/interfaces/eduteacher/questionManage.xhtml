@@ -25,6 +25,7 @@
                             <f:selectItems value="#{chapterinfoController.chapterList}" />
                             <f:ajax event="change" render="bigtree questionPanel"></f:ajax>
                         </h:selectOneMenu>
+                        <h:commandButton value="添加题目" action="/interfaces/public/addQuestion.xhtml"></h:commandButton>
                     </rich:panel>
                     <div id="tree">
                         <rich:panel header="知识点" style="height: 400px;margin-left: 200px;width: 200px" id="treePanel">
@@ -44,123 +45,148 @@
                             </rich:tree>
                         </rich:panel>
                         <rich:panel header="题目" style="margin-left: 405px;margin-top: -405px;height: 400px" id="questionPanel">
-                            <h:commandButton value="添加题目" action="/interfaces/public/addQuestion.xhtml"></h:commandButton>
-                            <c:if test="#{knowledgeController.selected.id>0}">
-                                <div  class="divcss1">
-                                    <font  class="font1">题型维护</font>
-                                </div>
-                                <div  class="divcss3">
-                                    <rich:dataTable value="#{questiontypeinfoController.items}" var="item"  rowClasses="jsfcrud_odd_row,jsfcrud_even_row"  style="border:solid 1px">
-                                        <rich:column>
-                                            <h:commandLink value="#{item.name}" action="#{questionknowledgeController.selectQuestion(item.id)}" >
-                                            </h:commandLink>
-                                        </rich:column>
-                                        <rich:column>
-                                            <h:commandButton action="#{questiontypeinfoController.delete()}" value="删除"/>
-                                        </rich:column>
-                                    </rich:dataTable>
-                                    <rich:inplaceInput value="#{questiontypeinfoController.typeName}" defaultLabel="点击输入新题型的名称"/>
-                                    <h:commandButton  value="添加" action="#{questiontypeinfoController.createNewType()}" style="width: 60px"/>
-                                </div>
-                                <div class="divcss5" style="width: 400px;height: 330px;">
-                                    <rich:panel style="height: 300px" >
-                                        <rich:dataTable  value="#{questionknowledgeController.items}" iterationStatusVar="it"  id="table"  var="item"  rowClasses="jsfcrud_odd_row,jsfcrud_even_row"  style="border:solid 1px;" rendered="#{questionknowledgeController.items.rowCount > 0}" rows="5">
-                                            <rich:column>
-                                                <f:facet name="header">
-                                                    <h:outputText value="编号"/>
-                                                </f:facet>
-                                                <h:outputLabel value="#{item.id}"/> 
-                                            </rich:column>
-                                            <rich:column>
-                                                <f:facet name="header">
-                                                    <h:outputText value="内容"/>
-                                                </f:facet>
-                                                <h:outputLabel value="#{item.content}"/> 
-                                            </rich:column>
-                                            <rich:column>
-                                                <a4j:commandLink styleClass="no-decor" execute="@this"
-                                                                 render="@none" oncomplete="#{rich:component('confirmPane')}.show()">删除
-                                                    <a4j:param value="#{item.id}"
-                                                               assignTo="#{questionknowledgeController.selectedItemIndex}" />
-                                                </a4j:commandLink>
-                                            </rich:column>
-                                            <rich:column>
-                                                <!--如下须重新渲染题目类型的列表，使其重新向后台传值-->
-                                                <a4j:commandLink styleClass="no-decor" render="editGrid questionPanel"   
-                                                                 execute="@this" oncomplete="#{rich:component('editPane')}.show()">修改
-                                                    <a4j:param value="#{item.id}"
-                                                               assignTo="#{questionknowledgeController.selectedItemIndex}" />
-                                                    <f:setPropertyActionListener target="#{questionknowledgeController.selected}" value="#{item}">
-                                                    </f:setPropertyActionListener>
-                                                </a4j:commandLink>
-                                                <h:commandButton action="#{questionsinfoController.edit}" value="修改"/>
-                                            </rich:column>
-                                            <f:facet name="footer">
-                                                <rich:dataScroller />
+                            <c:if test="#{knowledgeController.selected.id>0}">            
+                                <div class="divcss5" style="width: 900px;height: 330px;" >
+                                    <h:selectOneMenu valueChangeListener="#{questionknowledgeController.typeListener}">
+                                        <f:selectItems value="#{questiontypeinfoController.itemsAvailableSelectAll}"></f:selectItems>
+                                    </h:selectOneMenu>
+                                    <h:commandButton value="确定" action="#{questionknowledgeController.selectQuestion()}"></h:commandButton><br></br>
+                                    <h:outputText escape="false" value="暂无题目,请添加" rendered="#{questionknowledgeController.items.rowCount == -1}"/>
+                                    <rich:dataTable  value="#{questionknowledgeController.items}" iterationStatusVar="it"  id="table"  var="item"  rowClasses="jsfcrud_odd_row,jsfcrud_even_row"  style="border:solid 1px;" rendered="#{questionknowledgeController.items.rowCount > 0}" rows="5">
+                                        <rich:column style="width: 30px">
+                                            <f:facet name="header">
+                                                <h:outputText value="编号"/>
                                             </f:facet>
-                                        </rich:dataTable>
-                                        <a4j:jsFunction name="remove" action="#{questionknowledgeController.delete()}"
-                                                        render="table" execute="@this"
-                                                        oncomplete="#{rich:component('confirmPane')}.hide();" />
-                                        <rich:popupPanel id="confirmPane" autosized="true"> 
-                                            你确定要删除这条题目？
-                                            <a4j:commandButton value="取消"
-                                                               onclick="#{rich:component('confirmPane')}.hide();
-                                                                                       return false;" />
-                                            <a4j:commandButton value="删除" onclick="remove();
-                                                            return false;" />
-                                        </rich:popupPanel>
+                                            <h:outputLabel value="#{item.id}"/> 
+                                        </rich:column>
+                                        <rich:column style="width: 500px">
+                                            <f:facet name="header">
+                                                <h:outputText value="内容"/>
+                                            </f:facet>
+                                            <h:outputLabel value="#{item.content}"/> 
+                                        </rich:column>
+                                        <rich:column style="width: 80px">
+                                            <f:facet name="header">
+                                                <h:outputText value="答案"/>
+                                            </f:facet>
+                                            <h:outputLabel value="#{item.answer}"/> 
+                                        </rich:column>
+                                        <rich:column>
+                                            <a4j:commandLink styleClass="no-decor" execute="@this"
+                                                             render="@none" oncomplete="#{rich:component('confirmPane')}.show()">
+                                                <h:graphicImage value="/resources/images/delete.gif"></h:graphicImage>
+                                                <a4j:param value="#{item.id}"
+                                                           assignTo="#{questionknowledgeController.selectedItemIndex}" />
+                                            </a4j:commandLink>
+                                        </rich:column>
+                                        <rich:column>
+                                            <!--如下须重新渲染题目类型的列表，使其重新向后台传值-->
+                                            <a4j:commandLink styleClass="no-decor" render="editGrid questionPanel"   
+                                                             execute="@this" oncomplete="#{rich:component('editPane')}.show()">
+                                                <h:graphicImage value="/resources/images/edit.gif"></h:graphicImage>
+                                                <a4j:param value="#{item.id}"
+                                                           assignTo="#{questionknowledgeController.selectedItemIndex}" />
+                                                <f:setPropertyActionListener target="#{questionknowledgeController.selected}" value="#{item}">
+                                                </f:setPropertyActionListener>
+                                            </a4j:commandLink>
+                                        </rich:column>
+                                        <f:facet name="footer">
+                                            <rich:dataScroller />
+                                        </f:facet>
+                                    </rich:dataTable>
+                                    <a4j:jsFunction name="remove" action="#{questionknowledgeController.delete()}"
+                                                    render="table" execute="@this"
+                                                    oncomplete="#{rich:component('confirmPane')}.hide();" />
+                                    <rich:popupPanel id="confirmPane" autosized="true"> 
+                                        你确定要删除这条题目？
+                                        <a4j:commandButton value="确定" onclick="remove();
+                                                return false;" />
+                                        <a4j:commandButton value="取消"
+                                                           onclick="#{rich:component('confirmPane')}.hide();
+                                                                                   return false;" />
+                                    </rich:popupPanel>
 
-                                        <rich:popupPanel header="修改题目"  id="editPane" domElementAttachment="parent" height="500" width="600" style="margin-right: 300px">
-                                           
-                                                <h:panelGrid columns="3" style="width: 100%">
-                                                    <h:outputLabel value="内容"></h:outputLabel>
-                                                    <h:inputTextarea id="content" rendered="true"  requiredMessage="输入内容不能为空" value="#{questionknowledgeController.selected.content}" rows="5" cols="80"/>
-                                                    <rich:message for="content"  style="color: red"/>
+                                    <rich:popupPanel header="修改题目"  id="editPane" domElementAttachment="parent" height="500" width="700" style="margin-right: 300px">
+                                        <h:panelGrid columns="3">
+                                            <h:outputLabel value="内容"></h:outputLabel>
+                                            <h:inputTextarea id="content" required="true"  requiredMessage="输入内容不能为空" value="#{questionknowledgeController.selected.content}" rows="5" cols="80"/>
+                                            <rich:message for="content"  style="color: red"/>
+                                        </h:panelGrid>
+                                        <h:panelGrid columns="3" id="editGrid" >
+                                            <h:outputLabel for="scores">
+                                                <h:outputText value="题目分数(1~100)"></h:outputText>
+                                            </h:outputLabel>
+                                            <h:inputText id="scores" required="true"  requiredMessage="输入内容不能为空" validatorMessage="分数值必须在0~100之间" value="#{questionknowledgeController.selected.score}">
+                                                <f:validateLongRange minimum="1" maximum="100"></f:validateLongRange>
+                                            </h:inputText>
+                                            <rich:message id="scoresMsg" for="scores" />
+                                            <h:outputLabel for="difficulty">
+                                                <h:outputText value="题目难度(0~1)"></h:outputText>
+                                            </h:outputLabel>
+                                            <h:inputText id="difficulty"  required="true" requiredMessage="输入内容不能为空" validatorMessage="难度值必须在0~1之间"  value="#{questionknowledgeController.selected.difficulty}"> 
+                                                <f:validateDoubleRange minimum="0" maximum="1"></f:validateDoubleRange>
+                                            </h:inputText>
+                                            <rich:message id="difficultyMsg" for="difficulty"/>
+                                            <h:outputLabel for="averagetime">
+                                                <h:outputText value="平均时间"></h:outputText>
+                                            </h:outputLabel>
+                                            <h:inputText value="#{questionknowledgeController.selected.averagetime}"  required="true" requiredMessage="平均时间必须填写" id="averagetime">
+                                            </h:inputText>
+                                            <rich:message id="priceMsg" for="averagetime" />
+                                        </h:panelGrid>
+
+                                        <c:choose>
+                                            <c:when test="#{questionknowledgeController.typeId==1}">
+                                                <rich:panel>
+                                                    <h:panelGrid columns="3">
+                                                        <h:outputLabel for="s1">
+                                                            <h:outputText value="A"></h:outputText>
+                                                        </h:outputLabel>
+                                                        <h:inputText id="s1" required="true" requiredMessage="输入内容不能为空" value="#{questionknowledgeController.selection1}"></h:inputText>
+                                                        <rich:message for="s1" />
+                                                        <h:outputLabel for="s2">
+                                                            <h:outputText value="B"></h:outputText>
+                                                        </h:outputLabel>
+                                                        <h:inputText id="s2" required="true"  requiredMessage="输入内容不能为空" value="#{questionknowledgeController.selection2}"></h:inputText>
+                                                        <rich:message for="s2" />
+                                                        <h:outputLabel for="s3">
+                                                            <h:outputText value="C"></h:outputText>
+                                                        </h:outputLabel>
+                                                        <h:inputText id="s3"  required="true" requiredMessage="输入内容不能为空" value="#{questionknowledgeController.selection3}"></h:inputText>
+                                                        <rich:message for="s3" />
+                                                        <h:outputLabel for="s4">
+                                                            <h:outputText value="D"></h:outputText>
+                                                        </h:outputLabel>
+                                                        <h:inputText id="s4" required="true"  requiredMessage="输入内容不能为空" value="#{questionknowledgeController.selection4}"></h:inputText>
+                                                        <rich:message for="s4" />
+                                                    </h:panelGrid>
+                                                    <h:panelGrid>
+                                                        <h:outputText value="题目答案:"></h:outputText>
+                                                        <h:selectOneRadio id="answer1" layout="lineDirection" required="true"  requiredMessage="答案内容不能为空"  value="#{questionknowledgeController.selected.answer}">
+                                                            <f:selectItem itemLabel="A" itemValue="A"></f:selectItem>
+                                                            <f:selectItem itemLabel="B" itemValue="B"></f:selectItem>
+                                                            <f:selectItem itemLabel="C" itemValue="C"></f:selectItem>
+                                                            <f:selectItem itemLabel="D" itemValue="D"></f:selectItem>
+                                                        </h:selectOneRadio>
+                                                    </h:panelGrid>
+                                                </rich:panel>
+                                            </c:when>
+                                            <c:when test="#{questionknowledgeController.typeId==3}">
+
+                                                <h:panelGrid columns="3" style="align:center;">
+                                                    <h:inputTextarea  cols="30" rows="5"  value="#{questionknowledgeController.selected.answer}"/>
                                                 </h:panelGrid>
-                                                <h:panelGrid columns="3" id="editGrid">
-                                                    <h:outputLabel for="scores">
-                                                        <h:outputText value="题目分数(1~100)"></h:outputText>
-                                                    </h:outputLabel>
-                                                    <h:inputText id="scores" rendered="true" requiredMessage="输入内容不能为空" validatorMessage="分数值必须在0~100之间" value="#{questionknowledgeController.selected.score}">
-                                                        <f:validateLongRange minimum="1" maximum="100"></f:validateLongRange>
-                                                    </h:inputText>
-                                                    <rich:message for="scores"  style="color: red"/>
-                                                    <h:outputLabel for="difficulty">
-                                                        <h:outputText value="题目难度(0~1)"></h:outputText>
-                                                    </h:outputLabel>
-                                                    <h:inputText id="difficulty" rendered="true"  requiredMessage="输入内容不能为空" validatorMessage="难度值必须在0~1之间"  value="#{questionknowledgeController.selected.difficulty}"> 
-                                                        <f:validateDoubleRange minimum="0" maximum="1"></f:validateDoubleRange>
-                                                    </h:inputText>
-                                                    <rich:message for="difficulty"  style="color: red"/>
-                                                    <h:outputLabel for="averagetime">
-                                                        <h:outputText value="平均时间"></h:outputText>
-                                                    </h:outputLabel>
-                                                    <h:inputText value="#{questionknowledgeController.selected.averagetime}" rendered="true"  requiredMessage="平均时间必须填写" id="averagetime">
-                                                    </h:inputText>
-                                                    <rich:message id="priceMsg" for="averagetime" />
-                                                </h:panelGrid>
 
-                                                <c:choose>
-                                                    <c:when test="#{questionknowledgeController.typeId==1}">
-                                                        dddddddddddd
-                                                    </c:when>
-                                                    <c:when test="#{questionknowledgeController.typeId==3}">
+                                            </c:when>
+                                        </c:choose>
+                                        <a4j:commandButton value="保存" action="#{questionknowledgeController.store}"
+                                                           render="table" execute="editPane"
+                                                           oncomplete="if (#{facesContext.maximumSeverity==null}) {#{rich:component('editPane')}.hide();}" />
+                                        <a4j:commandButton value="取消" 
+                                                           onclick="#{rich:component('editPane')}.hide(); return false;" />
 
-                                                        <h:panelGrid columns="3" style="align:center;">
-                                                            <h:inputTextarea  cols="30" rows="5"  value="#{questionknowledgeController.selected.answer}"/>
-                                                        </h:panelGrid>
+                                    </rich:popupPanel>
 
-                                                    </c:when>
-                                                </c:choose>
-                                                <a4j:commandButton value="保存" action="#{questionknowledgeController.store}"
-                                                                   render="table" execute="editPane"
-                                                                   oncomplete="if (#{facesContext.maximumSeverity==null}) {#{rich:component('editPane')}.hide();}" />
-                                                <a4j:commandButton value="取消" 
-                                                                   onclick="#{rich:component('editPane')}.hide(); return false;" />
-                                            
-                                        </rich:popupPanel>
-                                    </rich:panel>
                                 </div>
                             </c:if>
                         </rich:panel>
