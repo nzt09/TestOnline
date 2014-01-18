@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../stylemodel.xhtml">
+            <ui:define name="content">
+                <h:form>
+                 <h:panelGroup  layout="block">
+                        <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                    </h:panelGroup>
+                    <h:outputText escape="false" value="#{bundle.ListTeacherEmpty}" rendered="#{teacherController.items.rowCount == 0}" />
+                    <rich:dataTable value="#{teacherController.items1}" var="item1"  rowClasses="jsfcrud_odd_row,jsfcrud_even_row"  style="border:solid 1px" rows="10">
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="老师工号"/>
+                            </f:facet>
+                            <h:outputText value="#{item1.personid}"/>
+                        </rich:column>
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="姓名"/>
+                            </f:facet>
+                            <h:outputText value="#{item1.name}"/>
+                        </rich:column>
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="密码"/>
+                            </f:facet>
+                            <h:outputText value="#{item1.password}"/>
+                        </rich:column>
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="身份"/>
+                            </f:facet>
+                            <h:outputText value="#{item1.rolesinfo.name}"/>
+                        </rich:column>
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="学院"/>
+                            </f:facet>
+                            <h:outputText value="#{item1.department.name}"/>
+                        </rich:column>
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                        </rich:column>
+                        <f:facet name="footer">
+                            <rich:dataScroller />
+                        </f:facet>
+                    </rich:dataTable>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+    </body>
+</html>
