@@ -31,4 +31,6 @@ public interface QuestionknowledgeFacadeLocal {
       
     List<Questionknowledge> findRange(int typeid, int knowid);
     
+    Questionknowledge findById(int id);
+    
 }

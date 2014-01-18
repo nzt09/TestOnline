@@ -6,12 +6,10 @@
 package sessionBean;
 
 import entities.Questionknowledge;
-import entities.Questionknowledge_;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.Root;
 
 /**
  *
@@ -39,5 +37,10 @@ public class QuestionknowledgeFacade extends AbstractFacade<Questionknowledge> i
             return null;
         }
         return tem;
+    }
+    
+    public Questionknowledge findById(int id){
+        List<Questionknowledge> tem=em.createNativeQuery("select * from questionknowledge where id="+id, Questionknowledge.class).getResultList();
+        return tem.get(0);
     }
 }
