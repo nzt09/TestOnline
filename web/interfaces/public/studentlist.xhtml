@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:rich="http://richfaces.org/rich">
+
+    <body>
+
+        <ui:composition template="./../../stylemodel.xhtml">
+            <ui:define name="content">
+                <h:form>
+                    <h:panelGroup  layout="block">
+                        <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                    </h:panelGroup>
+                    <h:outputText escape="false" value="#{bundle.ListTeacherEmpty}" rendered="#{teacherController.items.rowCount == 0}" />
+                    <rich:dataTable value="#{studentinfoController.items1}" var="item1"  rowClasses="jsfcrud_odd_row,jsfcrud_even_row"  style="border:solid 1px" rows="10">
+                        <rich:column>
+                            <f:facet name="header">#</f:facet>
+                                #{it.index}
+                        </rich:column>
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="学号"/>
+                            </f:facet>
+                            <h:outputText value="#{item.stuno}"/>
+                        </rich:column>
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="名字"/>
+                            </f:facet>
+                            <h:outputText value="#{item.name}"/>
+                        </rich:column>
+                        <rich:column>
+                            <f:facet name="header">
+                                <h:outputText value="班级"/>
+                            </f:facet>
+                            <h:outputText value="#{item.classname}"/>
+                        </rich:column>
+                        <f:facet name="footer">
+                            <rich:dataScroller />
+                        </f:facet>
+                    </rich:dataTable>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

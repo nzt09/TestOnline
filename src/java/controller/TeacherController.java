@@ -69,6 +69,15 @@ public class TeacherController implements Serializable {
     private String rpw;
     private boolean flag;
     private boolean flag1;
+    private String teacherId;
+
+    public String getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(String teacherId) {
+        this.teacherId = teacherId;
+    }
 
     public boolean isFlag() {
         return flag;
@@ -126,6 +135,7 @@ public class TeacherController implements Serializable {
 
     private Teacher current;
     private DataModel items = null;
+     private DataModel items1 = null;
     @EJB
     private sessionBean.TeacherFacadeLocal ejbFacade;
 
@@ -259,7 +269,23 @@ public class TeacherController implements Serializable {
         }
         return pagination;
     }
+  public PaginationHelper getPagination1() {
+        if (pagination == null) {
+            pagination = new PaginationHelper(2) {
 
+                @Override
+                public int getItemsCount() {
+                    return  getFacade().findByPersonId(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}, teacherId).size();
+                }
+
+                @Override
+                public DataModel createPageDataModel() {
+                    return new ListDataModel(getFacade().findByPersonId(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}, teacherId));
+                }
+            };
+        }
+        return pagination;
+    }
     public String teacherprepareList() {
         recreateModel();
         return "teacherlist";
@@ -326,15 +352,15 @@ public class TeacherController implements Serializable {
         try {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("PasswordChange"));
-            flag1 = true;
-            flag = false;
+            flag = true;
+            flag1 = false;
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
            
         }
     }else{
            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-           flag = true;
+           flag1 = true;
     }
     }
 
@@ -400,6 +426,12 @@ public class TeacherController implements Serializable {
         return items;
     }
 
+      public DataModel getItems1() {
+        if (items1 == null) {
+            items1 = getPagination1().createPageDataModel();
+        }
+        return items1;
+    }
     private void recreateModel() {
         items = null;
     }

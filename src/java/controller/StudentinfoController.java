@@ -49,6 +49,7 @@ public class StudentinfoController implements Serializable {
     private LoginController loginController;
     private Studentinfo current;
     private DataModel items = null;
+    private DataModel items1 = null;
     @EJB
     private sessionBean.StudentinfoFacadeLocal ejbFacade;
     private PaginationHelper pagination;
@@ -60,7 +61,15 @@ public class StudentinfoController implements Serializable {
     private String rpw;
     private boolean flag = false;
     private boolean flag1 = false;
+    private String studentId;
 
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+    }
     public boolean isRflag() {
         return rflag;
     }
@@ -159,6 +168,25 @@ public class StudentinfoController implements Serializable {
                 @Override
                 public DataModel createPageDataModel() {
                     return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+                }
+            };
+        }
+        return pagination;
+    }
+
+     public PaginationHelper getPagination1() {
+         System.out.println(studentId);
+        if (pagination == null) {
+            pagination = new PaginationHelper(10) {
+
+                @Override
+                public int getItemsCount() {
+                    return getFacade().findBystudentId(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}, studentId).size();
+                }
+
+                @Override
+                public DataModel createPageDataModel() {
+                    return new ListDataModel(getFacade().findBystudentId(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()},studentId));
                 }
             };
         }
@@ -324,6 +352,12 @@ public class StudentinfoController implements Serializable {
             items = getPagination().createPageDataModel();
         }
         return items;
+    }
+ public DataModel getItems1() {
+        if (items1 == null) {
+            items1 = getPagination1().createPageDataModel();
+        }
+        return items1;
     }
 
     private void recreateModel() {
