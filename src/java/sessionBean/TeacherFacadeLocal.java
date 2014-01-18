@@ -36,4 +36,5 @@ public interface TeacherFacadeLocal {
 
      List<Teacher> findByRoleId(int roleId);
 
+     List<Teacher> findByPersonId(int[] range,String teacherId);
 }

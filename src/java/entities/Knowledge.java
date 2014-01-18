@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Administrator
+ * @author hgs
  */
 @Entity
 @Table(name = "KNOWLEDGE")
@@ -51,6 +51,8 @@ public class Knowledge implements Serializable {
     @OneToMany(mappedBy = "knowledge")
     private List<Questionbaseinfo> questionbaseinfoList;
     @OneToMany(mappedBy = "knowledge")
+    private List<Question2knowledge> question2knowledgeList;
+    @OneToMany(mappedBy = "knowledge")
     private List<Knowledge> knowledgeList;
     @JoinColumn(name = "PARENTID", referencedColumnName = "ID")
     @ManyToOne
@@ -58,8 +60,6 @@ public class Knowledge implements Serializable {
     @JoinColumn(name = "CHAPTER", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Chapterinfo chapterinfo;
-    @OneToMany(mappedBy = "knowledge")
-    private List<Question2knowledge> question2knowledgeList;
 
     public Knowledge() {
     }
@@ -99,6 +99,15 @@ public class Knowledge implements Serializable {
     }
 
     @XmlTransient
+    public List<Question2knowledge> getQuestion2knowledgeList() {
+        return question2knowledgeList;
+    }
+
+    public void setQuestion2knowledgeList(List<Question2knowledge> question2knowledgeList) {
+        this.question2knowledgeList = question2knowledgeList;
+    }
+
+    @XmlTransient
     public List<Knowledge> getKnowledgeList() {
         return knowledgeList;
     }
@@ -121,15 +130,6 @@ public class Knowledge implements Serializable {
 
     public void setChapterinfo(Chapterinfo chapterinfo) {
         this.chapterinfo = chapterinfo;
-    }
-
-    @XmlTransient
-    public List<Question2knowledge> getQuestion2knowledgeList() {
-        return question2knowledgeList;
-    }
-
-    public void setQuestion2knowledgeList(List<Question2knowledge> question2knowledgeList) {
-        this.question2knowledgeList = question2knowledgeList;
     }
 
     @Override
