@@ -47,14 +47,22 @@ public class TeacherFacade extends AbstractFacade<Teacher> implements TeacherFac
             return (Teacher) tem.get(0);
         }
     }
- public List<Teacher> findByRoleId(int roleId) {
+
+    public List<Teacher> findByRoleId(int roleId) {
         List<Teacher> tem = em.createNativeQuery("select * from teacher where roleid=" + roleId + "", Teacher.class).getResultList();
         if (tem.isEmpty()) {
             return null;
         }
         return tem;
     }
-  
-    
+
+    public List<Teacher> findByPersonId(int[] rang, String teacherId) {
+        List<Teacher> tem = em.createNativeQuery("select * from teacher where  personId=" + teacherId + "", Teacher.class).getResultList();
+        if (tem.isEmpty()) {
+            return null;
+        }
+        return tem;
+
+    }
 
 }

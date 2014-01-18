@@ -37,5 +37,6 @@ public interface StudentinfoFacadeLocal {
     
     List<Studentinfo> findById(int id);
     
+    List<Studentinfo> findBystudentId(int[] range,String studentid);
      
 }
