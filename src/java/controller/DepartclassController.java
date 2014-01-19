@@ -58,6 +58,27 @@ public class DepartclassController implements Serializable {
     private int majorId;
     private Major major;
     private Department department;
+    //两种匹配方式
+    private String stunoFilter;
+    private String nameFilter;
+
+    public String getNameFilter() {
+        return nameFilter;
+    }
+
+    public void setNameFilter(String nameFilter) {
+        this.nameFilter = nameFilter;
+    }
+    
+
+    public String getStunoFilter() {
+        return stunoFilter;
+    }
+
+    public void setStunoFilter(String stunoFilter) {
+        this.stunoFilter = stunoFilter;
+    }
+    
 
     public void isShow() {
         items = null;

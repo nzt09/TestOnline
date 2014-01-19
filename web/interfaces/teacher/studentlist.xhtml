@@ -5,7 +5,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:rich="http://richfaces.org/rich"
-      xmlns:a4j="http://richfaces.org/a4j">
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
     <body>
         <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
@@ -30,56 +31,63 @@
                     <h:panelGroup id="messagePanel" layout="block">
                         <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                     </h:panelGroup>
-                    <h:outputText escape="false" value="无信息，请选择" rendered="#{departclassController.items.rowCount == 0}"/>
                     <h:panelGroup rendered="#{departclassController.items.rowCount > 0}">
                         <h:outputLabel value="人数："></h:outputLabel>
                         <h:outputLabel value="#{departclassController.pagination.itemsCount}"></h:outputLabel>
-                        <rich:dataTable value="#{departclassController.items}"  iterationStatusVar="it" var="item" id="table" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" style="border:solid 1px" rows="10">
-                            <rich:column>
-                                <f:facet name="header">#</f:facet>
+                        <rich:dataTable value="#{departclassController.items}"  iterationStatusVar="it" var="item" id="table"  style="border:solid 1px" rows="10">
+                            <f:facet name="noData">
+                                无满足条件的记录，请重新搜索！
+                            </f:facet>
+                            <rich:column style="width: 60px;column-width: 60px">
+                                <f:facet name="header" >#</f:facet>
                                     #{it.index}
                             </rich:column>
-                            <rich:column>
-                                <f:facet name="header">
+                            <rich:column filterValue="#{departclassController.stunoFilter}" style="width: 200px"
+                                         filterExpression="#{fn:containsIgnoreCase(item.stuno, departclassController.stunoFilter)}">
+                                <f:facet name="header">                          
                                     <h:outputText value="学号"/>
+                                    <rich:inplaceInput value="#{departclassController.stunoFilter}" defaultLabel="点击输入学号查询">
+                                        <a4j:ajax render="table" execute="@this" event="mouseout" />
+                                    </rich:inplaceInput>
                                 </f:facet>
                                 <h:outputText value="#{item.stuno}"/>
                             </rich:column>
-                            <rich:column>
+                            <rich:column filterValue="#{departclassController.nameFilter}" style="width: 200px"
+                                         filterExpression="#{fn:containsIgnoreCase(item.name, departclassController.nameFilter)}">
                                 <f:facet name="header">
                                     <h:outputText value="名字"/>
+                                    <rich:inplaceInput value="#{departclassController.nameFilter}" defaultLabel="点击输入名字查询">
+                                        <a4j:ajax render="table" execute="@this" event="mouseout" />
+                                    </rich:inplaceInput>>
                                 </f:facet>
                                 <h:outputText value="#{item.name}"/>
                             </rich:column>
-                            <rich:column>
+                            <rich:column style="width: 50px">
                                 <f:facet name="header">
                                     <h:outputText value="班级"/>
                                 </f:facet>
                                 <h:outputText value="#{item.classname}"/>
                             </rich:column>
-                            <rich:column>
+                            <rich:column style="width: 20px">
                                 <f:facet name="header">
                                     <h:outputText value="&nbsp;"/>
                                 </f:facet>
                                 <a4j:commandLink styleClass="no-decor" execute="@this" action="#{departclassController.deleted()}"
-                                                 render="@none" oncomplete="#{rich:component('confirmPane')}.show()">删除
+                                                 render="@none" oncomplete="#{rich:component('confirmPane')}.show()">
+                                    <h:graphicImage value="/resources/images/delete.gif"></h:graphicImage>
                                 </a4j:commandLink>
                                 <h:outputText value=" "/>
-                                <h:commandLink action="#{departclassController.deleted()}" value="删除"/>
                             </rich:column>
                             <f:facet name="footer">
-                                <rich:dataScroller/>
+                                <rich:dataScroller style="width: 490px"/>
                             </f:facet>
                         </rich:dataTable>
                         <a4j:jsFunction name="remove" action="#{departclassController.deleted()}"
                                         render="table" execute="@this"
                                         oncomplete="#{rich:component('confirmPane')}.hide();" />
+
                         <h:commandLink action="#{studentinfoController.prepareCreate()}" value="添加"/>
-
                     </h:panelGroup>
-
-
-
                     <rich:popupPanel id="confirmPane" autosized="true"> 
                         Are you sure you want to delete the row?
                         <a4j:commandButton value="Cancel"
