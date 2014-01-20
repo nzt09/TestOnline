@@ -60,14 +60,9 @@ public class TestassigninfomController implements Serializable {
     private int selectedItemIndex;
     private int courseId;
     private int classId;
-    private String isTesting;
-    private Date time;
     private List<Testassigninfom> testAssignList;
-    private int month;
-    private int day;
-    private int year;
-    private boolean isReady=false;
-    private boolean isReady1=false;
+    private boolean isReady = false;
+    private boolean isReady1 = false;
 
     public int getMinute() {
         return minute;
@@ -103,14 +98,14 @@ public class TestassigninfomController implements Serializable {
     private int minute = 0;
     private int second = 0;
     private int hour = 0;
-    
+
 //判断当前时间是否在考试时间内
     public void isTesting() {
         Calendar c = Calendar.getInstance();
         Calendar beginTime = Calendar.getInstance();
         Calendar endTime = Calendar.getInstance();
         if (testAssignList == null || testAssignList.isEmpty()) {
-         
+
         } else {
             for (Testassigninfom testa : testAssignList) {
                 beginTime.setTime(testa.getTesttime());
@@ -125,11 +120,13 @@ public class TestassigninfomController implements Serializable {
         System.out.println(c.toString());
         System.out.println(endTime.toString());
         if (c.before(endTime) && c.after(beginTime)) {
-            isReady=true;
-        } else 
-            isReady1=true;
+            isReady = true;
+        } else {
+            isReady1 = true;
+        }
     }
 //拿到班级ID
+
     public void getBanjiId() {
         classId = stuCon.getCurrent().getClassinfo().getId();
         System.out.print(classId);
@@ -142,7 +139,7 @@ public class TestassigninfomController implements Serializable {
     public void setCourseId(int courseId) {
         this.courseId = courseId;
         testAssignList = getFacade().findConstrainRange(new int[]{0, 10}, courseId, classId);
-        
+
     }
 
     public TestassigninfomController() {
@@ -161,10 +158,11 @@ public class TestassigninfomController implements Serializable {
         return ejbFacade;
     }
 //学生端的考试安排
+
     public PaginationHelper getPagination1() {
         classId = stuCon.getCurrent().getClassinfo().getId();
         System.out.print(courseId);
-      System.out.print(classId);
+        System.out.print(classId);
         if (pagination == null) {
             pagination = new PaginationHelper(10) {
 
@@ -182,6 +180,7 @@ public class TestassigninfomController implements Serializable {
         return pagination;
     }
 //教务老师端的考试安排
+
     public PaginationHelper getPagination() {
         if (pagination == null) {
             pagination = new PaginationHelper(10) {
@@ -300,7 +299,7 @@ public class TestassigninfomController implements Serializable {
     }
 
     public DataModel getItems1() {
-        items1=null;
+        items1 = null;
         if (items1 == null) {
             items1 = getPagination1().createPageDataModel();
         }

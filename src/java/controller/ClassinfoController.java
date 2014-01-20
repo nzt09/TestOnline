@@ -23,12 +23,12 @@ import sessionBean.DepartclassFacadeLocal;
 @Named("classinfoController")
 @SessionScoped
 public class ClassinfoController implements Serializable {
-  @EJB
-  private DepartclassFacadeLocal  departclassFacade;
-  @Inject
-  private DepartclassController departclassController;
-  
-    
+
+    @EJB
+    private DepartclassFacadeLocal departclassFacade;
+    @Inject
+    private DepartclassController departclassController;
+
     private Classinfo current;
     private DataModel items = null;
     @EJB
@@ -36,6 +36,7 @@ public class ClassinfoController implements Serializable {
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private int classId;
+
     public ClassinfoController() {
     }
 
@@ -135,7 +136,7 @@ public class ClassinfoController implements Serializable {
             return "List";
         }
     }
-   
+
     private void performDestroy() {
         try {
             getFacade().remove(current);
@@ -188,7 +189,7 @@ public class ClassinfoController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
-         SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
         for (int i = 0; i < item.length; i++) {
             item[i].setLabel(((Classinfo) item[i].getValue()).getClassname());
             item[i].setValue(((Classinfo) item[i].getValue()).getId());
@@ -199,14 +200,15 @@ public class ClassinfoController implements Serializable {
     public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
-     public SelectItem[] getItemsAvailableSelectM() {
+
+    public SelectItem[] getItemsAvailableSelectM() {
         SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
         for (int i = 0; i < item.length; i++) {
             item[i].setLabel(((Classinfo) item[i].getValue()).getClassname());
         }
         return item;
     }
-    
+
     public Classinfo getClassinfo(java.lang.Integer id) {
         return ejbFacade.find(id);
     }

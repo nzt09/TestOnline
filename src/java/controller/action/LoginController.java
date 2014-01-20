@@ -68,7 +68,7 @@ public class LoginController implements java.io.Serializable {
     }
     private int classId;
     //判断密码是否一致
-    private boolean  pwFlag = false;
+    private boolean pwFlag = false;
     //判断验证码是否对
     private boolean validateFlag = false;
 
@@ -79,7 +79,7 @@ public class LoginController implements java.io.Serializable {
     public void setPwFlag(boolean pwFlag) {
         this.pwFlag = pwFlag;
     }
-    
+
     //新的密码
     private String newPassword;
 
@@ -122,7 +122,7 @@ public class LoginController implements java.io.Serializable {
     }
     //  用户名并且往后传递
     private String name;
-   //判断密码是否一致
+    //判断密码是否一致
 
     public String pwApper() {
         System.out.println(oldpw);
@@ -200,7 +200,6 @@ public class LoginController implements java.io.Serializable {
             //取回验证码页面的session
             HttpSession tem = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             String code = (String) tem.getAttribute("rand");
-            System.out.println("code");
             if (validate_code.equals(code)) {
                 validate_code = null;
                 validateFlag = true;
@@ -215,7 +214,6 @@ public class LoginController implements java.io.Serializable {
 
     // 登录验证
     public String login() throws IOException {
-        FacesContext context = FacesContext.getCurrentInstance();
         Teacher currentTea = teaFacade.findByIdPassword(userId, password);
         Studentinfo currentStu = studentFacade.findByIdPassword(userId, password);
         if (validateFlag == true) {
@@ -223,17 +221,6 @@ public class LoginController implements java.io.Serializable {
                 //管理员登陆
                 name = currentTea.getName();
                 teaCon.setCurrent(currentTea);
-                if (currentTea.getRolesinfo().getId() == Publicfields.ADMINISTRATOR_ROLE) {
-
-                    
-                } //教务老师登陆
-                else if (currentTea.getRolesinfo().getId() == Publicfields.TEACHER_ROLE) {
-                   
-                } //任课老师登陆
-                else if (currentTea.getRolesinfo().getId() == Publicfields.EDUTEACHER_ROLE) {
-                    teaCon.setCurrent(currentTea);
-                    
-                }
                 return "/interfaces/public/welcome?faces-redirect=true";
 
             } else if (null == currentTea.getName() && null != currentStu.getName()) {
@@ -272,6 +259,7 @@ public class LoginController implements java.io.Serializable {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         facesContext.getExternalContext().invalidateSession();
         this.password = "";
+        this.validate_code = null;
         return "/interfaces/login/login";
     }
 

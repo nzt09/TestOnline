@@ -50,7 +50,7 @@
 
 .left_content {
     background-color: #F0F6FA;
-    height: 100%;
+    height: 490px;
 }
 
 .right_content {
@@ -94,5 +94,5 @@
 
 #divstyle{margin-left: 400px;
           padding-top: 50px;
-           height: 200px;
-           background: #F0F6FA;}
+          height: 200px;
+          background: #F0F6FA;}

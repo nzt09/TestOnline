@@ -7,7 +7,6 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:a4j="http://richfaces.org/a4j">
-
     <body>
         <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
@@ -52,7 +51,7 @@
                                     </h:selectOneMenu>
                                     <h:commandButton value="确定" action="#{questionknowledgeController.selectQuestion()}"></h:commandButton><br></br>
 
-                                    <rich:dataTable  value="#{questionknowledgeController.items}" iterationStatusVar="it"  id="table"  var="item"  rowClasses="jsfcrud_odd_row,jsfcrud_even_row"  style="border:solid 1px;" rendered="#{questionknowledgeController.items.rowCount > 0}" rows="5">
+                                    <rich:dataTable  value="#{questionknowledgeController.items}" iterationStatusVar="it"  id="table"  var="item"  rowClasses="jsfcrud_odd_row,jsfcrud_even_row"  rendered="#{questionknowledgeController.items.rowCount > 0}" rows="5">
                                         <f:facet name="noData">
                                             暂无题目，请先添加
                                         </f:facet>

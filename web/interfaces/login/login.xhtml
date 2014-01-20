@@ -19,25 +19,31 @@
                             <f:facet name="header">
                                 <h:outputText value="考试系统登陆"/>
                             </f:facet>
-                            <h:panelGrid columns="2">
+                            <h:panelGrid columns="3">
                                 <h:outputText value="用户编号： " styleClass="stylefont"/>
-                                <rich:inplaceInput defaultLabel="点击输入你的编号" value="#{loginController.userId}" style="width: 150px;"
-                                                   showControls="true"/>
-                                <h:outputText value="密码：" styleClass="stylefont"/>
-                                <rich:inplaceInput defaultLabel="点击输入你的密码" value="#{loginController.password}" style="width: 150px;"
-                                                   showControls="true" >
+                                <rich:inplaceInput id="userId" defaultLabel="点击输入你的编号" value="#{loginController.userId}" style="width: 150px;" 
+                                                   required="true" requiredMessage="请输入你的编号"  showControls="true">
+                                    <f:ajax event="keyup" render="userIdmessage"></f:ajax>
                                 </rich:inplaceInput>
+                                <rich:message for="userId" id="userIdmessage"></rich:message>
+                                <h:outputText value="密码：" styleClass="stylefont"/>
+                                <rich:inplaceInput  id="password"  defaultLabel="点击输入你的密码" value="#{loginController.password}" style="width: 150px;"
+                                                   required="true" requiredMessage="请输入你的密码"  showControls="true" >
+                                    <f:ajax event="keyup" render="passwordmessage"></f:ajax>
+                                </rich:inplaceInput>
+                                <rich:message for="password" id="passwordmessage"></rich:message>
                             </h:panelGrid>
-                            <h:panelGrid columns="5">
+                            <h:panelGrid columns="6">
                                 <h:outputText value="验证码(*)：" styleClass="label"></h:outputText>
-                                <h:inputText id="vcode" required="true" value="#{loginController.validate_code}">
-                                    <f:ajax event="blur" render="vali"></f:ajax>
+                                <h:inputText id="vcode"  value="#{loginController.validate_code}" required="true" requiredMessage="请输入验证码">
+                                    <f:ajax event="keyup" render="vali vcodeMessage"></f:ajax>
                                 </h:inputText>
                                 <h:graphicImage value="../../../interfaces/login/image.jsp" id="validateImage"></h:graphicImage>
                                 <h:outputLabel value="换一张">
                                     <a4j:ajax render="validateImage" event="click"></a4j:ajax>
                                 </h:outputLabel>
                                 <h:graphicImage value="#{loginController.doValidate()}" id="vali"></h:graphicImage>
+                                <rich:message for="vcode" id="vcodeMessage"/>
                             </h:panelGrid>
                             <h:panelGrid columns="2">
                                 <h:commandButton style="width: 100px;height: 25px " id="submit" value="登录" action="#{loginController.login()}"></h:commandButton> 

@@ -42,10 +42,7 @@ public class TeacherController implements Serializable {
 
     @Inject
     private TeachercourseclassController teachercourseCont;
-    
-    @EJB
-    private DepartclassFacadeLocal DepartclassFacade;
-    
+
     @Inject
     private DepartclassController departclassController;
 
@@ -69,14 +66,15 @@ public class TeacherController implements Serializable {
     private String rpw;
     private boolean flag;
     private boolean flag1;
-    private String teacherId;
 
-    public String getTeacherId() {
-        return teacherId;
+    private String currentTeacherId;
+
+    public String getCurrentTeacherId() {
+        return currentTeacherId;
     }
 
-    public void setTeacherId(String teacherId) {
-        this.teacherId = teacherId;
+    public void setCurrentTeacherId(String currentTeacherId) {
+        this.currentTeacherId = currentTeacherId;
     }
 
     public boolean isFlag() {
@@ -94,7 +92,6 @@ public class TeacherController implements Serializable {
     public void setFlag1(boolean flag1) {
         this.flag1 = flag1;
     }
-   
 
     public String getRpw() {
         return rpw;
@@ -103,7 +100,12 @@ public class TeacherController implements Serializable {
     public void setRpw(String rpw) {
         this.rpw = rpw;
     }
-    
+
+    //设定初始值
+    public void setDefault() {
+        departmentId = this.getCurrent().getDepartment().getId();
+        roleId = 3;
+    }
 
     public void isShow() {
         items = null;
@@ -135,7 +137,6 @@ public class TeacherController implements Serializable {
 
     private Teacher current;
     private DataModel items = null;
-     private DataModel items1 = null;
     @EJB
     private sessionBean.TeacherFacadeLocal ejbFacade;
 
@@ -155,19 +156,19 @@ public class TeacherController implements Serializable {
     public void setRoleId(int roleId) {
         this.roleId = roleId;
     }
-    
-     //核对两遍新密码是否一致
+
+    //核对两遍新密码是否一致
     public String checkNewPassword() {
-       if(rpw == null || rpw.isEmpty()){
-           
+        if (rpw == null || rpw.isEmpty()) {
+
             return "请输入密码";
-        }else if(rpw.equals(this.getSelected().getPassword())){
-            
+        } else if (rpw.equals(this.getSelected().getPassword())) {
+
             return "密码正确";
-        }else
-            
-           return "密码不匹配";
-        
+        } else {
+            return "密码不匹配";
+        }
+
     }
     private int selectedItemIndex, roleId, departmentId;
 
@@ -269,23 +270,7 @@ public class TeacherController implements Serializable {
         }
         return pagination;
     }
-  public PaginationHelper getPagination1() {
-        if (pagination == null) {
-            pagination = new PaginationHelper(2) {
 
-                @Override
-                public int getItemsCount() {
-                    return  getFacade().findByPersonId(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}, teacherId).size();
-                }
-
-                @Override
-                public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findByPersonId(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}, teacherId));
-                }
-            };
-        }
-        return pagination;
-    }
     public String teacherprepareList() {
         recreateModel();
         return "teacherlist";
@@ -322,6 +307,7 @@ public class TeacherController implements Serializable {
     public String educreate() {
         try {
             getFacade().create(current);
+            recreateModel();
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TeacherCreated"));
             return "";
         } catch (Exception e) {
@@ -348,20 +334,20 @@ public class TeacherController implements Serializable {
     }
 
     public void updateAdminPassword() {
-        if(loginController.isPwFlag()==true){
-        try {
-            getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("PasswordChange"));
-            flag = true;
-            flag1 = false;
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-           
+        if (loginController.isPwFlag() == true) {
+            try {
+                getFacade().edit(current);
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("PasswordChange"));
+                flag = true;
+                flag1 = false;
+            } catch (Exception e) {
+                JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+
+            }
+        } else {
+            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            flag1 = true;
         }
-    }else{
-           JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-           flag1 = true;
-    }
     }
 
     public String admindestroy() {
@@ -371,6 +357,12 @@ public class TeacherController implements Serializable {
         recreatePagination();
         recreateModel();
         return "adminMain";
+    }
+
+    public void delete() {
+        current = getFacade().find(currentTeacherId);
+        performDestroy();
+        items = null;
     }
 
     public String destroy() {
@@ -426,12 +418,6 @@ public class TeacherController implements Serializable {
         return items;
     }
 
-      public DataModel getItems1() {
-        if (items1 == null) {
-            items1 = getPagination1().createPageDataModel();
-        }
-        return items1;
-    }
     private void recreateModel() {
         items = null;
     }
@@ -476,7 +462,6 @@ public class TeacherController implements Serializable {
         }
         return item;
     }
-
 
     public Teacher getTeacher(java.lang.String id) {
         return ejbFacade.find(id);

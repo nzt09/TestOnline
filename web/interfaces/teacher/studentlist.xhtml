@@ -10,31 +10,9 @@
     <body>
         <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
-                <h:form>
-                    <h:panelGrid columns="4">
-                        <h:selectOneMenu  id="departmentId"  valueChangeListener="#{departclassController.typeDepartmentListener}">
-                            <f:selectItem itemValue="0" itemLabel="-请选择学院-"></f:selectItem>
-                            <f:selectItems value="#{departmentController.itemsAvailableSelectMany}"></f:selectItems>
-                            <f:ajax event="change" render="majorId classId"></f:ajax>
-                        </h:selectOneMenu> 
-                        <h:selectOneMenu id="majorId" valueChangeListener="#{departclassController.typeMajorListener}">
-                            <f:selectItem itemValue="0" itemLabel="-请选择专业-"></f:selectItem>
-                            <f:selectItems value="#{departclassController.majorList}"></f:selectItems>
-                            <f:ajax event="change" render="classId"></f:ajax>
-                        </h:selectOneMenu>
-                        <h:selectOneMenu id="classId"  value="#{departclassController.classId}" >
-                            <f:selectItem itemValue="0" itemLabel="-请选择班级-"></f:selectItem>
-                            <f:selectItems value="#{departclassController.classList}"></f:selectItems>
-                        </h:selectOneMenu>
-                        <h:commandLink  action="#{departclassController.isShow()}" value="查看"  style="text-decoration: none;"/>
-                    </h:panelGrid>
-                    <h:panelGroup id="messagePanel" layout="block">
-                        <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-                    </h:panelGroup>
+                <h:form onclick="#{departclassController.giveDepartmentId()}">
                     <h:panelGroup rendered="#{departclassController.items.rowCount > 0}">
-                        <h:outputLabel value="人数："></h:outputLabel>
-                        <h:outputLabel value="#{departclassController.pagination.itemsCount}"></h:outputLabel>
-                        <rich:dataTable value="#{departclassController.items}"  iterationStatusVar="it" var="item" id="table"  style="border:solid 1px" rows="10">
+                        <rich:dataTable value="#{departclassController.items}"  iterationStatusVar="it" var="item" id="table"  styleClass="stable" rows="10">
                             <f:facet name="noData">
                                 无满足条件的记录，请重新搜索！
                             </f:facet>
@@ -45,20 +23,20 @@
                             <rich:column filterValue="#{departclassController.stunoFilter}" style="width: 200px"
                                          filterExpression="#{fn:containsIgnoreCase(item.stuno, departclassController.stunoFilter)}">
                                 <f:facet name="header">                          
-                                    <h:outputText value="学号"/>
-                                    <rich:inplaceInput value="#{departclassController.stunoFilter}" defaultLabel="点击输入学号查询">
+                                    <h:outputText value="学号："/>
+                                    <h:inputText value="#{departclassController.stunoFilter}" >
                                         <a4j:ajax render="table" execute="@this" event="mouseout" />
-                                    </rich:inplaceInput>
+                                    </h:inputText>
                                 </f:facet>
                                 <h:outputText value="#{item.stuno}"/>
                             </rich:column>
                             <rich:column filterValue="#{departclassController.nameFilter}" style="width: 200px"
                                          filterExpression="#{fn:containsIgnoreCase(item.name, departclassController.nameFilter)}">
                                 <f:facet name="header">
-                                    <h:outputText value="名字"/>
-                                    <rich:inplaceInput value="#{departclassController.nameFilter}" defaultLabel="点击输入名字查询">
+                                    <h:outputText value="姓名："/>
+                                    <h:inputText value="#{departclassController.nameFilter}" >
                                         <a4j:ajax render="table" execute="@this" event="mouseout" />
-                                    </rich:inplaceInput>>
+                                    </h:inputText>
                                 </f:facet>
                                 <h:outputText value="#{item.name}"/>
                             </rich:column>
@@ -72,35 +50,39 @@
                                 <f:facet name="header">
                                     <h:outputText value="&nbsp;"/>
                                 </f:facet>
-                                <a4j:commandLink styleClass="no-decor" execute="@this" action="#{departclassController.deleted()}"
+                                <a4j:commandLink styleClass="no-decor" execute="@this" 
                                                  render="@none" oncomplete="#{rich:component('confirmPane')}.show()">
                                     <h:graphicImage value="/resources/images/delete.gif"></h:graphicImage>
+                                    <a4j:param value="#{item.id}"
+                                               assignTo="#{departclassController.currentStuId}" />
                                 </a4j:commandLink>
                                 <h:outputText value=" "/>
                             </rich:column>
                             <f:facet name="footer">
-                                <rich:dataScroller style="width: 490px"/>
+                                <rich:dataScroller style="width: 490px" render="table"/>
                             </f:facet>
                         </rich:dataTable>
                         <a4j:jsFunction name="remove" action="#{departclassController.deleted()}"
-                                        render="table" execute="@this"
-                                        oncomplete="#{rich:component('confirmPane')}.hide();" />
-
+                                        render="table hintPane" execute="@this"
+                                        oncomplete="#{rich:component('confirmPane')}.hide();#{rich:component('hintPane')}.show();" />
                         <h:commandLink action="#{studentinfoController.prepareCreate()}" value="添加"/>
                     </h:panelGroup>
                     <rich:popupPanel id="confirmPane" autosized="true"> 
-                        Are you sure you want to delete the row?
-                        <a4j:commandButton value="Cancel"
-                                           onclick="#{rich:component('confirmPane')}.hide();
-                                                   return false;" />
-                        <a4j:commandButton value="Delete" onclick="remove();
+                        确定删除该条信息？
+                        <a4j:commandButton value="确定" onclick="remove();
                                 return false;" />
+                        <a4j:commandButton value="取消"
+                                           onclick="#{rich:component('confirmPane')}.hide();
+                                                                   return false;" />        
                     </rich:popupPanel>
-                    <br />
+                    <rich:popupPanel id="hintPane" autosized="true">
+                        <h:outputLabel value="#{departclassController.deletemessage}"></h:outputLabel>
+                        <a4j:commandButton value="确定"
+                                           onclick="#{rich:component('hintPane')}.hide();
+                                                                   return false;" />
+                    </rich:popupPanel>
                 </h:form>
             </ui:define>
-
         </ui:composition>
-
     </body>
 </html>

@@ -4,6 +4,7 @@ import controller.action.LoginController;
 import entities.Studentinfo;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
+import entities.Classinfo;
 import entities.Teachercourseclass;
 import sessionBean.StudentinfoFacadeLocal;
 
@@ -23,8 +24,6 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
-import sessionBean.DepartclassFacadeLocal;
-import sessionBean.TeacherFacadeLocal;
 import sessionBean.TeachercourseclassFacadeLocal;
 
 @Named("studentinfoController")
@@ -33,23 +32,12 @@ public class StudentinfoController implements Serializable {
 
     @EJB
     private TeachercourseclassFacadeLocal teachercourseclassFacade;
-
-    @Inject
-    private TeachercourseclassController teachercourseCont;
-
-    @EJB
-    private DepartclassFacadeLocal DepartclassFacade;
-    @Inject
-    private DepartclassController DepartclassController;
-    @EJB
-    private TeacherFacadeLocal teacherFacade;
-    @Inject
-    private TeacherController teacherController;
     @Inject
     private LoginController loginController;
+    @Inject
+    private DepartclassController departclassController;
     private Studentinfo current;
     private DataModel items = null;
-    private DataModel items1 = null;
     @EJB
     private sessionBean.StudentinfoFacadeLocal ejbFacade;
     private PaginationHelper pagination;
@@ -58,18 +46,11 @@ public class StudentinfoController implements Serializable {
 
     private List<SelectItem> courseList;// 用于存放该学生的所有课程名
     private int departmentId;
+    private int classId;
     private String rpw;
     private boolean flag = false;
     private boolean flag1 = false;
-    private String studentId;
 
-    public String getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
-    }
     public boolean isRflag() {
         return rflag;
     }
@@ -78,6 +59,7 @@ public class StudentinfoController implements Serializable {
         this.rflag = rflag;
     }
     private boolean rflag = false;
+
     public String getRpw() {
         return rpw;
     }
@@ -101,7 +83,14 @@ public class StudentinfoController implements Serializable {
     public void setFlag1(boolean flag1) {
         this.flag1 = flag1;
     }
-    private int roleId;
+
+    public int getClassId() {
+        return classId;
+    }
+
+    public void setClassId(int classId) {
+        this.classId = classId;
+    }
 
     public List<SelectItem> getCourseList() {
         return courseList;
@@ -174,25 +163,6 @@ public class StudentinfoController implements Serializable {
         return pagination;
     }
 
-     public PaginationHelper getPagination1() {
-         System.out.println(studentId);
-        if (pagination == null) {
-            pagination = new PaginationHelper(10) {
-
-                @Override
-                public int getItemsCount() {
-                    return getFacade().findBystudentId(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}, studentId).size();
-                }
-
-                @Override
-                public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findBystudentId(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()},studentId));
-                }
-            };
-        }
-        return pagination;
-    }
-
     public String prepareList() {
         recreateModel();
         return "studentlist";
@@ -212,7 +182,11 @@ public class StudentinfoController implements Serializable {
 
     public String create() {
         try {
+            Classinfo c=new Classinfo();
+            c.setId(classId);
+            current.setClassinfo(c);
             getFacade().create(current);
+            departclassController.isShow();
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("StudentinfoCreated"));
             return prepareCreate();
         } catch (Exception e) {
@@ -233,16 +207,16 @@ public class StudentinfoController implements Serializable {
 
     //核对两遍新密码是否一致
     public String checkNewPassword() {
-       if(rpw == null || rpw.isEmpty()){
-           
+        if (rpw == null || rpw.isEmpty()) {
+
             return "请输入密码";
-        }else if(rpw.equals(this.getSelected().getPassword())){
-            
+        } else if (rpw.equals(this.getSelected().getPassword())) {
+
             return "密码正确";
-        }else
-            
-           return "密码不匹配";
-        
+        } else {
+            return "密码不匹配";
+        }
+
     }
 //为学生更新密码
 
@@ -352,12 +326,6 @@ public class StudentinfoController implements Serializable {
             items = getPagination().createPageDataModel();
         }
         return items;
-    }
- public DataModel getItems1() {
-        if (items1 == null) {
-            items1 = getPagination1().createPageDataModel();
-        }
-        return items1;
     }
 
     private void recreateModel() {
