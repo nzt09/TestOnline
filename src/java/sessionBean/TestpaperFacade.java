@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package sessionBean;
 
 import entities.Testpaper;
+import java.util.LinkedList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,6 +18,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class TestpaperFacade extends AbstractFacade<Testpaper> implements TestpaperFacadeLocal {
+
     @PersistenceContext(unitName = "TestOnlineFree-ejbPU")
     private EntityManager em;
 
@@ -28,5 +30,13 @@ public class TestpaperFacade extends AbstractFacade<Testpaper> implements Testpa
     public TestpaperFacade() {
         super(Testpaper.class);
     }
-    
+
+    public List<Testpaper> findByStuId(int stuId) {
+        List<Testpaper> tem = em.createNativeQuery("select * from testpaper where stuid=" + stuId + "", Testpaper.class).getResultList();
+        if (tem == null || tem.isEmpty()) {
+            return null;
+        } else {
+            return tem;
+        }
+    }
 }

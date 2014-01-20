@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package sessionBean;
 
 import entities.Classinfo;
@@ -30,8 +29,8 @@ public interface ClassinfoFacadeLocal {
     List<Classinfo> findRange(int[] range);
 
     int count();
-    
+
     List<Classinfo> findByMajor(int id);
-    
-     List<Classinfo> findById(int classId);
+
+    List<Classinfo> findById(int classId);
 }

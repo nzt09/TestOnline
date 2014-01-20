@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package sessionBean;
 
 import entities.Classinfo;
@@ -18,6 +17,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class ClassinfoFacade extends AbstractFacade<Classinfo> implements ClassinfoFacadeLocal {
+
     @PersistenceContext(unitName = "TestOnlineFree-ejbPU")
     private EntityManager em;
 
@@ -29,11 +29,13 @@ public class ClassinfoFacade extends AbstractFacade<Classinfo> implements Classi
     public ClassinfoFacade() {
         super(Classinfo.class);
     }
+
     public List<Classinfo> findByMajor(int id) {
         List<Classinfo> tem = em.createNativeQuery("select * from classinfo where major=" + id + "", Classinfo.class).getResultList();
         return tem;
     }
-       public List<Classinfo> findById(int classId) {
+
+    public List<Classinfo> findById(int classId) {
         List<Classinfo> tem = em.createNativeQuery("select * from classinfo where id=" + classId + "", Classinfo.class).getResultList();
         return tem;
     }

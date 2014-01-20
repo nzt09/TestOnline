@@ -27,7 +27,7 @@ public interface DepartclassFacadeLocal {
 
     List<Departclass> findAll();
 
-    List<Departclass> findRange(int departmentId,int classId,int majorId);
+    List<Departclass> findRange(int departmentId);
 
     int count();
     

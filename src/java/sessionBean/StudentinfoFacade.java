@@ -58,12 +58,4 @@ public class StudentinfoFacade extends AbstractFacade<Studentinfo> implements St
             return (Studentinfo) tem.get(0);
         }
     }
-       public List<Studentinfo> findBystudentId(int[] range,String studentId) {
-        List<Studentinfo> tem = em.createNativeQuery("select * from studentinfo where  stuno='" + studentId + "'", Studentinfo.class).getResultList();
-        if (null == tem || tem.isEmpty()) {
-            return null;
-        } else {
-            return tem;
-        }
-    }
 }

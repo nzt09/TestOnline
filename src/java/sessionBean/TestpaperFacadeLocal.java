@@ -31,4 +31,6 @@ public interface TestpaperFacadeLocal {
 
     int count();
     
+    List<Testpaper> findByStuId(int stuId);
+    
 }
