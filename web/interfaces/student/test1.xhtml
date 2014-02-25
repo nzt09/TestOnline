@@ -9,13 +9,15 @@
     <ui:composition template="./../../template.xhtml">
 
         <ui:define name="title">
-            title
+          
         </ui:define>
 
         <ui:define name="body">
             <body onload="serverCurrTime()">
-                <div align="right" id="currTime">
+                <div align="right" >
+                    剩余时间：<h:outputLabel id="currTime"></h:outputLabel>
             </div>
+                
             </body>
         </ui:define>
 
