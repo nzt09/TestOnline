@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package sessionBean;
 
-import entities.Chapterinfo;
-import java.util.List;
+import entities.Subjectinfo;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,8 +16,7 @@ import javax.persistence.PersistenceContext;
  * @author Administrator
  */
 @Stateless
-public class ChapterinfoFacade extends AbstractFacade<Chapterinfo> implements ChapterinfoFacadeLocal {
-
+public class SubjectinfoFacade extends AbstractFacade<Subjectinfo> implements SubjectinfoFacadeLocal {
     @PersistenceContext(unitName = "TestOnlineFree-ejbPU")
     private EntityManager em;
 
@@ -26,13 +25,8 @@ public class ChapterinfoFacade extends AbstractFacade<Chapterinfo> implements Ch
         return em;
     }
 
-    public ChapterinfoFacade() {
-        super(Chapterinfo.class);
+    public SubjectinfoFacade() {
+        super(Subjectinfo.class);
     }
-
-    @Override
-    public List<Chapterinfo> findByCourseId(int id) {
-        List<Chapterinfo> tem = em.createNativeQuery("select * from chapterinfo where course =" + id + "order by chapternum", Chapterinfo.class).getResultList();
-        return tem;
-    }
+    
 }

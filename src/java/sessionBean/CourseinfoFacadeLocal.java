@@ -29,8 +29,13 @@ public interface CourseinfoFacadeLocal {
     List<Courseinfo> findRange(int[] range);
 
     int count();
-    
+
     public List<Courseinfo> findByCourseId(int id);
+
+    List<Courseinfo> findByMajor(int Major);
     
-   List<Courseinfo> findByMajor(int Major);
+    List<Courseinfo> findBySubject(int subjectId);
+    
+    
+    
 }

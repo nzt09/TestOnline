@@ -35,4 +35,8 @@ public class Question2knowledgeFacade extends AbstractFacade<Question2knowledge>
         return tem.get(0);
     }
     
+    public Question2knowledge findLast(){
+        List<Question2knowledge> tem=em.createNativeQuery("select *  from Question2knowledge order by id",Question2knowledge.class).getResultList();
+        return tem.get(tem.size()-1);
+    }
 }

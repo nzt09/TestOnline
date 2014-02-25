@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package sessionBean;
 
 import entities.Courseinfo;
@@ -18,6 +17,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class CourseinfoFacade extends AbstractFacade<Courseinfo> implements CourseinfoFacadeLocal {
+
     @PersistenceContext(unitName = "TestOnlineFree-ejbPU")
     private EntityManager em;
 
@@ -29,14 +29,21 @@ public class CourseinfoFacade extends AbstractFacade<Courseinfo> implements Cour
     public CourseinfoFacade() {
         super(Courseinfo.class);
     }
+
     @Override
     public List<Courseinfo> findByCourseId(int id) {
         List<Courseinfo> tem = em.createNativeQuery("select * from courseinfo where id=" + id + "", Courseinfo.class).getResultList();
-        return tem;     
-    }  
+        return tem;
+    }
+
     @Override
-     public List<Courseinfo> findByMajor(int Major) {
+    public List<Courseinfo> findByMajor(int Major) {
         List<Courseinfo> tem = em.createNativeQuery("select * from courseinfo where Major=" + Major + "", Courseinfo.class).getResultList();
-        return tem;     
-    }  
+        return tem;
+    }
+
+    public List<Courseinfo> findBySubject(int subjectId) {
+        List<Courseinfo> tem = em.createNativeQuery("select * from courseinfo where subjectid=" +  subjectId + "", Courseinfo.class).getResultList();
+        return tem;
+    }
 }

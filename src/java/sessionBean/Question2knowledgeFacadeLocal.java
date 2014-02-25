@@ -33,4 +33,8 @@ public interface Question2knowledgeFacadeLocal {
     
     Question2knowledge findByQusetionId(int id);
     
+    Question2knowledge findLast();
+    
+    
+    
 }
