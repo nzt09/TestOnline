@@ -7,57 +7,63 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:rich="http://richfaces.org/rich"
       xmlns:a4j="http://richfaces.org/a4j">
+    <title>在线考试系统</title>
     <body > 
         <ui:composition template="./../../template.xhtml">
             <ui:define name="title" >
 
             </ui:define>
             <ui:define name="body" >  
-                <div  class="BODY"  >
-                    <h:form  >
-                        <rich:panel style="width:460px;height: 200px;background-image: url('../image/bgm.jpg')" >
-                            <f:facet name="header">
-                                <h:outputText value="考试系统登陆"/>
-                            </f:facet>
-                            <h:panelGrid columns="3">
-                                <h:outputText value="用户编号： " styleClass="stylefont"/>
-                                <rich:inplaceInput id="userId" defaultLabel="点击输入你的编号" value="#{loginController.userId}" style="width: 150px;" 
-                                                   required="true" requiredMessage="请输入你的编号"  showControls="true">
-                                    <f:ajax event="keyup" render="userIdmessage"></f:ajax>
-                                </rich:inplaceInput>
-                                <rich:message for="userId" id="userIdmessage"></rich:message>
-                                <h:outputText value="密码：" styleClass="stylefont"/>
-                                <rich:inplaceInput  id="password"  defaultLabel="点击输入你的密码" value="#{loginController.password}" style="width: 150px;"
-                                                   required="true" requiredMessage="请输入你的密码"  showControls="true" >
-                                    <f:ajax event="keyup" render="passwordmessage"></f:ajax>
-                                </rich:inplaceInput>
-                                <rich:message for="password" id="passwordmessage"></rich:message>
-                            </h:panelGrid>
-                            <h:panelGrid columns="6">
-                                <h:outputText value="验证码(*)：" styleClass="label"></h:outputText>
-                                <h:inputText id="vcode"  value="#{loginController.validate_code}" required="true" requiredMessage="请输入验证码">
-                                    <f:ajax event="keyup" render="vali vcodeMessage"></f:ajax>
-                                </h:inputText>
-                                <h:graphicImage value="../../../interfaces/login/image.jsp" id="validateImage"></h:graphicImage>
-                                <h:outputLabel value="换一张">
-                                    <a4j:ajax render="validateImage" event="click"></a4j:ajax>
-                                </h:outputLabel>
-                                <h:graphicImage value="#{loginController.doValidate()}" id="vali"></h:graphicImage>
-                                <rich:message for="vcode" id="vcodeMessage"/>
-                            </h:panelGrid>
-                            <h:panelGrid columns="2">
-                                <h:commandButton style="width: 100px;height: 25px " id="submit" value="登录" action="#{loginController.login()}"></h:commandButton> 
-                                <h:commandButton style="width: 100px;height: 25px" id="cancel" value="重置" action="#{loginController.cancel()}"></h:commandButton>
-                            </h:panelGrid>          
-                        </rich:panel>
-                    </h:form>
-                    <h:form>
-                        <div style="margin-left: 300px;margin-top: -30px">
-                        <h:commandLink value="找回密码" action="/interfaces/findpassword/findpw"></h:commandLink>
+                <h:form  style="border-color: blue;position: relative">
+                    <style type="text/css">
+                        body {
+                            background-image: url(../image/bg003.jpg );
+                            background-repeat: repeat;
+                        }
+                        div {
+                            margin-top: 10%;
+                            margin-left: 35%;
+                        }
+                    </style>
+                    <div id="div2" style="background-image: url('../image/bg005.jpg');width: 420px;height: 280px;border-style:ridge;border-color: #7EC0EE;">
+                        <h1 style="font-style: oblique;color: blue;border-top: 300px;" align="center">
+                            在线考试系统
+                        </h1>
+                        <h:panelGrid columns="3" cellspacing="15px">
+                            <h:outputText value="用户编号： " styleClass="stylefont"/>
+                            <h:inputText id="userId"  value="#{loginController.userId}" style="width: 150px;" 
+                                         required="true" requiredMessage="请输入你的编号" >
+                                <f:ajax event="keyup" render="userIdmessage"></f:ajax>
+                            </h:inputText>
+                            <rich:message for="userId" id="userIdmessage"></rich:message>
+                            <h:outputText value="密码：" styleClass="stylefont"/>
+                            <h:inputSecret  id="password"  value="#{loginController.password}" style="width: 150px;"
+                                          required="true" requiredMessage="请输入你的密码" >
+                                <f:ajax event="keyup" render="passwordmessage"></f:ajax>
+                            </h:inputSecret>
+                            <rich:message for="password" id="passwordmessage"></rich:message>
+                        </h:panelGrid>
+                        <h:panelGrid columns="6">
+                            <h:outputText value="验证码(*)：" styleClass="label"></h:outputText>
+                            <h:inputText id="vcode"  value="#{loginController.validate_code}" required="true" requiredMessage="请输入验证码">
+                                <f:ajax event="keyup" render="vali vcodeMessage"></f:ajax>
+                            </h:inputText>
+                            <h:graphicImage value="../../../interfaces/login/image.jsp" id="validateImage"></h:graphicImage>
+                            <h:outputLabel value="换一张">
+                                <a4j:ajax render="validateImage" event="click"></a4j:ajax>
+                            </h:outputLabel>
+                            <h:graphicImage value="#{loginController.doValidate()}" id="vali"></h:graphicImage>
+                            <rich:message for="vcode" id="vcodeMessage"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="3">
+                            <h:commandButton style="width: 100px;height: 25px " id="submit" value="登录" action="#{loginController.login()}"></h:commandButton> 
+                            <h:commandButton style="width: 100px;height: 25px" id="cancel" value="重置" action="#{loginController.cancel()}"></h:commandButton>
+                        </h:panelGrid>          
                     </div>
-                    </h:form>
-                    
-                </div>
+                </h:form>
+                <h:form style="margin-left: 800px">
+                    <h:commandLink value="找回密码" action="/interfaces/findpassword/findpw" style="column-rule-color: red"></h:commandLink>
+                </h:form>
             </ui:define>
         </ui:composition>
     </body>

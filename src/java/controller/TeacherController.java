@@ -5,8 +5,6 @@ import entities.Teacher;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
 import entities.Classinfo;
-import entities.Departclass;
-import entities.Department;
 import entities.Major;
 import entities.Teachercourseclass;
 import sessionBean.TeacherFacadeLocal;
@@ -30,7 +28,6 @@ import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import sessionBean.ClassinfoFacadeLocal;
 import sessionBean.MajorFacadeLocal;
-import sessionBean.DepartclassFacadeLocal;
 import sessionBean.TeachercourseclassFacadeLocal;
 
 @Named("teacherController")
@@ -63,9 +60,8 @@ public class TeacherController implements Serializable {
     //显示该老师所交课程
     private List<SelectItem> teacherCourseList;
     private int majorId;
-    private String rpw;
-    private boolean flag;
-    private boolean flag1;
+
+    
 
     private String currentTeacherId;
 
@@ -75,36 +71,6 @@ public class TeacherController implements Serializable {
 
     public void setCurrentTeacherId(String currentTeacherId) {
         this.currentTeacherId = currentTeacherId;
-    }
-
-    public boolean isFlag() {
-        return flag;
-    }
-
-    public void setFlag(boolean flag) {
-        this.flag = flag;
-    }
-
-    public boolean isFlag1() {
-        return flag1;
-    }
-
-    public void setFlag1(boolean flag1) {
-        this.flag1 = flag1;
-    }
-
-    public String getRpw() {
-        return rpw;
-    }
-
-    public void setRpw(String rpw) {
-        this.rpw = rpw;
-    }
-
-    //设定初始值
-    public void setDefault() {
-        departmentId = this.getCurrent().getDepartment().getId();
-        roleId = 3;
     }
 
     public void isShow() {
@@ -157,20 +123,7 @@ public class TeacherController implements Serializable {
         this.roleId = roleId;
     }
 
-    //核对两遍新密码是否一致
-    public String checkNewPassword() {
-        if (rpw == null || rpw.isEmpty()) {
-
-            return "请输入密码";
-        } else if (rpw.equals(this.getSelected().getPassword())) {
-
-            return "密码正确";
-        } else {
-            return "密码不匹配";
-        }
-
-    }
-    private int selectedItemIndex, roleId, departmentId;
+    private int selectedItemIndex, roleId = 3, departmentId;
 
     //监听上一页获取学院的编号
     public void typeDepartmentListener(ValueChangeEvent event) {
@@ -202,7 +155,6 @@ public class TeacherController implements Serializable {
 
     //监听上一页获取角色的编号
     public void typeRolesListener(ValueChangeEvent event) {
-
         roleId = Integer.parseInt((String) event.getNewValue());
         System.out.print(roleId);
     }
@@ -244,9 +196,6 @@ public class TeacherController implements Serializable {
     }
 
     public void selectDepartment() {
-
-        System.out.print("dzzzzzzzzzzzzzzzzzzz");
-        System.out.print(this.getCurrent().getDepartment().getId());
         departmentId = this.getCurrent().getDepartment().getId();
         roleId = this.getCurrent().getRolesinfo().getId();
         System.out.print(this.getCurrent().getRolesinfo().getId());
@@ -333,30 +282,9 @@ public class TeacherController implements Serializable {
         }
     }
 
-    public void updateAdminPassword() {
-        if (loginController.isPwFlag() == true) {
-            try {
-                getFacade().edit(current);
-                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("PasswordChange"));
-                flag = true;
-                flag1 = false;
-            } catch (Exception e) {
-                JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-
-            }
-        } else {
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            flag1 = true;
-        }
-    }
-
-    public String admindestroy() {
-        current = (Teacher) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+    public void admindestroy() {
         performDestroy();
-        recreatePagination();
         recreateModel();
-        return "adminMain";
     }
 
     public void delete() {

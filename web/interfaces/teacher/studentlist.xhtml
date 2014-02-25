@@ -10,7 +10,7 @@
     <body>
         <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
-                <h:form onclick="#{departclassController.giveDepartmentId()}">
+                <h:form>
                     <h:panelGroup rendered="#{departclassController.items.rowCount > 0}">
                         <rich:dataTable value="#{departclassController.items}"  iterationStatusVar="it" var="item" id="table"  styleClass="stable" rows="10">
                             <f:facet name="noData">

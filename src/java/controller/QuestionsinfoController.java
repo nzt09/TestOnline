@@ -3,6 +3,8 @@ package controller;
 import entities.Questionsinfo;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
+import entities.Knowledge;
+import entities.Question2knowledge;
 import entities.Questiontypeinfo;
 import sessionBean.QuestionsinfoFacadeLocal;
 
@@ -13,6 +15,7 @@ import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -22,6 +25,7 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
+import sessionBean.Question2knowledgeFacadeLocal;
 
 @Named("questionsinfoController")
 @SessionScoped
@@ -34,6 +38,9 @@ public class QuestionsinfoController implements Serializable {
     private DataModel items = null;
     @EJB
     private sessionBean.QuestionsinfoFacadeLocal ejbFacade;
+    
+    @EJB
+    private Question2knowledgeFacadeLocal q2kFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private int typeId;
@@ -128,6 +135,10 @@ public class QuestionsinfoController implements Serializable {
         System.out.println("类型" + typeId);
     }
 
+    public void typeKnowledgeListenner(ValueChangeEvent event) {
+        knowid = Integer.parseInt((String) event.getNewValue());
+    }
+    
     public void selectQuestion(int id) {
         typeId = id;
         knowid = kc.getSelected().getId();
@@ -217,6 +228,15 @@ public class QuestionsinfoController implements Serializable {
             }
             current.setQuestiontypeinfo(qt);
             getFacade().create(current);
+            Question2knowledge  q2k=new Question2knowledge();
+            Questionsinfo qs=new Questionsinfo();
+            qs.setId(current.getId());
+            Knowledge kl=new Knowledge();
+            kl.setId(knowid);
+            q2k.setId(q2kFacade.findLast().getId()+1);
+            q2k.setKnowledge(kl);
+            q2k.setQuestionsinfo(qs);
+            q2kFacade.create(q2k);
             current = null;
             selection1 = null;
             selection2 = null;
@@ -224,6 +244,7 @@ public class QuestionsinfoController implements Serializable {
             selection4 = null;
             selection5 = null;
             answerList = null;
+            FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "添加成功!", "添加成功!"));
             return null;
         } catch (Exception e) {
             return null;

@@ -8,10 +8,8 @@ package controller;
 import entities.Knowledge;
 import java.util.LinkedList;
 import java.util.List;
-import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
-import sessionBean.MyKnowledgeFacadeLocal;
 
 /**
  *
@@ -29,6 +27,7 @@ public class WrappedKnowledge implements java.io.Serializable {
     }
 
     public void setKl(Knowledge kl) {
+        System.out.println("haoxiangshizheyang");
         this.kl = kl;
     }
 

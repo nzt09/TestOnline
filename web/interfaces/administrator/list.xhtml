@@ -4,7 +4,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:rich="http://richfaces.org/rich"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a4j="http://richfaces.org/a4j">
     <body>
         <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
@@ -21,7 +22,7 @@
                             <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                         </h:panelGroup>
                         <h:outputText escape="false" />
-                        <rich:dataTable value="#{teacherController.items}" var="item"  rowClasses="jsfcrud_odd_row,jsfcrud_even_row"  style="border:solid 1px" rows="10">
+                        <rich:dataTable value="#{teacherController.items}" var="item" id="table" rows="10">
                             <rich:column>
                                 <f:facet name="header">
                                     <h:outputText value="ID"/>
@@ -56,12 +57,28 @@
                                 <f:facet name="header">
                                     <h:outputText value="操作"/>
                                 </f:facet>   
-                                <h:commandButton action="#{teacherController.admindestroy()}" value="删除"/>
+                                <a4j:commandLink styleClass="no-decor" execute="@this"
+                                             render="@none" oncomplete="#{rich:component('confirmPane')}.show()">
+                                <h:graphicImage value="/resources/images/delete.gif"></h:graphicImage>
+                                <a4j:param value="#{item.personid}"
+                                           assignTo="#{teacherController.currentTeacherId}" />
+                                </a4j:commandLink>
                             </rich:column>
                             <f:facet name="footer">
                                 <rich:dataScroller />
                             </f:facet>
                         </rich:dataTable>
+                        <a4j:jsFunction name="remove" action="#{teacherController.delete()}"
+                                    render="table" execute="@this"
+                                    oncomplete="#{rich:component('confirmPane')}.hide();" />
+                        <rich:popupPanel id="confirmPane" autosized="true"> 
+                            确定删除该条信息？
+                            <a4j:commandButton value="确定" onclick="remove();
+                                    return false;" />
+                            <a4j:commandButton value="取消"
+                                               onclick="#{rich:component('confirmPane')}.hide();
+                                                       return false;" />
+                        </rich:popupPanel>
                     </div>
                 </h:form>
             </ui:define>

@@ -162,7 +162,9 @@ public class DepartclassController implements Serializable {
     }
 
     public void giveDepartmentId() {
-        departmentId = teacherController.getCurrent().getDepartment().getId();
+        if(teacherController.getCurrent()!=null){
+            departmentId = teacherController.getCurrent().getDepartment().getId();
+        }
     }
 
     public int getDepartmentId() {

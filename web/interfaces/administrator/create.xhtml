@@ -5,30 +5,40 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:rich="http://richfaces.org/rich"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <body>
         <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
                 <h:form>
                     <div id="divstyle">
-                        <h:panelGrid columns="2" style="column-width: 100px">
+                        <h:panelGrid columns="3" style="column-width: 100px">
                             <h:outputLabel value="编号" for="id" />
-                            <h:inputText id="id" value="#{teacherController.selected.personid}">
+                            <h:inputText id="id" value="#{teacherController.selected.personid}" required="true" requiredMessage="请输入学号">
+                                <f:ajax event="keyup" render="idMessage"></f:ajax>
                             </h:inputText>
+                            <rich:message for="id" id="idMessage"></rich:message>
                             <h:outputLabel value="姓名" for="name" />
-                            <h:inputText id="name" value="#{teacherController.selected.name}">
+                            <h:inputText id="name" value="#{teacherController.selected.name}" required="true" requiredMessage="请输入姓名">
+                                <f:ajax event="keyup" render="nameMessage"></f:ajax>
                             </h:inputText>
+                            <rich:message for="name" id="nameMessage"></rich:message>
                             <h:outputLabel value="密码" for="password" />
-                            <h:inputSecret id="password" value="#{teacherController.selected.password}" />
+                            <h:inputSecret id="password" value="#{teacherController.selected.password}" required="true" requiredMessage="请输入密码">
+                                <f:ajax event="keyup" render="passwordMessage"></f:ajax>
+                            </h:inputSecret>
+                            <rich:message for="password" id="passwordMessage"></rich:message>
                         </h:panelGrid>
                         <h:panelGrid columns="2">
                             <h:outputLabel value="教师" for="rolesinfo" />
                             <h:selectOneMenu id="rolesinfo" value="#{teacherController.selected.rolesinfo}"  >
                                 <f:selectItems value="#{rolesinfoController.itemsAvailableSelectOnlyOne}"/>
                             </h:selectOneMenu>
+                        </h:panelGrid>
+                        <h:panelGrid columns="3">
                             <h:outputLabel value="学院" for="department" />
-                            <rich:inplaceSelect id="department" value="#{teacherController.selected.department}" defaultLabel="点击此处选择学院">
+                            <rich:inplaceSelect id="department" value="#{teacherController.selected.department}" defaultLabel="点击此处选择学院" required="true" requiredMessage="请选择学院">
                                 <f:selectItems value="#{departmentController.itemsAvailableSelectSome}"/>
+                                <f:ajax event="keyup" render="departmentMessage"></f:ajax>
                             </rich:inplaceSelect>
+                            <rich:message for="department" id="departmentMessage"></rich:message>
                         </h:panelGrid>
                         <h:commandButton action="#{teacherController.create}" value="添加" />
                     </div>
@@ -36,6 +46,4 @@
             </ui:define>
 
         </ui:composition>
-
-    </body>
 </html>

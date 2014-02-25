@@ -174,7 +174,6 @@ public class ChapterinfoController implements Serializable {
         }
         kl.setChapterId(null);
         this.setNull();
-        
 
     }
 
@@ -378,6 +377,15 @@ public class ChapterinfoController implements Serializable {
         getPagination().previousPage();
         recreateModel();
         return "List";
+    }
+
+    public SelectItem[] getItemsAvailableSelectByCourse() {
+        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByCourseId(courseId), false);
+        for (int i = 0; i < item.length; i++) {
+            item[i].setLabel("第"+(((Chapterinfo) item[i].getValue()).getChapternum())+"章"+((Chapterinfo) item[i].getValue()).getName());
+            item[i].setValue(((Chapterinfo) item[i].getValue()).getId());
+        }
+        return item;
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
