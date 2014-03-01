@@ -6,6 +6,7 @@
 package controller.action;
 
 import com.email.Mail;
+import controller.DepartclassController;
 import controller.StudentinfoController;
 import controller.TeacherController;
 import entities.Studentinfo;
@@ -41,6 +42,12 @@ public class LoginController implements java.io.Serializable {
 
     @Inject
     private TeacherController teaCon;
+
+    @Inject
+    private userBean userbean;
+
+    @Inject
+    private DepartclassController depCon;
     //验证码
     private String validate_code;
 
@@ -56,16 +63,9 @@ public class LoginController implements java.io.Serializable {
     private String userId;
     // 获得login.xhtml中inputSecret的值，用户输入的密码
     private String password;
-    private String oldpw;
+
     private String className;
 
-    public String getOldpw() {
-        return oldpw;
-    }
-
-    public void setOldpw(String oldpw) {
-        this.oldpw = oldpw;
-    }
     private int classId;
     //判断密码是否一致
     private boolean pwFlag = false;
@@ -123,22 +123,6 @@ public class LoginController implements java.io.Serializable {
     //  用户名并且往后传递
     private String name;
     //判断密码是否一致
-
-    public String pwApper() {
-        System.out.println(oldpw);
-        System.out.println(password);
-        if (oldpw == null || oldpw.isEmpty()) {
-            pwFlag = false;
-            return "请输入原先密码";
-        } else if (oldpw.equals(password)) {
-            pwFlag = true;
-            return "密码正确";
-        } else {
-            pwFlag = false;
-        }
-        return "密码不匹配";
-
-    }
 
     //随机生成一个新的密码
     public String getNewpassword() {
@@ -221,6 +205,11 @@ public class LoginController implements java.io.Serializable {
                 //管理员登陆
                 name = currentTea.getName();
                 teaCon.setCurrent(currentTea);
+                if (currentTea.getDepartment() != null) {
+                    teaCon.setDepartmentId(currentTea.getDepartment().getId());
+                    depCon.setDepartmentId(currentTea.getDepartment().getId());
+                }
+                userbean.setUserId(currentTea.getPersonid());
                 return "/interfaces/public/welcome?faces-redirect=true";
 
             } else if (null == currentTea.getName() && null != currentStu.getName()) {
@@ -228,15 +217,16 @@ public class LoginController implements java.io.Serializable {
                 className = currentStu.getClassinfo().getClassname();
                 classId = currentStu.getClassinfo().getId();
                 stuCon.setCurrent(currentStu);
-                return "/interfaces/student/main";
+                userbean.setUserId(currentStu.getStuno());
+                return "/interfaces/student/main?faces-redirect=true";
             }
             this.validate_code = null;
             this.password = null;
-            return "/error/errorLogin.xhtml";
+            return "/error/errorLogin?faces-redirect=true";
         } else {
             this.validate_code = null;
             this.password = null;
-            return "errorLogin.xhtml";
+            return "errorLogin?faces-redirect=true";
         }
     }
 

@@ -9,7 +9,7 @@
     <body>
         <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
-                <h:form  onclick="#{teacherController.setDefault()}">
+                <h:form>
                     <rich:dataTable value="#{teacherController.items}" var="item" id="table"  iterationStatusVar="it" rows="10">
                         <f:facet name="noData">
                             无满足条件的记录，请重新搜索！
@@ -61,7 +61,7 @@
                                     render="table" execute="@this"
                                     oncomplete="#{rich:component('confirmPane')}.hide();" />
                     <rich:popupPanel id="confirmPane" autosized="true"> 
-                        你确定要删除这条题目？
+                        确定删除该条信息？
                         <a4j:commandButton value="确定" onclick="remove();
                                 return false;" />
                         <a4j:commandButton value="取消"

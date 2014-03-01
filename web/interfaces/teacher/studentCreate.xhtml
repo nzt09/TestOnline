@@ -7,34 +7,40 @@
       xmlns:rich="http://richfaces.org/rich">
 
     <body>
-
         <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
                 <h:form onclick="#{departclassController.requireMajor()}" style="margin-left: 500px">
                     <h:outputText value="添加学生信息"></h:outputText>
                     <h:panelGrid columns="3">
                         <h:outputLabel value="姓名" for="name" />
-                        <h:inputText id="name" value="#{studentinfoController.selected.name}" required="true" requiredMessage="请输入姓名" />
-                        <rich:message  for="name" />
+                        <h:inputText id="name" value="#{studentinfoController.selected.name}" required="true" requiredMessage="请输入姓名" >
+                            <f:ajax event="keyup" render="namemessage"></f:ajax>
+                        </h:inputText>
+                        <rich:message  for="name" id="namemessage" />
                         <h:outputLabel value="密码" for="password" />
-                        <h:inputSecret id="password" value="#{studentinfoController.selected.password}" required="true" requiredMessage="请输入密码"/>
-                        <rich:message  for="password" />
+                        <h:inputSecret id="password" value="#{studentinfoController.selected.password}" required="true" requiredMessage="请输入密码">
+                            <f:ajax event="keyup" render="passwordmessage"></f:ajax>
+                        </h:inputSecret>
+                        <rich:message  for="password" id="passwordmessage"/>
                         <h:outputLabel value="学号" for="stuno" />
-                        <h:inputText id="stuno" value="#{studentinfoController.selected.stuno}" required="true" requiredMessage="请输入学号" />
-                        <rich:message  for="stuno" />
+                        <h:inputText id="stuno" value="#{studentinfoController.selected.stuno}" required="true" requiredMessage="请输入学号" >
+                            <f:ajax event="keyup" render="stunomessage"></f:ajax>
+                        </h:inputText>
+                        <rich:message  for="stuno" id="stunomessage"/>
                         <h:outputLabel value="专业" for="major" />
                         <h:selectOneMenu id="major" valueChangeListener="#{departclassController.typeMajorListener}" required="true" requiredMessage="请选择专业">
                             <f:selectItem itemLabel="--请选择--"></f:selectItem>
                             <f:selectItems value="#{departclassController.majorList}"/>
-                            <f:ajax render="classId" event="change"></f:ajax>
+                            <f:ajax render="classId  majormessage" event="change"></f:ajax>
                         </h:selectOneMenu>
-                        <rich:message  for="major" />
+                        <rich:message  for="major" id="majormessage"/>
                         <h:outputLabel value="班级" for="classId" />
                         <h:selectOneMenu id="classId" value="#{studentinfoController.classId}" required="true" requiredMessage="请选择班级">
                             <f:selectItem itemLabel="--请选择--"></f:selectItem>
                             <f:selectItems value="#{departclassController.classList}"/>
+                            <f:ajax render="classIdmessage" event="change"></f:ajax>
                         </h:selectOneMenu>
-                        <rich:message  for="classId" />  
+                        <rich:message  for="classId" id="classIdmessage"/>  
                     </h:panelGrid>
                     <h:commandButton action="#{studentinfoController.create}" value="添加" />
                 </h:form> 

@@ -218,27 +218,6 @@ public class StudentinfoController implements Serializable {
         }
 
     }
-//为学生更新密码
-
-    public void updateStudentPassword() {
-        if (loginController.isPwFlag() == true) {
-            try {
-                getFacade().edit(current);
-                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("PasswordChange"));
-                System.out.println("dsfds");
-                flag = true;
-                flag1 = false;
-
-            } catch (Exception e) {
-                JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-
-            }
-        } else {
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            System.out.println("222222");
-            flag1 = true;
-        }
-    }
 
     public String update() {
         try {

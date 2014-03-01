@@ -39,10 +39,8 @@ public class TopMenu implements Serializable {
         if (null == this.resWithChildrenMap || this.resWithChildrenMap.isEmpty()) {
            // System.out.println(teacherController.getCurrent().getRolesinfo().getId());
             if (teacherController.getCurrent()!= null) {
-                System.out.println("328233");
                 resWithChildrenMap = publicFields.getReslistMap().get(teacherController.getCurrent().getRolesinfo().getId()).entrySet();
             } else {
-                  System.out.println("sauhsuh");
                 resWithChildrenMap = publicFields.getReslistMap().get(STUDENT_ROLE).entrySet();
             }
 

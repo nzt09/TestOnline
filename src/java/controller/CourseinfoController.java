@@ -14,6 +14,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
@@ -42,6 +43,13 @@ public class CourseinfoController implements Serializable {
     private int selectedItemIndex;
     private int classId;
     private int MajorId;
+    
+    private int subjectTypeId;
+    
+    
+    public void subTypeListener(ValueChangeEvent event) {
+        subjectTypeId=Integer.parseInt((String) event.getNewValue());
+    }
 
     public CourseinfoController() {
     }
@@ -194,6 +202,16 @@ public class CourseinfoController implements Serializable {
         return "List";
     }
 
+    //取出对应科目类型的课程
+    public SelectItem[] getItemsAvailableSelectBySubject() {
+        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findBySubject(subjectTypeId), false);
+        for (int i = 0; i < item.length; i++) {
+            item[i].setLabel(((Courseinfo) item[i].getValue()).getName());
+            item[i].setValue(((Courseinfo) item[i].getValue()).getId());
+        }
+        return item;
+    }
+
     public SelectItem[] getItemsAvailableSelectMany() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
     }
@@ -205,7 +223,7 @@ public class CourseinfoController implements Serializable {
     public SelectItem[] getItemsAvailableSelectA() {
         classId = stuCon.getCurrent().getClassinfo().getId();
         MajorId = stuCon.getCurrent().getClassinfo().getMajor().getId();
-         SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByMajor(MajorId), false);
+        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByMajor(MajorId), false);
 //        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
         for (int i = 0; i < item.length; i++) {
             item[i].setLabel(((Courseinfo) item[i].getValue()).getName());

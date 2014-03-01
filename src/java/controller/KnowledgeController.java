@@ -16,6 +16,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
@@ -48,6 +49,8 @@ public class KnowledgeController implements Serializable {
     //显示或隐藏标志位
     private boolean chapterIdSelected = false;
 
+    private int chapterNumId;
+    
     public String getNewPname() {
         return newPname;
     }
@@ -72,6 +75,10 @@ public class KnowledgeController implements Serializable {
         this.chapterId = chapterId;
 
     }
+    
+    public void typeChapterListenner(ValueChangeEvent event) {
+        chapterNumId = Integer.parseInt((String) event.getNewValue());
+    }
 
     public KnowledgeController() {
     }
@@ -86,21 +93,10 @@ public class KnowledgeController implements Serializable {
     }
 
     public void setSelected(Knowledge kl) {
+        System.out.println("");
         this.chapterIdSelected = true;
         this.current = kl;
         qkController.deleteItem();
-
-        //给当前一个默认值，否在页面无法显示
-        qkController.getSelected().setContent("---");
-        qkController.getSelected().setScore(1);
-        qkController.getSelected().setDifficulty(0.0);
-//        qkController.getSelected().setSelections("---");
-//        qkController.getSelected().setQuestiontype(0);
-        qkController.getSelected().setAnswer("A");
-        qkController.getSelected().setAveragetime(0.0);
-//        qkController.getSelected().setCode("---");
-//        qkController.getSelected().setAnalysis("---");
-
     }
 
     private MyKnowledgeFacadeLocal getFacade() {
@@ -276,6 +272,16 @@ public class KnowledgeController implements Serializable {
         getPagination().previousPage();
         recreateModel();
         return "List";
+    }
+
+    public SelectItem[] getItemsAvailableSelectByChapter() {
+        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByChapterId(chapterNumId), false);
+        for (int i = 0; i < item.length; i++) {
+            item[i].setLabel(((Knowledge) item[i].getValue()).getName());
+            item[i].setValue(((Knowledge) item[i].getValue()).getId());
+        }
+        return item;
+
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
