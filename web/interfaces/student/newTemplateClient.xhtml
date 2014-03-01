@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+        <ui:composition template="./../../template.xhtml">
+            <ui:define name="body">
+                <c:forEach var="questionTypeEntity" items="#{testAction.allQues}"><!--题型-->
+                    <c:forEach var="question" items="#{questionTypeEntity.value}"><!--每种题型的题目，可能有多道题目-->
+                        <c:if test="#{questionTypeEntity.key==1}">
+                            #{testAction.getBianhao()}#{question.content}
+                            <h:selectOneRadio value="#{question.answer}">
+                                <c:forEach var="selectCandiate" items="#{question.selection}"<!--查查jsf页面中如何使用函数spilt，用到双引号-->
+                                           <f:selectItem itemValue="#{selectBianhao+1}" itemLabel="#{selectBianhoa+1}#{selectCandiate}"/>
+                                </c:forEach>
+                            </h:selectOneRadio>
+                        </c:if>
+                        
+                    </c:forEach>
+                </c:forEach>
+                </body>
+                </html>

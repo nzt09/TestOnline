@@ -121,6 +121,7 @@ public class TestassigninfomController implements Serializable {
         System.out.println(endTime.toString());
         if (c.before(endTime) && c.after(beginTime)) {
             isReady = true;
+           
         } else {
             isReady1 = true;
         }

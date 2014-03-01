@@ -1,5 +1,6 @@
 package controller;
 
+import com.gkm.entity.StringAndBox;
 import entities.Questionsinfo;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
@@ -49,9 +50,18 @@ public class QuestionsinfoController implements Serializable {
 
     //多选题的答案列表
     private List answerList;
-
+    //单项填空、多项填空答案
+    private List<StringAndBox> pagecontent = new ArrayList<StringAndBox>(); 
     public Questionsinfo getCurrent() {
         return current;
+    }
+
+    public List<StringAndBox> getPagecontent() {
+        return pagecontent;
+    }
+
+    public void setPagecontent(List<StringAndBox> pagecontent) {
+        this.pagecontent = pagecontent;
     }
 
     public void setCurrent(Questionsinfo current) {
