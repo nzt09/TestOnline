@@ -61,6 +61,16 @@ public class TeacherController implements Serializable {
     private List<SelectItem> teacherCourseList;
     private int majorId;
 
+    private String teanoFilter;
+
+    public String getTeanoFilter() {
+        return teanoFilter;
+    }
+
+    public void setTeanoFilter(String teanoFilter) {
+        this.teanoFilter = teanoFilter;
+    }
+    
     
 
     private String currentTeacherId;
