@@ -52,7 +52,7 @@ public abstract class PaginationHelper {
     }
 
     public int getPageSize() {
-        System.out.println("每页的数量"+pageSize);
+        //System.out.println("每页的数量"+pageSize);
         return pageSize;
     }
 

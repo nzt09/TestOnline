@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Map.Entry;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
 
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import javax.inject.Inject;
@@ -71,16 +71,20 @@ public class TestAction implements java.io.Serializable {
         Iterator<Entry<Integer, List<Questionsinfo>>> it=allQues.entrySet().iterator();
     }
     int bianhao=0;
+    public String test(){
+        this.takeAllQues();
+        return null;
+    }
 public int getBianhao(){
+    System.out.println("qqqqqqqqq");
     return bianhao++;
+    
 }
     @PostConstruct
     public void initilize() {
         questionTypeCount = qtEJB.findAll().size();
         qutypeExsit = new int[questionTypeCount];
-    }
-
-    public List<Integer> getQuestionId() {
+        //获取题目id
         if (questionId.size() == 0) {
 //            String stunp = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("StudentName");
 //            String[] ss = stunp.split(";");
@@ -98,25 +102,20 @@ public int getBianhao(){
                 }
             }
         }
-        return questionId;
-    }
-
-    public void setQuestionId(List<Integer> questionId) {
-        this.questionId = questionId;
-    }
-
-    public HashMap<Integer, List<Questionsinfo>> getAllQues() {
-        if (this.getQuestionId().size() == 0) {
+        //获取题目列表
+         if (this.getQuestionId().size() >  0) {
             for (int i = 0; i < questionId.size(); i++) {
                 Questionsinfo qi = questinfoEjb.find(questionId.get(i));
                 if (qi.getQuestiontypeinfo().getId() == Publicfields.SingleSelectType) {
                       List<Questionsinfo> tem;
                     if (!allQues.containsKey(Publicfields.SingleSelectType)) {
                         tem = new LinkedList<>();
+                        allQues.put(Publicfields.SingleSelectType, tem);
                     } else {
                         tem = allQues.get(Publicfields.SingleSelectType);
                     }
                     tem.add(qi);
+                 
                     HashMap<String, String> List1 = new LinkedHashMap<>();
                     String[] s = qi.getSelections().split("#");
                     for (int j = 0; j < s.length; j++) {
@@ -125,6 +124,21 @@ public int getBianhao(){
                 }
             }
         }
+        
+    }
+
+    public List<Integer> getQuestionId() {
+        
+        return questionId;
+    }
+
+    public void setQuestionId(List<Integer> questionId) {
+        this.questionId = questionId;
+    }
+
+    public HashMap<Integer, List<Questionsinfo>> takeAllQues() {
+        System.out.println(this.getQuestionId().size()+"==================");
+       
         return this.allQues;
     }
 

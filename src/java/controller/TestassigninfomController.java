@@ -160,8 +160,7 @@ public class TestassigninfomController implements Serializable {
 
     public PaginationHelper getPagination1() {
         classId = stuCon.getCurrent().getClassinfo().getId();
-        System.out.print(courseId);
-        System.out.print(classId);
+        
         if (pagination == null) {
             pagination = new PaginationHelper(10) {
 
