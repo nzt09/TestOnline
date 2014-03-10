@@ -8,38 +8,44 @@
     <body>
 
         <ui:composition template="./../../stylemodel.xhtml">
-
-            <ui:define name="title">
-              生成试卷
-            </ui:define>
-
-            <ui:define name="body">
+            <ui:define name="content">
                 <h:form>
-                 <h:outputText>学校</h:outputText>
-                <h:selectOneMenu  >      
-                    <f:selectItems value="#{schoolController.itemsAvailableSelectMany}"></f:selectItems>
-                </h:selectOneMenu>
-                <h:outputLabel>院系</h:outputLabel>
-                <h:selectOneMenu    style="width: 150px " >
-                    <f:selectItems value="#{departmentController.itemsAvailableSelectMany}" ></f:selectItems>
-                </h:selectOneMenu>
-                <h:outputLabel >专业</h:outputLabel>
-                <h:selectOneMenu >
-                    <f:selectItems value="#{majorController.itemsAvailableSelectMany}"></f:selectItems>
-                </h:selectOneMenu>
-                <h:outputLabel >班级</h:outputLabel>
-                <h:selectOneMenu  >
-                    <f:selectItems value="#{classinfoController.itemsAvailableSelectMany}"></f:selectItems>
-                </h:selectOneMenu>	
+                    <h:outputText>学校</h:outputText>
+                    <h:selectOneMenu  >      
+                        <f:selectItems value="#{schoolController.itemsAvailableSelectMany}"></f:selectItems>
+                    </h:selectOneMenu>
+                    <h:outputLabel>院系</h:outputLabel>
+                    <h:selectOneMenu id="department" valueChangeListener="#{majorController.departmentTypeListener}">
+                        <f:selectItem itemLabel="--请选择学院--" itemValue="0"></f:selectItem>
+                        <f:selectItems value="#{departmentController.itemsAvailableSelectMany}" ></f:selectItems>
+                        <f:ajax event="change" render="major class"></f:ajax>
+                    </h:selectOneMenu>
+                    <h:outputLabel >专业</h:outputLabel>
+                    <h:selectOneMenu id="major" valueChangeListener="#{classinfoController.majorTypeListener}" value="#{generateAction.majorId}">
+                        <f:selectItem itemLabel="--请选择专业--" itemValue="0"></f:selectItem>
+                        <f:selectItems value="#{majorController.itemsAvailableSelectByDepart}"></f:selectItems>
+                        <f:ajax event="change" render="class course"></f:ajax>
+                    </h:selectOneMenu>
+                    <h:outputLabel >班级</h:outputLabel>
+                    <h:selectOneMenu  id="class" value="#{generateAction.classId}">
+                        <f:selectItem itemLabel="--请选择班级--" itemValue="0"></f:selectItem>
+                        <f:selectItems value="#{classinfoController.itemsAvailableSelectByMajor}"></f:selectItems>
+                    </h:selectOneMenu>
+                    <h:outputLabel >学科</h:outputLabel>
+                    <h:selectOneMenu  id="course" value="#{generateAction.courseId}">
+                        <f:selectItem itemLabel="--请选择学科--" itemValue="0"></f:selectItem>
+                        <f:selectItems value="#{courseinfoController.itemsAvailableSelectByMajor}"></f:selectItems>
+                    </h:selectOneMenu>
+                    <h:commandLink action="#{generateAction.doGenerateTestPaper()}" style="text-decoration: none">生成</h:commandLink>
                 </h:form>
                 <div id="testpaper" align="center">
-			
-				<h1>试卷已生成</h1>
-			
-	
-				<h1>试卷生成失败</h1>
-			
-		</div>
+
+                    <h1>试卷已生成</h1>
+
+
+                    <h1>试卷生成失败</h1>
+
+                </div>
             </ui:define>
 
         </ui:composition>

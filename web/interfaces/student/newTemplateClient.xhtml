@@ -9,23 +9,22 @@
     <body>
         <ui:composition template="./../../template.xhtml">
             <ui:define name="title">
-              
+
             </ui:define>
             <ui:define name="body">
                 <h:form>
-                <c:forEach var="questionTypeEntity" items="#{testAction.takeAllQues()}"><!--题型-->
-                    <c:forEach var="question" items="#{questionTypeEntity.value}"><!--每种题型的题目，可能有多道题目-->
-                        <c:if test="#{questionTypeEntity.key==1}">
-                            #{testAction.bianhao}#{question.content}
-                            <h:selectOneRadio value="#{question.answer}">
-<!--                                <c:forEach var="selectCandiate" items="#{question.selections}">查查jsf页面中如何使用函数spilt，用到双引号
-                                    <f:selectItem itemValue="#{selectBianhao+1}" itemLabel="#{selectBianhoa+1}#{selectCandiate}"/>
-                                </c:forEach>-->
-                            </h:selectOneRadio>
-                        </c:if>
-
+                    <c:forEach var="questionTypeEntity" items="#{testAction.takeAllQues()}"><!--题型-->
+                        <c:forEach var="question" items="#{questionTypeEntity.value}" varStatus="statusBig"><!--每种题型的题目，可能有多道题目-->
+                            <c:if test="#{questionTypeEntity.key==1}">
+                                #{testAction.bianhao}#{question.content}
+                                <h:selectOneRadio>
+                                    <c:forEach var="selectCandiate" items="#{testAction.list1}" varStatus="status" begin="#{status+statusBig.index*4}" end="#{(status+3)+statusBig.index*4}">
+                                            <f:selectItem itemValue="#{selectCandiate.value}" itemLabel="#{selectCandiate.key}"/>                        
+                                    </c:forEach>
+                                </h:selectOneRadio>
+                            </c:if>
+                        </c:forEach>
                     </c:forEach>
-                </c:forEach>
                 </h:form>
             </ui:define>
         </ui:composition>

@@ -13,6 +13,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
@@ -28,6 +29,8 @@ public class ClassinfoController implements Serializable {
     private DepartclassFacadeLocal departclassFacade;
     @Inject
     private DepartclassController departclassController;
+    @Inject
+    private CourseinfoController courseCon;
 
     private Classinfo current;
     private DataModel items = null;
@@ -35,7 +38,7 @@ public class ClassinfoController implements Serializable {
     private sessionBean.ClassinfoFacadeLocal ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
-    private int classId;
+    private int majorId;
 
     public ClassinfoController() {
     }
@@ -48,6 +51,16 @@ public class ClassinfoController implements Serializable {
         return current;
     }
 
+    public void majorTypeListener(ValueChangeEvent event) {
+        System.out.println( event.getNewValue()+"llllllllllllllllllllllll");
+        String hh=(String.valueOf(event.getNewValue())) ;
+        System.out.println(hh+"pppppppppppppppp");
+        majorId=Integer.parseInt(hh);
+        
+        
+        courseCon.setMajorId(majorId);
+    }
+    
     private ClassinfoFacadeLocal getFacade() {
         return ejbFacade;
     }
@@ -186,6 +199,15 @@ public class ClassinfoController implements Serializable {
         getPagination().previousPage();
         recreateModel();
         return "List";
+    }
+    
+    public SelectItem[] getItemsAvailableSelectByMajor() {
+        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByMajor(majorId), false);
+        for (int i = 0; i < item.length; i++) {
+            item[i].setLabel(((Classinfo) item[i].getValue()).getClassname());
+            item[i].setValue(((Classinfo) item[i].getValue()).getId());
+        }
+        return item;
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {

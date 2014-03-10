@@ -14,6 +14,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
@@ -56,6 +57,11 @@ public class MajorController implements Serializable {
         return ejbFacade;
     }
 
+    
+    public void departmentTypeListener(ValueChangeEvent event) {
+        department=Integer.parseInt((String) event.getNewValue());
+    }
+    
     public PaginationHelper getPagination() {
         if (pagination == null) {
             pagination = new PaginationHelper(10) {
@@ -192,6 +198,15 @@ public class MajorController implements Serializable {
         return "List";
     }
 
+    public SelectItem[] getItemsAvailableSelectByDepart() {
+        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByDepartment(department), false);
+        for (int i = 0; i < item.length; i++) {
+            item[i].setLabel(((Major) item[i].getValue()).getName());
+            item[i].setValue((int)((Major) item[i].getValue()).getId());
+        }
+        return item;
+    }
+    
     public SelectItem[] getItemsAvailableSelectMany() {
         SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
         for (int i = 0; i < item.length; i++) {

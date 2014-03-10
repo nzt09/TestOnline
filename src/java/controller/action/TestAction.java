@@ -64,26 +64,49 @@ public class TestAction implements java.io.Serializable {
     private List<Classinfo> classinfo = new ArrayList<Classinfo>();
     private final HashMap<Integer, List<Questionsinfo>> allQues;
     private int[] qutypeExsit;
+
+    private HashMap<String, String> list1;
+
+    public HashMap<String, String> getList1() {
+        return list1;
+    }
+
+    public void setList1(HashMap<String, String> list1) {
+        this.list1 = list1;
+    }
+
     String[] selectionName = new String[]{"A", "B", "C", "D", "E", "F", "G", "H"};
+
+    public String[] getSelectionName() {
+        return selectionName;
+    }
+
+    public void setSelectionName(String[] selectionName) {
+        this.selectionName = selectionName;
+    }
 
     public TestAction() {
         this.allQues = new LinkedHashMap<>();
-        Iterator<Entry<Integer, List<Questionsinfo>>> it=allQues.entrySet().iterator();
+        Iterator<Entry<Integer, List<Questionsinfo>>> it = allQues.entrySet().iterator();
     }
-    int bianhao=0;
-    public String test(){
+    int bianhao = 0;
+
+    public String test() {
         this.takeAllQues();
         return null;
     }
-public int getBianhao(){
-    System.out.println("qqqqqqqqq");
-    return bianhao++;
-    
-}
+
+    public int getBianhao() {
+        System.out.println("qqqqqqqqq");
+        return bianhao++;
+
+    }
+
     @PostConstruct
     public void initilize() {
         questionTypeCount = qtEJB.findAll().size();
         qutypeExsit = new int[questionTypeCount];
+        list1 = new LinkedHashMap<>();
         //获取题目id
         if (questionId.size() == 0) {
 //            String stunp = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("StudentName");
@@ -103,11 +126,11 @@ public int getBianhao(){
             }
         }
         //获取题目列表
-         if (this.getQuestionId().size() >  0) {
+        if (this.getQuestionId().size() > 0) {
             for (int i = 0; i < questionId.size(); i++) {
                 Questionsinfo qi = questinfoEjb.find(questionId.get(i));
                 if (qi.getQuestiontypeinfo().getId() == Publicfields.SingleSelectType) {
-                      List<Questionsinfo> tem;
+                    List<Questionsinfo> tem;
                     if (!allQues.containsKey(Publicfields.SingleSelectType)) {
                         tem = new LinkedList<>();
                         allQues.put(Publicfields.SingleSelectType, tem);
@@ -115,20 +138,18 @@ public int getBianhao(){
                         tem = allQues.get(Publicfields.SingleSelectType);
                     }
                     tem.add(qi);
-                 
-                    HashMap<String, String> List1 = new LinkedHashMap<>();
                     String[] s = qi.getSelections().split("#");
                     for (int j = 0; j < s.length; j++) {
-                        List1.put(selectionName[j], selectionName[j] + ". " + s[j]);
+                        list1.put(selectionName[j] + ". " + s[j], selectionName[j]);
                     }
                 }
             }
         }
-        
+
     }
 
     public List<Integer> getQuestionId() {
-        
+
         return questionId;
     }
 
@@ -137,8 +158,8 @@ public int getBianhao(){
     }
 
     public HashMap<Integer, List<Questionsinfo>> takeAllQues() {
-        System.out.println(this.getQuestionId().size()+"==================");
-       
+        System.out.println(this.getQuestionId().size() + "==================");
+
         return this.allQues;
     }
 
