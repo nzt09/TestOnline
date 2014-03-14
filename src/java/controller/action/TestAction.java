@@ -74,7 +74,7 @@ public class TestAction implements java.io.Serializable {
     private final HashMap<Integer, List<Questionsinfo>> allQues;//key是题目类型
     private HashMap<Integer, String> testAnswer = new LinkedHashMap<Integer, String>();
     private String[] testPaperAnswer;
-    
+    private int biangao1;
     public HashMap<Integer, String> getTestAnswer() {
         
         return testAnswer;
@@ -138,7 +138,7 @@ public class TestAction implements java.io.Serializable {
         this.allQues = new LinkedHashMap<>();
         //Iterator<Entry<Integer, List<Questionsinfo>>> it = allQues.entrySet().iterator();
     }
-    int bianhao = 1;
+    int bianhao = 0;
     
     public String test() {
         this.getAllQues();
@@ -146,9 +146,13 @@ public class TestAction implements java.io.Serializable {
     }
     
     public int getBianhao() {
-        
-        return bianhao++;
-        
+    if(bianhao < biangao1){
+       bianhao++;   
+    }else{
+        bianhao=1;
+    }
+        return bianhao;
+      
     }
     
     @PostConstruct
@@ -165,6 +169,7 @@ public class TestAction implements java.io.Serializable {
             for (Testpaper test : testPaperList) {
                 if (test.getCourseinfo().getId() == testInfom.getCourseId()) {
                     String[] questionIds = test.getContent().split(",");
+                    biangao1 = questionIds.length;
                     List<Integer> ques = new ArrayList<Integer>();
                     for (int i = 0; i < questionIds.length; i++) {
                         ques.add(Integer.parseInt(questionIds[i]));
