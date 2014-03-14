@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package sessionBean;
 
 import entities.Testassigninfom;
@@ -30,7 +29,9 @@ public interface TestassigninfomFacadeLocal {
     List<Testassigninfom> findRange(int[] range);
 
     int count();
-    
-     List<Testassigninfom> findConstrainRange(int[] range, int courseId, int classId) ;
-    
+
+    List<Testassigninfom> findConstrainRange(int[] range, int courseId, int classId);
+
+    List<Testassigninfom> findCourseClass(int courseId, int classId);
+
 }

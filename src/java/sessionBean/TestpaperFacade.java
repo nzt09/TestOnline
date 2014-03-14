@@ -6,7 +6,6 @@
 package sessionBean;
 
 import entities.Testpaper;
-import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -39,4 +38,16 @@ public class TestpaperFacade extends AbstractFacade<Testpaper> implements Testpa
             return tem;
         }
     }
+    
+    public List<Testpaper> findByCourseBystuid(int courseId,int classId ) {
+        List<Testpaper> tem = em.createNativeQuery("select * from testpaper where course=" +courseId+ " and stuid in(select id from studentinfo where classid="+classId+")", Testpaper.class).getResultList();
+        System.out.println("select * from testpaper where course=" +courseId+ "and stuid in(select id from studentinfo where classid="+classId+")");
+        System.out.println(tem.size());
+        if (tem == null || tem.isEmpty()) {
+            return null;
+        } else {
+            return tem;
+        }
+    }
+    
 }

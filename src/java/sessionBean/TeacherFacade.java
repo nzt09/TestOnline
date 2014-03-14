@@ -31,7 +31,7 @@ public class TeacherFacade extends AbstractFacade<Teacher> implements TeacherFac
     }
 
     public List<Teacher> findConstrainRange(int[] range, int roleId, int departmentId) {
-        List<Teacher> tem = em.createNativeQuery("select * from teacher where roleid=" + roleId + " and departmentid=" + departmentId, Teacher.class).getResultList();
+        List<Teacher> tem = em.createNativeQuery("select * from teacher where roleid=" + roleId + " and departmentid=" + departmentId+"order by personid", Teacher.class).getResultList();
 //        System.out.println("select * from teacher where roleid=" + roleId + " and departmentid=" + departmentId);
         if (tem.isEmpty()) {
             return null;

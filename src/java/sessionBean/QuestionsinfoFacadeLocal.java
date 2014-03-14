@@ -29,5 +29,11 @@ public interface QuestionsinfoFacadeLocal {
     List<Questionsinfo> findRange(int[] range);
     
     int count();
+    
+    List<Questionsinfo> findByCourseId(String sql );
+    
+    List executQuery(String sqlString);
+    
+    int executQuery2(String sqlString);
 
 }

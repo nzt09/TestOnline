@@ -33,4 +33,6 @@ public interface TestpaperFacadeLocal {
     
     List<Testpaper> findByStuId(int stuId);
     
+    List<Testpaper> findByCourseBystuid(int courseId,int classId );
+    
 }

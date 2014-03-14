@@ -36,5 +36,7 @@ public interface StudentinfoFacadeLocal {
     Studentinfo findByStuno(String userId);
     
     List<Studentinfo> findById(int id);
+    
+    public List<Studentinfo> findByClassId(int classId);
      
 }
