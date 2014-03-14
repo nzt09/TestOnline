@@ -108,7 +108,6 @@ public class GenerateAction implements java.io.Serializable {
                 if (classId > 0 && courseId > 0) {
                     try {
                         testAssigninfo = testAssignFacade.findCourseClass(courseId, classId).get(0);
-                        System.out.println(courseId + "yyyyyyy" + classId + "yyyyyy");
                         int testassignid = 0;
                         if (testAssigninfo != null) {
                             if (testAssigninfo.getId() > 0) {
@@ -125,15 +124,15 @@ public class GenerateAction implements java.io.Serializable {
                                     // 修改考试安排
                                 } else if (type.equals("1")) {// 生成试卷
                                     // 从表testpaper中删除已经存在的试卷8
-                                    System.out.println("daomeidao a  aaaaa");
-                                    if (testPaperFacade.findByCourseBystuid(test.getCourseinfo().getId(), test.getClassinfo().getId()) != null) {
-                                        testPaperFacade.findByCourseBystuid(test.getCourseinfo().getId(), test.getClassinfo().getId());
-                                        for (int i = 0; i < testPaperFacade.findByCourseBystuid(test.getCourseinfo().getId(), test.getClassinfo().getId()).size(); i++) {
-                                            testPaperFacade.remove(testPaperFacade.findByCourseBystuid(test.getCourseinfo().getId(), test.getClassinfo().getId()).get(i));
+                                    System.out.println("jjjjjjjjjjjjjjjjjjjjjj");
+                                    List<Testpaper> tem=testPaperFacade.findByCourseBystuid(test.getCourseinfo().getId(), test.getClassinfo().getId());
+                                    
+                                    if (tem != null) {
+                                        for (int i = 0; i < tem.size(); i++) {
+                                            testPaperFacade.remove(tem.get(i));
                                         }
-                                        System.out.println("daomeidao a  aaaaa");
+                                        System.out.println("rrrrrrrrrrrrrrrrrrrrrrrrrrr");
                                     }
-
 //                                    // 利用遗传算法生成试卷
 //                                    // 找到这门程题目的分数类别
                                     String sql = "select distinct(questionsinfo.score)"
@@ -447,9 +446,9 @@ public class GenerateAction implements java.io.Serializable {
                     }
                     i++;
                 }
-                if (Math.abs(sumTimeCost - F2.testInterval) > 35) {// 如果时长的误差超过25分钟，就重新生成试卷
-                    setNumofQuestionType(problemNum, gsuCount);
-                }
+//                if (Math.abs(sumTimeCost - F2.testInterval) > 35) {// 如果时长的误差超过25分钟，就重新生成试卷
+//                    setNumofQuestionType(problemNum, gsuCount);
+//                }
                 questionContent = questionContent.substring(0,
                         questionContent.length() - 1);// 去掉最后的逗号
             }

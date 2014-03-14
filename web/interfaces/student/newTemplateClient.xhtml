@@ -17,7 +17,7 @@
                         <c:forEach var="question" items="#{questionTypeEntity.value}" varStatus="statusBig"><!--每种题型的题目，可能有多道题目-->
                             <c:if test="#{questionTypeEntity.key==1}">
                                 #{testAction.bianhao}#{question.content}
-                                <h:selectOneRadio>
+                                <h:selectOneRadio value="#{question.pageanswer}">
                                     <c:forEach var="selectCandiate" items="#{testAction.list1}" varStatus="status" begin="#{status+statusBig.index*4}" end="#{(status+3)+statusBig.index*4}">
                                             <f:selectItem itemValue="#{selectCandiate.value}" itemLabel="#{selectCandiate.key}"/>                        
                                     </c:forEach>

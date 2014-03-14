@@ -11,9 +11,11 @@
                     <div id="divstyle">
                         <h:panelGrid columns="3" style="column-width: 100px">
                             <h:outputLabel value="编号" for="id" />
-                            <h:inputText id="id" value="#{teacherController.selected.personid}" required="true" requiredMessage="请输入学号">
-                                <f:ajax event="keyup" render="idMessage"></f:ajax>
+                            <h:inputText id="id" value="#{teacherController.selected.personid}" required="true" requiredMessage="请输入学号" >
+                                <f:ajax event="keyup" render="idMessage validatorId"></f:ajax>
                             </h:inputText>
+                            <rich:message ></rich:message>
+                            <h:outputLabel value="#{teacherController.validatorId()}" id="validatorId"></h:outputLabel>
                             <rich:message for="id" id="idMessage"></rich:message>
                             <h:outputLabel value="姓名" for="name" />
                             <h:inputText id="name" value="#{teacherController.selected.name}" required="true" requiredMessage="请输入姓名">

@@ -23,7 +23,7 @@ public class FactoryPopulationInitiation {
     }
     public Population getGeneratedPopulation(F2 f2) {
         switch (ControlParameters.genecodeType) {
-            case 0://�ַ����ͣ�ControlParameters.genecodeType==0
+            case 0:
                 this.pop = new StringPopulationInitiation(individualNum,f2).getGeneratedPopulation();
                 break;
         }
