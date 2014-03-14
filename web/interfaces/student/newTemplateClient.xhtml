@@ -24,8 +24,8 @@
                                 </h:selectOneRadio>
                             </c:if>
                             <c:if test="#{questionTypeEntity.key==2}">
-                               #{testAction.bianhao} #{question.content}&nbsp;( #{question.score}分)<br />
-                               <h:selectManyCheckbox id="a#{question.id}" >
+                                #{testAction.bianhao} #{question.content}&nbsp;( #{question.score}分)<br />
+                                <h:selectManyCheckbox id="a#{question.id}" >
                                     <c:forEach var="selectCandiate" items="#{testAction.list2}" varStatus="status" begin="#{status+statusBig.index*5}" end="#{(status+4)+statusBig.index*5}">
                                         <f:selectItem itemValue="#{selectCandiate.value}" itemLabel="#{selectCandiate.key}"/>
                                     </c:forEach>
@@ -37,19 +37,15 @@
                             <c:if test="#{questionTypeEntity.key==6}">
                                 <h:outputLabel value="#{testAction.bianhao}#{question.content}"  /><br/>&nbsp;( #{question.score}分)<br />
                                 <h:inputTextarea rows="20" cols="60" id="a#{question.id}"
-                                            /><br/>
+                                                 /><br/>
                             </c:if>
                             <c:if test="#{questionTypeEntity.key==7}">
                                 <h:outputText escape="false" value=" #{testAction.bianhao}#{testAction.convertFill(question)}"/>&nbsp;( #{question.score}分)<br />
                             </c:if>
-               
-
-				
-						
-                    </c:forEach>
+                        </c:forEach>
                     </c:forEach>
                     <h:commandButton onclick="" value="保存"
-                                                                                 action="#{testAction.insert()}"></h:commandButton><br />
+                                     action="#{testAction.insert()}"></h:commandButton><br />
                 </h:form>
             </ui:define>
         </ui:composition>

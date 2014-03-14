@@ -61,6 +61,16 @@ public class TeacherController implements Serializable {
     private List<SelectItem> teacherCourseList;
     private int majorId;
 
+    private String teanoFilter;
+
+    public String getTeanoFilter() {
+        return teanoFilter;
+    }
+
+    public void setTeanoFilter(String teanoFilter) {
+        this.teanoFilter = teanoFilter;
+    }
+    
     
 
     private String currentTeacherId;
@@ -77,6 +87,17 @@ public class TeacherController implements Serializable {
         items = null;
     }
 
+    
+    //验证Id是否存在
+    public String validatorId(){
+        if(getFacade().find(current.getPersonid())==null){
+             return "可以使用";
+        }
+        else{
+            return "该编号已存在，请重新输入";
+        }
+    }
+    
     public List<SelectItem> getTeacherCourseList() {
         return teacherCourseList;
     }

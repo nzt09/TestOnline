@@ -19,7 +19,7 @@ public class ErrorController implements java.io.Serializable{
     private String errorMessage;//错误内容
 	
 	public String returnMain(){
-		return "/interfaces/login/login";
+		return "/interfaces/login/login?faces-redirect=true";
 	}
 	
 	public String setNameFail(){

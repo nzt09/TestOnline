@@ -2,27 +2,30 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:rich="http://richfaces.org/rich">
 
     <body>
         <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
                 <h:form>
-                    <h:outputText value="添加任课老师信息"></h:outputText>
-                    <h:panelGrid columns="2">
-                        <h:outputLabel value="教师编号" for="personid" />
-                        <h:inputText id="personid" value="#{teacherController.selected.personid}"  required="true" requiredMessage="不能为空"/>
-                        <h:outputLabel value="姓名" for="name" />
-                        <h:inputText id="name" value="#{teacherController.selected.name}"  required="true" requiredMessage="不能为空"/>
-                        <h:outputLabel value="密码" for="password" />
-                        <h:inputText id="password" value="#{teacherController.selected.password}"  required="true" requiredMessage="不能为空"/>
-                    </h:panelGrid>
-                    <h:commandButton action="#{teacherController.educreate()}" value="保存" />
-                    <br />
-                    <br />
-                    <h:commandButton action="#{teacherController.teacherprepareList()}" value="显示所有任课老师信息"/>
-                    <br />
-
+                    <rich:panel style="width: 500px;margin-left: 300px">
+                        <h:panelGrid columns="3">
+                            <h:outputLabel value="教师编号" for="personid" />
+                            <h:inputText id="personid" value="#{teacherController.selected.personid}"  required="true" requiredMessage="编号不能为空"/>
+                            <rich:messages for="personid"></rich:messages>
+                            <h:outputLabel value="姓名" for="name" />
+                            <h:inputText id="name" value="#{teacherController.selected.name}"  required="true" requiredMessage="姓名不能为空"/>
+                            <rich:messages for="name"></rich:messages>
+                            <h:outputLabel value="密码" for="password" />
+                            <h:inputText id="password" value="#{teacherController.selected.password}"  required="true" requiredMessage="密码不能为空"/>
+                            <rich:messages for="password"></rich:messages>
+                        </h:panelGrid>
+                        <h:commandButton action="#{teacherController.educreate()}" value="保存" />   
+                    </rich:panel>              
+                </h:form>
+                <h:form>
+                    <h:commandButton action="#{teacherController.teacherprepareList()}" value="显示所有任课老师信息" style="margin-left: 100px"/>
                 </h:form>
             </ui:define>
 

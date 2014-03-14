@@ -43,6 +43,16 @@ public class CourseinfoController implements Serializable {
     private int selectedItemIndex;
     private int classId;
     private int MajorId;
+
+    public int getMajorId() {
+        return MajorId;
+    }
+
+    public void setMajorId(int MajorId) {
+        this.MajorId = MajorId;
+    }
+    
+    
     
     private int subjectTypeId;
     
@@ -50,6 +60,7 @@ public class CourseinfoController implements Serializable {
     public void subTypeListener(ValueChangeEvent event) {
         subjectTypeId=Integer.parseInt((String) event.getNewValue());
     }
+    
 
     public CourseinfoController() {
     }
@@ -205,6 +216,16 @@ public class CourseinfoController implements Serializable {
     //取出对应科目类型的课程
     public SelectItem[] getItemsAvailableSelectBySubject() {
         SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findBySubject(subjectTypeId), false);
+        for (int i = 0; i < item.length; i++) {
+            item[i].setLabel(((Courseinfo) item[i].getValue()).getName());
+            item[i].setValue(((Courseinfo) item[i].getValue()).getId());
+        }
+        return item;
+    }
+    
+    public SelectItem[] getItemsAvailableSelectByMajor() {
+        System.out.println(MajorId+"ttttttttttttttttttttttttttttttttttt");
+        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByMajor(MajorId), false);
         for (int i = 0; i < item.length; i++) {
             item[i].setLabel(((Courseinfo) item[i].getValue()).getName());
             item[i].setValue(((Courseinfo) item[i].getValue()).getId());

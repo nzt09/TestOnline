@@ -181,7 +181,12 @@ public class SchoolController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        for (int i = 0; i < item.length; i++) {
+            item[i].setLabel(((School) item[i].getValue()).getName());
+            item[i].setValue(((School) item[i].getValue()).getId());
+        }
+        return item;
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
