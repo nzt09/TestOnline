@@ -55,4 +55,12 @@ public class TeacherFacade extends AbstractFacade<Teacher> implements TeacherFac
         }
         return tem;
     }
+    
+    public List<Teacher> findByDepartmentId(int departmentId) {
+        List<Teacher> tem = em.createNativeQuery("select * from teacher where departmentId=" + departmentId + "", Teacher.class).getResultList();
+        if (tem.isEmpty()) {
+            return null;
+        }
+        return tem;
+    }
 }

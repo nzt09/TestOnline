@@ -26,7 +26,7 @@ public interface TestassigninfomFacadeLocal {
 
     List<Testassigninfom> findAll();
 
-    List<Testassigninfom> findRange(int[] range);
+    List<Testassigninfom> findRange(int[] range,int departmentId);
 
     int count();
 

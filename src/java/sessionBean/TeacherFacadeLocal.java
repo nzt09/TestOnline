@@ -34,6 +34,8 @@ public interface TeacherFacadeLocal {
 
     Teacher findByIdPassword(String userId, String password);
 
-     List<Teacher> findByRoleId(int roleId);
+    List<Teacher> findByRoleId(int roleId);
+
+    List<Teacher> findByDepartmentId(int departmentId);
 
 }

@@ -38,10 +38,17 @@ public class TestassigninfomFacade extends AbstractFacade<Testassigninfom> imple
         }
         return tem;
     }
-    
+
     public List<Testassigninfom> findCourseClass(int courseId, int classId) {
         List<Testassigninfom> tem = em.createNativeQuery("select * from Testassigninfom where courseId=" + courseId + " and classId=" + classId, Testassigninfom.class).getResultList();
-//        System.out.println("select * from teacher where roleid=" + roleId + " and departmentid=" + departmentId);
+        if (tem.isEmpty()) {
+            return null;
+        }
+        return tem;
+    }
+
+    public List<Testassigninfom> findRange(int[] range, int departmentId) {
+        List<Testassigninfom> tem = em.createNativeQuery("select * from Testassigninfom where classId in(select distinct(classId) from departclass where department=" + departmentId+")", Testassigninfom.class).getResultList();
         if (tem.isEmpty()) {
             return null;
         }

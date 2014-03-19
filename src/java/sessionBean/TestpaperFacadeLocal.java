@@ -35,4 +35,6 @@ public interface TestpaperFacadeLocal {
     
     List<Testpaper> findByCourseBystuid(int courseId,int classId );
     
+List<Testpaper> findByTestAssignId(int testAssignid);
+    
 }
