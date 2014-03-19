@@ -1,34 +1,33 @@
-<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h:head></h:head>
-<h:body>
-    
-    <ui:composition template="./../../template.xhtml">
-
-        <ui:define name="title">
-          
-        </ui:define>
-
-        <ui:define name="body">
-            <body onload="serverCurrTime()">
-                <div align="right" >
-                    剩余时间：<h:outputLabel id="currTime"></h:outputLabel>
-                    <h:selectOneRadio value="学历">
-        <f:selectItem value="highschool" itemLabel="highschool"/>
-         <f:selectItem value="serniorschool" itemLabel="seniorschool"/>
-          <f:selectItem value="masterschool" itemLabel="masterschool"/>
-           <f:selectItem value="doctorschool" itemLabel="highschool"/>
-    </h:selectOneRadio>
-            </div>
-                
-            </body>
-        </ui:define>
-
-    </ui:composition>
-
-</h:body>
-</html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+    <h:outputStylesheet>
+        .everyThirdDay {
+        background-color: gray;
+        }
+ 
+        .weekendBold {
+        font-weight: bold;
+        font-style: italic;
+        }
+    </h:outputStylesheet>
+    <h:outputScript>
+        var curDt = new Date();
+        function disablementFunction(day){
+        if (day.isWeekend) return false;
+        if (curDt==undefined){
+        curDt = day.date.getDate();
+        }
+        if (curDt.getTime() - day.date.getTime() &lt; 0) return true; else return false;
+        }
+        function disabledClassesProv(day){
+        if (curDt.getTime() - day.date.getTime() &gt;= 0) return 'rf-cal-boundary-day';
+        var res = '';
+        if (day.isWeekend) res+='weekendBold ';
+        if (day.day%3==0) res+='everyThirdDay';
+        return res;
+        }
+    </h:outputScript>
+    <rich:calendar dayDisableFunction="disablementFunction" dayClassFunction="disabledClassesProv" boundaryDatesMode="scroll" />
+</ui:composition>
