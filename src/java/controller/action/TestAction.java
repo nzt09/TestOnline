@@ -69,11 +69,22 @@ public class TestAction implements java.io.Serializable {
     List<Questiontypeinfo> listQuestionType;// 题目类型
     private List<Questionsinfo> questioninfo = new ArrayList<Questionsinfo>();// 考试题目
     private List<Integer> questionId = new ArrayList<Integer>();// 考试题目Id3
+    private List<Integer> falseId = new ArrayList<Integer>();
     private List<Courseinfo> course = new ArrayList<Courseinfo>();
     private List<Classinfo> classinfo = new ArrayList<Classinfo>();
     private final HashMap<Integer, List<Questionsinfo>> allQues;//key是题目类型
     private HashMap<Integer, String> testAnswer = new LinkedHashMap<Integer, String>();
+    private HashMap<Integer, String> trueAnswer = new LinkedHashMap<Integer, String>();
     private String[] testPaperAnswer;
+    private int biangao1;
+
+    public HashMap<Integer, String> getTrueAnswer() {
+        return trueAnswer;
+    }
+
+    public void setTrueAnswer(HashMap<Integer, String> trueAnswer) {
+        this.trueAnswer = trueAnswer;
+    }
 
     public HashMap<Integer, String> getTestAnswer() {
 
@@ -138,7 +149,7 @@ public class TestAction implements java.io.Serializable {
         this.allQues = new LinkedHashMap<>();
         //Iterator<Entry<Integer, List<Questionsinfo>>> it = allQues.entrySet().iterator();
     }
-    int bianhao = 1;
+    int bianhao = 0;
 
     public String test() {
         this.getAllQues();
@@ -146,8 +157,12 @@ public class TestAction implements java.io.Serializable {
     }
 
     public int getBianhao() {
-
-        return bianhao++;
+        if (bianhao < biangao1) {
+            bianhao++;
+        } else {
+            bianhao = 1;
+        }
+        return bianhao;
 
     }
 
@@ -165,6 +180,7 @@ public class TestAction implements java.io.Serializable {
             for (Testpaper test : testPaperList) {
                 if (test.getCourseinfo().getId() == testInfom.getCourseId()) {
                     String[] questionIds = test.getContent().split(",");
+                    biangao1 = questionIds.length;
                     List<Integer> ques = new ArrayList<Integer>();
                     for (int i = 0; i < questionIds.length; i++) {
                         ques.add(Integer.parseInt(questionIds[i]));
@@ -179,6 +195,9 @@ public class TestAction implements java.io.Serializable {
         if (this.getQuestionId().size() > 0) {
             for (int i = 0; i < questionId.size(); i++) {
                 Questionsinfo qi = questinfoEjb.find(questionId.get(i));
+                trueAnswer.put(qi.getId(), qi.getAnswer());
+                System.out.println(trueAnswer);
+                System.out.println(testAnswer);
                 //单项选择题
                 if (qi.getQuestiontypeinfo().getId() == Publicfields.SingleSelectType) {
                     List<Questionsinfo> tem;
@@ -214,7 +233,6 @@ public class TestAction implements java.io.Serializable {
                 //单项填空题
                 if (qi.getQuestiontypeinfo().getId() == Publicfields.SingleFill) {
                     List<Questionsinfo> tem1;
-                    System.out.println("22222222222222222222222222");
                     if (!allQues.containsKey(Publicfields.SingleFill)) {
                         tem1 = new LinkedList<>();
                         allQues.put(Publicfields.SingleFill, tem1);
@@ -276,6 +294,29 @@ public class TestAction implements java.io.Serializable {
         }
         temContent += content[i];
         return temContent;
+    }
+
+    public String convertFills(Questionsinfo question) {
+        String[] content = question.getContent().split("#");
+        String[] answer = question.getAnswer().split("#");
+        String temContent = "";
+        int i = 0;
+        String fill = this.getTestAnswer().get(question.getId());
+        if (fill == null) {
+            fill = "";
+            for (; i < content.length - 1; i++) {
+                temContent += content[i] + "<input id=\"fill_" + i + "_" + question.getId() + "\" name=\"" + "fill_" + i + "_" + question.getId() + "\"  value=\"" + fill + "\" type=text size=" + answer[i].length() + "/>";
+            }
+        } else {
+            System.out.println(fill + "====================");
+            String[] fills = fill.split("#");
+            for (; i < content.length - 1; i++) {
+                temContent += content[i] + "<input id=\"fill_" + i + "_" + question.getId() + "\" name=\"" + "fill_" + i + "_" + question.getId() + "\"  value=\"" + fills[i] + "\" type=text size=" + answer[i].length() + "/>";
+            }
+        }
+        temContent += content[i];
+        return temContent;
+
     }
 
     public List<Integer> getQuestionId() {
@@ -378,14 +419,12 @@ public class TestAction implements java.io.Serializable {
 
     // 是否在考试时间
     public String isInTesting() {
-
         return "test";
     }
 
     public void insert() {
         allQues.clear();
         bianhao = 1;
-
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         //获取题目列表
         if (this.getQuestionId().size() > 0) {
@@ -402,7 +441,6 @@ public class TestAction implements java.io.Serializable {
                     }
                     tem.add(qi);
                     testAnswer.put(qi.getId(), request.getParameter("myform:a" + qi.getId()));
-                    //System.out.println(testAnswer.values());
                 }
                 //多项选择题
                 if (qi.getQuestiontypeinfo().getId() == Publicfields.MultiSelectType) {
@@ -435,10 +473,7 @@ public class TestAction implements java.io.Serializable {
                         }
 
                     }
-
                     testAnswer.put(qi.getId(), multivalue);
-
-                    // System.out.println(testAnswer.values());
                 }
                 //单项填空题
                 if (qi.getQuestiontypeinfo().getId() == Publicfields.SingleFill) {
@@ -466,20 +501,17 @@ public class TestAction implements java.io.Serializable {
                     tem.add(qi);
                     int k = 0;
                     String temAnswer = "";
-
                     String[] fill = qi.getAnswer().split("#");
                     for (int t = 0; t < fill.length; t++) {
                         if (fill[t] != null) {
                             k++;
                         }
                     }
-                    System.out.println(k);
-                    System.out.println(qi.getAnswer().length());
                     for (int j = 0; j < k; j++) {
                         if (j != k - 1) {
                             temAnswer = temAnswer + request.getParameter("fill_" + j + "_" + qi.getId()) + "#";
                         } else {
-                            temAnswer = temAnswer + request.getParameter("fill_" + j + "_" + qi.getId());
+                            temAnswer = temAnswer + request.getParameter("fill_" + j + "_" + qi.getId()) + "#2";
                         }
                     }
                     testAnswer.put(qi.getId(), temAnswer);
@@ -496,91 +528,56 @@ public class TestAction implements java.io.Serializable {
                     }
                     tem.add(qi);
                     testAnswer.put(qi.getId(), request.getParameter("myform:a" + qi.getId()));
+
                     System.out.println(testAnswer.values());
                 }
             }
         }
-        String answers = "";
-
+        String answers = "";//学生的答案
+        String answer = "";//正确答案
         Set set = testAnswer.entrySet();
         Iterator it = set.iterator();
         while (it.hasNext()) {
             Map.Entry me = (Map.Entry) it.next();
             answers = answers + me.getKey() + "-" + me.getValue() + "#@!";
-
         }
+        Set set1 = trueAnswer.entrySet();
+        Iterator it1 = set1.iterator();
+        while (it1.hasNext()) {
+            Map.Entry me = (Map.Entry) it1.next();
+            answer = answer + me.getKey() + "-" + me.getValue() + "#@!";
+        }
+        System.out.println(answer);
         System.out.println(answers);
+        String[] list = answer.split("#@!");
+        String[] list1 = answers.split("#@!");
+        String wrong = "";
+        String right = "";
+        int score = 0;//存放成绩
+        Object[] obj = trueAnswer.keySet().toArray();
+        //客观题答案的比对
+        for (int k = 0; k < list.length; k++) {
+            if (!list[k].equals(list1[k])) {
+                falseId.add(k);
+                wrong = wrong + obj[k] + ",";
+            } else {
+                right = right + obj[k] + ",";
+                Questionsinfo rqi = questinfoEjb.find(obj[k]);
+                score += rqi.getScore();
+                System.out.println(score);
+            }
+        }
+
         Studentinfo stu = stuCon.getCurrent();
         List<Testpaper> testPaperList = stu.getTestpaperList();
         for (Testpaper test : testPaperList) {
             if (test.getCourseinfo().getId() == testInfom.getCourseId()) {
                 System.out.println(test.getId());
                 test.setAnswer(answers);
+                test.setWrongnum(wrong);
+                test.setScore(score);
                 testpaperEJB.edit(test);
             }
         }
     }
 }
-//        if (isTesting == 1) {
-//            String answers = "";
-//            for (int i = 0; i < questioninfo.size(); i++) {
-//                System.out.println("=========================");
-//                String answer = "";
-//                answer = answer + questioninfo.get(i).getId() + "-";
-//                if (questioninfo.get(i).getContent() != null) {
-//                    if (questioninfo.get(i).getQuestiontypeinfo().getId() == Publicfields.SingleFill) {
-//                        System.out.println(questioninfo.get(i).getQuestiontypeinfo().getId() );
-//                        if (questioninfo.get(i).getAnswer() != null) {
-//                            answer = answer + questioninfo.get(i).getAnswer()
-//                                    + "";
-//                        }
-//                        System.out.println(answer+"999999999999999999999999999999999");
-//                    }
-//                    if (questioninfo.get(i).getQuestiontypeinfo().getId() == Publicfields.MultiSelectType) {
-//                        if (questioninfo.get(i).getAnswer()!= null) {
-//                            for (int j = 1; j < questioninfo.get(i)
-//                                    .getPageanswers().size(); j++) {
-//                                answer = answer
-//                                        + questioninfo.get(i).getPageanswers()
-//                                        .get(j) + "#";
-//                            }
-//                        }
-//                    }
-//                    // 多项填空
-//                    if (questioninfo.get(i).getQuestiontypeinfo().getId() == Publicfields.MultiFill
-//                            || questioninfo.get(i).getQuestiontypeinfo().getId() == Publicfields.SingleFill) {
-//                        for (int j = 1; j < questioninfo.get(i).getPagecontent()
-//                                .size(); j++) {
-//                            answer = answer
-//                                    + questioninfo.get(i).getPagecontent().get(j)
-//                                    .getBoxvalue() + "#";
-//                        }
-//                    }
-//                    if (questioninfo.get(i).getQuestiontypeinfo().getId() == Publicfields.SimpeAnaswer
-//                            || questioninfo.get(i).getQuestiontypeinfo().getId() == Publicfields.EssayQuestions
-//                            || questioninfo.get(i).getQuestiontypeinfo().getId()== Publicfields.SimpeAnaswer
-//                            || questioninfo.get(i).getQuestiontypeinfo().getId() == Publicfields.TrueorFalse) {
-//
-//                        answer = answer + questioninfo.get(i).getPageanswer()
-//                                + "#";
-//                    }
-
-//                if (answer == "") {
-//                    if (answers == "") {
-//                        answers = answer;
-//                    } else {
-//                        answers = answers + "#@!";
-//                    }
-//                } else {
-//
-//                    if (answers == "") {
-//                        answers = answers + answer;
-//                    } else {
-//                        answers = answers + "#@!" + answer;
-//                    }
-//                }
-//
-//            MyDbUtilsTools.executeUpdate("update testpaper set answer = '" + answers
-//                    + "' where id = " + testPaper.getId());
-//        }
-
