@@ -254,7 +254,6 @@ public class QuestionsinfoController implements Serializable {
             selection4 = null;
             selection5 = null;
             answerList = null;
-            FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "添加成功!", "添加成功!"));
             return null;
         } catch (Exception e) {
             return null;

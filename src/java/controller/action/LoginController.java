@@ -7,8 +7,10 @@ package controller.action;
 
 import com.email.Mail;
 import controller.DepartclassController;
+import controller.MajorController;
 import controller.StudentinfoController;
 import controller.TeacherController;
+import controller.TestassigninfomController;
 import entities.Studentinfo;
 import entities.Teacher;
 import java.io.IOException;
@@ -39,6 +41,12 @@ public class LoginController implements java.io.Serializable {
 
     @EJB
     private TeacherFacadeLocal teaFacade;
+    
+    @Inject
+    private MajorController majCon;
+    
+    @Inject 
+    private TestassigninfomController testAssignCon;
 
     @Inject
     private TeacherController teaCon;
@@ -208,6 +216,8 @@ public class LoginController implements java.io.Serializable {
                 if (currentTea.getDepartment() != null) {
                     teaCon.setDepartmentId(currentTea.getDepartment().getId());
                     depCon.setDepartmentId(currentTea.getDepartment().getId());
+                    majCon.setDepartment(currentTea.getDepartment().getId());
+                    testAssignCon.setDepartmentId(currentTea.getDepartment().getId());
                 }
                 userbean.setUserId(currentTea.getPersonid());
                 return "/interfaces/public/welcome?faces-redirect=true";

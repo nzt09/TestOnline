@@ -205,7 +205,6 @@ public class ClassinfoController implements Serializable {
         SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByMajor(majorId), false);
         for (int i = 0; i < item.length; i++) {
             item[i].setLabel(((Classinfo) item[i].getValue()).getClassname());
-            item[i].setValue(((Classinfo) item[i].getValue()).getId());
         }
         return item;
     }

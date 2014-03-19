@@ -4,21 +4,21 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:rich="http://richfaces.org/rich">
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j">
     <body>
         <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
-                <h:form styleClass="jsfcrud_list_form">
+                <h:form>
                     <h:panelGroup id="messagePanel" layout="block">
-                        <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                        <h:messages  infoStyle="color: red" style="font-size: 30px" layout="table"/>
                     </h:panelGroup>
-                    <h:outputText escape="false" value="#{bundle.ListTestassigninfomEmpty}" rendered="#{testassigninfomController.items.rowCount == 0}"/>
+                    <h:outputText escape="false" value="当前没有考试安排" rendered="#{testassigninfomController.items.rowCount == 0}"/>
                     <h:panelGroup rendered="#{testassigninfomController.items.rowCount > 0}">
                         <h:outputLabel value="考试安排信息："></h:outputLabel>
                         <h:outputLabel value="#{testassigninfomController.pagination.itemsCount}"></h:outputLabel>
                         <h:outputLabel value="条"></h:outputLabel>
-                        
-                        <rich:dataTable value="#{testassigninfomController.items}" var="item"  rowClasses="jsfcrud_odd_row,jsfcrud_even_row"  style="border:solid 1px" rows="10">
+                        <rich:dataTable value="#{testassigninfomController.items}" var="item" rowClasses="jsfcrud_odd_row,jsfcrud_even_row"  style="border:solid 1px" rows="10">
                             <rich:column>
                                 <f:facet name="header">
                                     <h:outputText value="编号"/>
@@ -65,7 +65,7 @@
                             </rich:column>
                             <rich:column>
                                 <f:facet name="header">
-                                    <h:outputText value="平均时间"/>
+                                    <h:outputText value="平均时间（分钟）"/>
                                 </f:facet>
                                 <h:outputText value="#{item.averagetime}"/>
                             </rich:column>
@@ -94,21 +94,30 @@
                                 <h:outputText value="#{item.classinfo.classname}"/>
                             </rich:column>
                             <rich:column>
-                                <f:facet name="header">
-                                    <h:outputText value="&nbsp;"/>
-                                </f:facet>
-
-                                <h:commandLink action="#{testassigninfomController.prepareEdit}" value="修改"/>
-                                <h:outputText value=" "/>
-                                <h:commandLink action="#{testassigninfomController.destroy}" value="删除"/>
+                                <h:commandLink action="#{testassigninfomController.prepareEdit}">
+                                    <a4j:param value="#{item.id}"
+                                               assignTo="#{testassigninfomController.currentId}" />
+                                    <h:graphicImage value="/resources/images/edit.gif"></h:graphicImage>   
+                                </h:commandLink>
                             </rich:column>
+                            <rich:column>
+                                <h:commandLink action="#{testassigninfomController.destroy}" >
+                                    <a4j:param value="#{item.id}"
+                                               assignTo="#{testassigninfomController.currentId}" />
+                                    <h:graphicImage value="/resources/images/delete.gif"></h:graphicImage>                                
+                                </h:commandLink>
+                            </rich:column>
+                            <f:facet name="footer">
+                                <rich:dataScroller style="width: 490px" render="table"/>
+                            </f:facet>
                         </rich:dataTable>
                     </h:panelGroup>
                     <br />
-                    <h:commandLink action="#{testassigninfomController.prepareCreate}" value="添加考试信息"/>
+                    <h:commandButton action="#{testassigninfomController.prepareCreate}" value="添加考试信息"/>
                     <br />
 
                 </h:form>
+
             </ui:define>
 
         </ui:composition>

@@ -38,7 +38,7 @@
                                 <f:selectItem itemLabel="--请选择学科--" itemValue="0"></f:selectItem>
                                 <f:selectItems value="#{courseinfoController.itemsAvailableSelectByMajor}"></f:selectItems>
                             </h:selectOneMenu>
-                            <a4j:commandButton action="#{generateAction.doGenerateTestPaper()}"   oncomplete="show_confirm()"></a4j:commandButton>
+                            <a4j:commandButton action="#{generateAction.doGenerateTestPaper()}"   oncomplete="show_confirm()" ></a4j:commandButton>
                             <a4j:status>
                                 <f:facet name="start">
                                     <h:graphicImage value="../image/ai.gif" />

@@ -42,6 +42,15 @@ public class MajorController implements Serializable {
     private int selectedItemIndex;
     private int department;
 
+    public int getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(int department) {
+        this.department = department;
+    }
+    
+
     public MajorController() {
     }
 

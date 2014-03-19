@@ -44,7 +44,7 @@ import tools.Publicfields;
 @Named
 @SessionScoped
 public class TestAction implements java.io.Serializable {
-    
+
     @EJB
     private QuestionsinfoFacadeLocal questinfoEjb;
     @EJB
@@ -74,83 +74,83 @@ public class TestAction implements java.io.Serializable {
     private final HashMap<Integer, List<Questionsinfo>> allQues;//key是题目类型
     private HashMap<Integer, String> testAnswer = new LinkedHashMap<Integer, String>();
     private String[] testPaperAnswer;
-    
+
     public HashMap<Integer, String> getTestAnswer() {
-        
+
         return testAnswer;
     }
-    
+
     public void setTestAnswer(HashMap<Integer, String> testAnswer) {
         this.testAnswer = testAnswer;
     }
-    
+
     private int[] qutypeExsit;
-    
+
     public String[] getTestPaperAnswer() {
         return testPaperAnswer;
     }
-    
+
     public void setTestPaperAnswer(String[] testPaperAnswer) {
         this.testPaperAnswer = testPaperAnswer;
     }
-    
+
     private HashMap<String, String> list1;
-    
+
     private HashMap<String, String> list2;
-    
+
     private LinkedList list3;
-    
+
     public HashMap<String, String> getList2() {
         return list2;
     }
-    
+
     public void setList2(HashMap<String, String> list2) {
         this.list2 = list2;
     }
-    
+
     public HashMap<String, String> getList1() {
         return list1;
     }
-    
+
     public void setList1(HashMap<String, String> list1) {
         this.list1 = list1;
     }
-    
+
     public LinkedList getList3() {
         return list3;
     }
-    
+
     public void setList3(LinkedList list3) {
         this.list3 = list3;
     }
-    
+
     String[] selectionName = new String[]{"A", "B", "C", "D", "E", "F", "G", "H"};
-    
+
     public String[] getSelectionName() {
         return selectionName;
     }
-    
+
     public void setSelectionName(String[] selectionName) {
         this.selectionName = selectionName;
     }
-    
+
     public TestAction() {
         this.allQues = new LinkedHashMap<>();
         //Iterator<Entry<Integer, List<Questionsinfo>>> it = allQues.entrySet().iterator();
     }
     int bianhao = 1;
-    
+
     public String test() {
         this.getAllQues();
         return null;
     }
-    
+
     public int getBianhao() {
-        
+
         return bianhao++;
-        
+
     }
-    
+
     @PostConstruct
     public void initilize() {
         questionTypeCount = qtEJB.findAll().size();
@@ -168,7 +168,7 @@ public class TestAction implements java.io.Serializable {
                     List<Integer> ques = new ArrayList<Integer>();
                     for (int i = 0; i < questionIds.length; i++) {
                         ques.add(Integer.parseInt(questionIds[i]));
-                        
+
                     }
                     questionId = ques;
                     break;
@@ -200,7 +200,7 @@ public class TestAction implements java.io.Serializable {
                     if (!allQues.containsKey(Publicfields.MultiSelectType)) {
                         tem1 = new LinkedList<>();
                         allQues.put(Publicfields.MultiSelectType, tem1);
-                        
+
                     } else {
                         tem1 = allQues.get(Publicfields.MultiSelectType);
                     }
@@ -208,7 +208,7 @@ public class TestAction implements java.io.Serializable {
                     String[] s1 = qi.getSelections().split("#");
                     for (int k = 0; k < s1.length; k++) {
                         list2.put(selectionName[k] + ". " + s1[k], selectionName[k]);
-                        
+
                     }
                 }
                 //单项填空题
@@ -218,12 +218,12 @@ public class TestAction implements java.io.Serializable {
                     if (!allQues.containsKey(Publicfields.SingleFill)) {
                         tem1 = new LinkedList<>();
                         allQues.put(Publicfields.SingleFill, tem1);
-                        
+
                     } else {
                         tem1 = allQues.get(Publicfields.SingleFill);
                     }
                     tem1.add(qi);
-                    
+
                 }
                 //多项填空题
                 if (qi.getQuestiontypeinfo().getId() == Publicfields.MultiFill) {
@@ -247,7 +247,7 @@ public class TestAction implements java.io.Serializable {
                     }
                     tem.add(qi);
                 }
-                
+
             }
         }
         int questCount = 0;
@@ -257,9 +257,9 @@ public class TestAction implements java.io.Serializable {
             questCount += entry.getValue().size();
         }
         testPaperAnswer = new String[questCount];
-        
+
     }
-    
+
     public String convertFill(Questionsinfo question) {
         String[] content = question.getContent().split("#");
         System.out.println(question.getContent());
@@ -277,40 +277,40 @@ public class TestAction implements java.io.Serializable {
         temContent += content[i];
         return temContent;
     }
-    
+
     public List<Integer> getQuestionId() {
 
         return questionId;
     }
-    
+
     public void setQuestionId(List<Integer> questionId) {
         this.questionId = questionId;
     }
-    
+
     public HashMap<Integer, List<Questionsinfo>> getAllQues() {
         return this.allQues;
     }
-    
+
     public void setQuestioninfo(List<Questionsinfo> questioninfo) {
         this.questioninfo = questioninfo;
     }
-    
+
     public int getQuestionNum() {
         return questionNum;
     }
-    
+
     public void setQuestionNum(int questionNum) {
         this.questionNum = questionNum;
     }
-    
+
     public int getLeftMinute1() {
         return leftMinute1;
     }
-    
+
     public void setLeftMinute1(int leftMinute1) {
         this.leftMinute1 = leftMinute1;
     }
-    
+
     public String getStudentName() {
         studentName = (String) FacesContext.getCurrentInstance()
                 .getExternalContext().getSessionMap().get("StudentName");
@@ -318,51 +318,51 @@ public class TestAction implements java.io.Serializable {
         studentName = ss[0];
         return studentName;
     }
-    
+
     public void setStudentName(String studentName) {
         this.studentName = studentName;
     }
-    
+
     public Testassigninfom getTestAssign() {
         return testAssign;
     }
-    
+
     public void setTestAssign(Testassigninfom testAssign) {
         this.testAssign = testAssign;
     }
-    
+
     public void setIsTesting(int isTesting) {
         this.isTesting = isTesting;
     }
-    
+
     public List<Testpaper> getTp() {
         return tp;
     }
-    
+
     public void setTp(List<Testpaper> tp) {
         this.tp = tp;
     }
-    
+
     public Testpaper getTestPaper() {
         return testPaper;
     }
-    
+
     public void setTestPaper(Testpaper testPaper) {
         this.testPaper = testPaper;
     }
-    
+
     public void setListQuestionType(List<Questiontypeinfo> listQuestionType) {
         this.listQuestionType = listQuestionType;
     }
-    
+
     public void setCourse(List<Courseinfo> course) {
         this.course = course;
     }
-    
+
     public void setClassinfo(List<Classinfo> classinfo) {
         this.classinfo = classinfo;
     }
-    
+
     public List<Testassigninfom> getTestAssigns() {
         if (testAssigns.size() == 0 && testAssign != null) {
             List<Testassigninfom> tas = new ArrayList<Testassigninfom>();
@@ -371,21 +371,21 @@ public class TestAction implements java.io.Serializable {
         }
         return testAssigns;
     }
-    
+
     public void setTestAssigns(List<Testassigninfom> testAssigns) {
         this.testAssigns = testAssigns;
     }
 
     // 是否在考试时间
     public String isInTesting() {
-        
+
         return "test";
     }
-    
+
     public void insert() {
         allQues.clear();
         bianhao = 1;
-        
+
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         //获取题目列表
         if (this.getQuestionId().size() > 0) {
@@ -410,7 +410,7 @@ public class TestAction implements java.io.Serializable {
                     if (!allQues.containsKey(Publicfields.MultiSelectType)) {
                         tem1 = new LinkedList<>();
                         allQues.put(Publicfields.MultiSelectType, tem1);
-                        
+
                     } else {
                         tem1 = allQues.get(Publicfields.MultiSelectType);
                     }
@@ -418,7 +418,7 @@ public class TestAction implements java.io.Serializable {
                     int k = 0;
                     String multivalue = "";
                     String[] value = new String[5];
-                    String[] values = request.getParameterValues("myform:a" + qi.getId());                    
+                    String[] values = request.getParameterValues("myform:a" + qi.getId());
                     if (values != null) {
                         for (int j = 0; j < values.length; j++) {
                             if (values[j] != null) {
@@ -431,11 +431,11 @@ public class TestAction implements java.io.Serializable {
                         if (l != k - 1) {
                             multivalue = multivalue + value[l] + "#";
                         } else {
-                            multivalue = multivalue + value[l];                            
+                            multivalue = multivalue + value[l];
                         }
-                        
+
                     }
-                    
+
                     testAnswer.put(qi.getId(), multivalue);
 
                     // System.out.println(testAnswer.values());
@@ -446,13 +446,13 @@ public class TestAction implements java.io.Serializable {
                     if (!allQues.containsKey(Publicfields.SingleFill)) {
                         tem1 = new LinkedList<>();
                         allQues.put(Publicfields.SingleFill, tem1);
-                        
+
                     } else {
                         tem1 = allQues.get(Publicfields.SingleFill);
                     }
                     tem1.add(qi);
                     testAnswer.put(qi.getId(), request.getParameter("fill_0_" + qi.getId()));
-                    
+
                 }
                 //多项填空题
                 if (qi.getQuestiontypeinfo().getId() == Publicfields.MultiFill) {
@@ -466,7 +466,7 @@ public class TestAction implements java.io.Serializable {
                     tem.add(qi);
                     int k = 0;
                     String temAnswer = "";
-                    
+
                     String[] fill = qi.getAnswer().split("#");
                     for (int t = 0; t < fill.length; t++) {
                         if (fill[t] != null) {
@@ -482,7 +482,7 @@ public class TestAction implements java.io.Serializable {
                             temAnswer = temAnswer + request.getParameter("fill_" + j + "_" + qi.getId());
                         }
                     }
-                    testAnswer.put(qi.getId(), temAnswer);                    
+                    testAnswer.put(qi.getId(), temAnswer);
                     System.out.println(testAnswer);
                 }
                 //简答题
@@ -501,13 +501,13 @@ public class TestAction implements java.io.Serializable {
             }
         }
         String answers = "";
-        
+
         Set set = testAnswer.entrySet();
         Iterator it = set.iterator();
         while (it.hasNext()) {
             Map.Entry me = (Map.Entry) it.next();
             answers = answers + me.getKey() + "-" + me.getValue() + "#@!";
-            
+
         }
         System.out.println(answers);
         Studentinfo stu = stuCon.getCurrent();

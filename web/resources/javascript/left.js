@@ -15,6 +15,15 @@ $(document).ready(function() {
 
 function show_confirm()
 {
+    
     alert("试卷生成成功");
 }
   
+function delete_Confirm()
+{
+    
+    alert("确定要删除？");
+}
+  
+  
+ 

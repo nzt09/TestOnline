@@ -3,62 +3,52 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:rich="http://richfaces.org/rich">
 
     <body>
 
         <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
-                 <h:form>
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="编号" for="id" />
-                    <h:inputText id="id" value="#{testassigninfomController.selected.id}" title="#{bundle.EditTestassigninfomTitle_id}" required="true" requiredMessage="#{bundle.EditTestassigninfomRequiredMessage_id}"/>
-                    <h:outputLabel value="考试时间" for="testtime" />
-                    <h:inputText id="testtime" value="#{testassigninfomController.selected.testtime}" title="#{bundle.EditTestassigninfomTitle_testtime}" >
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                    </h:inputText>
-                    <h:outputLabel value="考试分数" for="testinterval" />
-                    <h:inputText id="testinterval" value="#{testassigninfomController.selected.testinterval}" title="#{bundle.EditTestassigninfomTitle_testinterval}" />
-                    <h:outputLabel value="难度" for="testdifficulty" />
-                    <h:inputText id="testdifficulty" value="#{testassigninfomController.selected.testdifficulty}" title="#{bundle.EditTestassigninfomTitle_testdifficulty}" />
-                    <h:outputLabel value="IP开始地址" for="ipstart" />
-                    <h:inputText id="ipstart" value="#{testassigninfomController.selected.ipstart}" title="#{bundle.EditTestassigninfomTitle_ipstart}" />
-                    <h:outputLabel value="IP结束地址" for="ipend" />
-                    <h:inputText id="ipend" value="#{testassigninfomController.selected.ipend}" title="#{bundle.EditTestassigninfomTitle_ipend}" />
-                    <h:outputLabel value="注意事项" for="notice" />
-                    <h:inputText id="notice" value="#{testassigninfomController.selected.notice}" title="#{bundle.EditTestassigninfomTitle_notice}" />
-                    <h:outputLabel value="基本分" for="noticescore" />
-                    <h:inputText id="noticescore" value="#{testassigninfomController.selected.noticescore}" title="#{bundle.EditTestassigninfomTitle_noticescore}" />
-                    <h:outputLabel value="平均时间" for="averagetime" />
-                    <h:inputText id="averagetime" value="#{testassigninfomController.selected.averagetime}" title="#{bundle.EditTestassigninfomTitle_averagetime}" />
-                    <h:outputLabel value="监考老师" for="teacher" />
-                    <h:selectOneMenu id="teacher" value="#{testassigninfomController.selected.teacher}" title="#{bundle.EditTestassigninfomTitle_teacher}" >
-                        <f:selectItems value="#{teacherController.itemsAvailableSelectM}"/>
-                    </h:selectOneMenu>
-                    <h:outputLabel value="专业" for="courseinfo" />
-                    <h:selectOneMenu id="courseinfo" value="#{testassigninfomController.selected.courseinfo}" title="#{bundle.EditTestassigninfomTitle_courseinfo}" >
-                        <f:selectItems value="#{courseinfoController.itemsAvailableSelectM}"/>
-                    </h:selectOneMenu>
-                    <h:outputLabel value="教室" for="classroom" />
-                    <h:selectOneMenu id="classroom" value="#{testassigninfomController.selected.classroom}" title="#{bundle.EditTestassigninfomTitle_classroom}" >
-                        <f:selectItems value="#{classroomController.itemsAvailableSelectM}"/>
-                    </h:selectOneMenu>
-                    <h:outputLabel value="班级" for="classinfo" />
-                    <h:selectOneMenu id="classinfo" value="#{testassigninfomController.selected.classinfo}" title="#{bundle.EditTestassigninfomTitle_classinfo}" >
-                        <f:selectItems value="#{classinfoController.itemsAvailableSelectM}"/>
-                    </h:selectOneMenu>
-                </h:panelGrid>
-                <h:commandLink action="#{testassigninfomController.update}" value="修改"/>
-                <br />
-<!--                <br />
-                <h:link outcome="View" value="#{bundle.EditTestassigninfomViewLink}"/>
-                <br />-->
-                <h:commandLink action="#{testassigninfomController.prepareList}" value="显示考试安排的信息" immediate="true"/>
-                <br />
-            </h:form>
+                <h:form>
+                    <rich:panel style="margin-left: 200px" header="修改信息">
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="考试时间" for="testtime" />
+                            <h:inputText id="testtime" value="#{testassigninfomController.selected.testtime}"  >
+                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            </h:inputText>
+                            <h:outputLabel value="考试分数" />
+                            <h:outputLabel  value="#{testassigninfomController.selected.testinterval}分"/>
+                            <h:outputLabel value="难度" for="testdifficulty" />
+                            <h:outputLabel id="testdifficulty" value="#{testassigninfomController.selected.testdifficulty}"/>
+                            <h:outputLabel value="IP开始地址" for="ipstart" />
+                            <h:inputText id="ipstart" value="#{testassigninfomController.selected.ipstart}"  />
+                            <h:outputLabel value="IP结束地址" for="ipend" />
+                            <h:inputText id="ipend" value="#{testassigninfomController.selected.ipend}"  />
+                            <h:outputLabel value="注意事项" for="notice" />
+                            <h:inputText id="notice" value="#{testassigninfomController.selected.notice}"/>
+                            <h:outputLabel value="基础分" for="noticescore" />
+                            <h:outputLabel id="noticescore" value="#{testassigninfomController.selected.noticescore}分"/>
+                            <h:outputLabel value="平均时间(分钟)" for="averagetime" />
+                            <rich:inputNumberSlider id="averagetime" step="10" value="#{testassigninfomController.selected.averagetime}"></rich:inputNumberSlider>
+                            <h:outputLabel value="监考老师" for="teacher" />
+                            <h:selectOneMenu id="teacher" value="#{testassigninfomController.selected.teacher}" >
+                                <f:selectItems value="#{teacherController.itemsAvailableSelectM}"/>
+                            </h:selectOneMenu>
+                            <h:outputLabel >班级</h:outputLabel>
+                            <h:outputLabel value="#{testassigninfomController.selected.classinfo.classname}"></h:outputLabel>
+                            <h:outputLabel >课程</h:outputLabel>
+                            <h:outputLabel value="#{testassigninfomController.selected.courseinfo.name}"/>
+                            <h:outputLabel value="教室"  />
+                            <h:selectOneMenu id="classroom" value="#{testassigninfomController.selected.classroom}" >
+                                <f:selectItems value="#{classroomController.itemsAvailableSelectM}"/>
+                            </h:selectOneMenu>
+                            <h:commandButton action="#{testassigninfomController.update}" value="保存"/>
+                            <h:commandLink action="#{testassigninfomController.prepareList}" value="返回" immediate="true"/>
+                        </h:panelGrid>
+                    </rich:panel>
+                </h:form>
             </ui:define>
-
         </ui:composition>
-
     </body>
 </html>

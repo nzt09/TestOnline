@@ -396,7 +396,8 @@ public class TeacherController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectM() {
-        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        
+        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByDepartmentId(departmentId), false);
         for (int i = 0; i < item.length; i++) {
             item[i].setLabel(((Teacher) item[i].getValue()).getName());
         }

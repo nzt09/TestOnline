@@ -116,6 +116,7 @@ public class GenerateAction implements java.io.Serializable {
                                 // requestMap.get("optype");
                                 String type = "1";
                                 Testassigninfom test = testAssignFacade.find(testassignid);
+                                
                                 // 如果该场考试安排中有其它notice及noticeScore不为0的话，则要同时读取averageTime出来，以便于在生成试卷时，只生成100-noticeScore和interval-averageTime的试卷
                                 int noticeScroe = (null == test.getNoticescore() ? 0 : test.getNoticescore());
                                 scoreSum = scoreSum - noticeScroe;
@@ -124,14 +125,12 @@ public class GenerateAction implements java.io.Serializable {
                                     // 修改考试安排
                                 } else if (type.equals("1")) {// 生成试卷
                                     // 从表testpaper中删除已经存在的试卷8
-                                    System.out.println("jjjjjjjjjjjjjjjjjjjjjj");
                                     List<Testpaper> tem=testPaperFacade.findByCourseBystuid(test.getCourseinfo().getId(), test.getClassinfo().getId());
-                                    
+                                    System.out.println("第一步");
                                     if (tem != null) {
                                         for (int i = 0; i < tem.size(); i++) {
                                             testPaperFacade.remove(tem.get(i));
                                         }
-                                        System.out.println("rrrrrrrrrrrrrrrrrrrrrrrrrrr");
                                     }
 //                                    // 利用遗传算法生成试卷
 //                                    // 找到这门程题目的分数类别
@@ -236,7 +235,7 @@ public class GenerateAction implements java.io.Serializable {
                                                     need2Repeat = true;
                                                 }
                                             }
-                                            
+                                            System.out.println("第二步");
                                             Testpaper testPaper = new Testpaper();
                                             testPaper.setContent(questionContent);
                                             testPaper.setStudentinfo(student);
@@ -246,6 +245,7 @@ public class GenerateAction implements java.io.Serializable {
                                             testassign.setId(testassignid);
                                             testPaper.setTestassigninfom(testassign);
                                             testPaperFacade.create(testPaper);
+                                            System.out.println("第3步");
                                             result = 1;
 
                                         } catch (Exception e) {

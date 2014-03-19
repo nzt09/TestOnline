@@ -1,5 +1,6 @@
 package controller;
 
+import controller.action.GenerateAction;
 import entities.Testassigninfom;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
@@ -20,9 +21,11 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
+import javax.persistence.GenerationType;
 import sessionBean.ClassinfoFacadeLocal;
 import sessionBean.CourseinfoFacadeLocal;
 import sessionBean.StudentinfoFacadeLocal;
+import sessionBean.TestpaperFacadeLocal;
 
 @Named("testassigninfomController")
 @SessionScoped
@@ -38,6 +41,10 @@ public class TestassigninfomController implements Serializable {
     private ClassinfoController claCon;
     @EJB
     private StudentinfoFacadeLocal studentFacade;
+    @Inject
+    private GenerateAction geraction;
+    @EJB
+    private TestpaperFacadeLocal testPaperFacade;
 
     public boolean isIsReady() {
         return isReady;
@@ -61,6 +68,25 @@ public class TestassigninfomController implements Serializable {
     private List<Testassigninfom> testAssignList;
     private boolean isReady = false;
     private boolean isReady1 = false;
+    private int currentId;
+    private int departmentId;
+
+    public int getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(int departmentId) {
+        this.departmentId = departmentId;
+    }
+    
+
+    public int getCurrentId() {
+        return currentId;
+    }
+
+    public void setCurrentId(int currentId) {
+        this.currentId = currentId;
+    }
 
     public int getMinute() {
         return minute;
@@ -119,7 +145,7 @@ public class TestassigninfomController implements Serializable {
         System.out.println(endTime.toString());
         if (c.before(endTime) && c.after(beginTime)) {
             isReady = true;
-           
+
         } else {
             isReady1 = true;
         }
@@ -160,7 +186,7 @@ public class TestassigninfomController implements Serializable {
 
     public PaginationHelper getPagination1() {
         classId = stuCon.getCurrent().getClassinfo().getId();
-        
+
         if (pagination == null) {
             pagination = new PaginationHelper(10) {
 
@@ -190,7 +216,7 @@ public class TestassigninfomController implements Serializable {
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()},departmentId));
                 }
             };
         }
@@ -217,6 +243,10 @@ public class TestassigninfomController implements Serializable {
     public String create() {
         try {
             getFacade().create(current);
+            geraction.setClassId(current.getClassinfo().getId());
+            geraction.setCourseId(current.getCourseinfo().getId());
+            System.out.println(current.getClassinfo().getId() + "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+            geraction.doGenerateTestPaper();
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TestassigninfomCreated"));
             return prepareCreate();
         } catch (Exception e) {
@@ -226,8 +256,7 @@ public class TestassigninfomController implements Serializable {
     }
 
     public String prepareEdit() {
-        current = (Testassigninfom) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        current = this.getFacade().find(currentId);
         return "editexam_arrange";
     }
 
@@ -243,11 +272,16 @@ public class TestassigninfomController implements Serializable {
     }
 
     public String destroy() {
-        current = (Testassigninfom) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        performDestroy();
-        recreatePagination();
-        recreateModel();
+        current = this.getFacade().find(currentId);
+        System.out.println(current.getId() + "pppppppppppppppppppppp");
+        if (testPaperFacade.findByTestAssignId(current.getId()) != null) {
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TestAssignDeleteFailed"));
+        } else {
+            selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+            performDestroy();
+            recreatePagination();
+            recreateModel();
+        }
         return "teacher_exam";
     }
 
@@ -284,7 +318,7 @@ public class TestassigninfomController implements Serializable {
             }
         }
         if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1},departmentId).get(0);
         }
     }
 

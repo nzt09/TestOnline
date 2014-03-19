@@ -5,7 +5,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:rich="http://richfaces.org/rich">
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j">
     <body>
         <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
@@ -233,8 +234,8 @@
                                         <h:outputText value="题目预览"></h:outputText>
                                     </h:outputLabel>
                                     <h:inputTextarea id="preContent"  cols="30" rows="5"  value="#{questionsinfoController.preContent}"></h:inputTextarea>
-                                    <h:commandButton value="添加" action="#{questionsinfoController.addquestion()}" >
-                                    </h:commandButton>
+                                    <a4j:commandButton value="添加" action="#{questionsinfoController.addquestion()}" oncomplete="show_confirm()">
+                                    </a4j:commandButton>
                                 </h:panelGrid>
                                 <h:panelGrid  style="align:center;margin-left: 300px">
                                     相似的题目：
