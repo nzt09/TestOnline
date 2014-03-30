@@ -29,8 +29,6 @@ public interface MajorFacadeLocal {
     List<Major> findRange(int[] range);
 
     int count();
-
-    List<Major> findByDepartment(int departmentId);
     
     List<Major> findByDepartmentId(int department);
 }
