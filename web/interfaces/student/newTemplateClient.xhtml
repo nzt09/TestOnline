@@ -13,6 +13,7 @@
 
             </ui:define>
             <ui:define name="body">
+                <rich:panel>
                 <body onload="serverCurrTime()">                   
                     <div align="right">
                         剩余时间：<h:outputLabel id="currTime"></h:outputLabel>     
@@ -79,8 +80,10 @@
                         </c:forEach>
                     </c:forEach>
                     <h:commandButton onclick="" value="保存"
-                                     action="#{testAction.insert()}"></h:commandButton><br />
+                                     action="#{testAction.insert()}"></h:commandButton>
+                                     <h:commandButton value="返回" action="testlist.xhtml"/>                
                 </h:form>
+                </rich:panel>
             </ui:define>
         </ui:composition>
     </body>
