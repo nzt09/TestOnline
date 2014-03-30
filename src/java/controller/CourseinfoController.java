@@ -241,6 +241,7 @@ public class CourseinfoController implements Serializable {
     public SelectItem[] getItemsAvailableSelectA() {
         classId = stuCon.getCurrent().getClassinfo().getId();
         MajorId = stuCon.getCurrent().getClassinfo().getMajor().getId();
+        System.out.println(MajorId+"majorId");
         SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByMajor(MajorId), false);
 //        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
         for (int i = 0; i < item.length; i++) {

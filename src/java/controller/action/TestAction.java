@@ -338,7 +338,8 @@ public class TestAction implements java.io.Serializable {
             if (fill == null) {
                 fill = "";
             }
-            temContent += content[i] + "<input id=\"fill_" + i + "_" + question.getId() + "\" name=\"" + "fill_" + i + "_" + question.getId() + "\"  value=\"" + fill + "\" type=text size=" + answer[i].length() + "/>";
+            temContent += content[i] + "<input id=\"fill_" + i + "_" + question.getId() + "\" name=\"" + "fill_" + i + "_" + 
+question.getId() + "\"  value=\"" + fill + "\" type=text size=" + answer[i].length() + "/>";
         }
         temContent += content[i];
         return temContent;
@@ -353,13 +354,15 @@ public class TestAction implements java.io.Serializable {
         if (fill == null) {
             fill = "";
             for (; i < content.length - 1; i++) {
-                temContent += content[i] + "<input id=\"fill_" + i + "_" + question.getId() + "\" name=\"" + "fill_" + i + "_" + question.getId() + "\"  value=\"" + fill + "\" type=text size=" + answer[i].length() + "/>";
+                temContent += content[i] + "<input id=\"fill_" + i + "_" + question.getId() + "\" name=\"" + "fill_" + i + "_" 
++ question.getId() + "\"  value=\"" + fill + "\" type=text size=" + answer[i].length() + "/>";
             }
         } else {
             System.out.println(fill + "====================");
             String[] fills = fill.split("#");
             for (; i < content.length - 1; i++) {
-                temContent += content[i] + "<input id=\"fill_" + i + "_" + question.getId() + "\" name=\"" + "fill_" + i + "_" + question.getId() + "\"  value=\"" + fills[i] + "\" type=text size=" + answer[i].length() + "/>";
+                temContent += content[i] + "<input id=\"fill_" + i + "_" + question.getId() + "\" name=\"" + "fill_" + i + "_" 
++ question.getId() + "\"  value=\"" + fills[i] + "\" type=text size=" + answer[i].length() + "/>";
             }
         }
         temContent += content[i];
@@ -607,21 +610,23 @@ public class TestAction implements java.io.Serializable {
         System.out.println(answer);
         System.out.println(answers);
         String[] list = answer.split("#@!");
+        
         for (int i = 0; i < list.length; i++) {
             System.out.println(list[i]);
         }
-        System.out.println(list.length+"////////////////////////////////////");
-        String[] answerlist= answers.split("#@!");
-        for (int i = 0; i < answerlist.length; i++) {
-            System.out.println(answerlist[i]);
+        System.out.println("list="+list.length);
+        String[] list1 = answers.split("#@!");
+        for (int i = 0; i < list1.length; i++) {
+            System.out.println(list1[i]);
         }
+        System.out.println("list1="+list1.length);
         String wrong = "";
         String right = "";
         double score = 0;//存放成绩
         Object[] obj = trueAnswer.keySet().toArray();
         //除无序多项填空题的客观题答案的比对
-        for (int k = 0; k < list.length; k++) {
-            if (!list[k].equals(answerlist[k])) {
+        for (int k = 0; k < list1.length; k++) {
+            if (!list[k].equals(list1[k])) {
                 falseId.add(k);
                 wrong = wrong + obj[k] + ",";
             } else {
