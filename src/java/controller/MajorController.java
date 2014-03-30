@@ -207,10 +207,10 @@ public class MajorController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectByDepart() {
-        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByDepartment(department), false);
+        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByDepartmentId(department), false);
         for (int i = 0; i < item.length; i++) {
             item[i].setLabel(((Major) item[i].getValue()).getName());
-            item[i].setValue((int)((Major) item[i].getValue()).getId());
+            item[i].setValue(((Major) item[i].getValue()).getId());
         }
         return item;
     }

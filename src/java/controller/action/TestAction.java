@@ -607,14 +607,21 @@ public class TestAction implements java.io.Serializable {
         System.out.println(answer);
         System.out.println(answers);
         String[] list = answer.split("#@!");
-        String[] list1 = answers.split("#@!");
+        for (int i = 0; i < list.length; i++) {
+            System.out.println(list[i]);
+        }
+        System.out.println(list.length+"////////////////////////////////////");
+        String[] answerlist= answers.split("#@!");
+        for (int i = 0; i < answerlist.length; i++) {
+            System.out.println(answerlist[i]);
+        }
         String wrong = "";
         String right = "";
         double score = 0;//存放成绩
         Object[] obj = trueAnswer.keySet().toArray();
         //除无序多项填空题的客观题答案的比对
         for (int k = 0; k < list.length; k++) {
-            if (!list[k].equals(list1[k])) {
+            if (!list[k].equals(answerlist[k])) {
                 falseId.add(k);
                 wrong = wrong + obj[k] + ",";
             } else {

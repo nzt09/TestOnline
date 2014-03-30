@@ -151,7 +151,7 @@ public class TeacherController implements Serializable {
         departmentId = Integer.parseInt((String) event.getNewValue());
         System.out.print(departmentId);
         majorList = new ArrayList<SelectItem>();
-        List<Major> currentMaj = majorFacade.findByDepartment(departmentId);
+        List<Major> currentMaj = majorFacade.findByDepartmentId(departmentId);
         for (int i = 0; i < currentMaj.size(); i++) {
             SelectItem selectItem = new SelectItem();
             selectItem.setLabel(currentMaj.get(i).getName());
