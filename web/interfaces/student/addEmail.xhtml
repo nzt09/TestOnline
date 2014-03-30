@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <body>
+        <ui:composition template="./../../stylemodel.xhtml">
+            <ui:define name="content">
+                <h:form>
+                    <h:panelGroup id="messagePanel" layout="block">
+                        <h:messages  infoStyle="color: red" style="font-size: 30px" layout="table"/>
+                    </h:panelGroup>
+                    <c:if test="#{studentinfoController.selected.email==null||studentinfoController.selected.email.isEmpty()}">
+                        <h:panelGrid columns="3">
+                            <rich:panel style="margin-left: 200px">
+                                <h:outputLabel value="输入邮箱："></h:outputLabel>
+                                <h:inputText value="#{studentinfoController.selected.email}" validatorMessage="邮箱格式不正确！" id="email">
+                                    <f:validateRegex pattern="^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+([;.](([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+)*$" ></f:validateRegex>
+                                    <rich:validator />
+                                </h:inputText>
+                                <rich:messages for="email"></rich:messages>
+                                <h:commandButton value="确定" action="#{studentinfoController.updateEmail()}"></h:commandButton>
+                            </rich:panel>
+                        </h:panelGrid>  
+                    </c:if>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

@@ -4,22 +4,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
-
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <body>
-
         <ui:composition template="./../../stylemodel.xhtml">
-
             <ui:define name="title">
                 学生
             </ui:define>
-
-            <ui:define name="body">
+            <ui:define name="content">
                 <h:form>
-                    <h:commandLink action="#{loginController.loginout()}" style="text-decoration: none;">退出</h:commandLink><br/>
-                    <h:commandLink target="checkContent" action="list.xhtml" value="考试" style="text-decoration: none;"/>
-                    <h:outputText value=""></h:outputText><br></br>
-                    <h:commandLink  action="student_menu.xhtml" value="查询考试结果" style="text-decoration: none;"/>
+                    <c:if test="#{studentinfoController.selected.email==null||studentinfoController.selected.email.isEmpty()}">
+                        <h:commandLink value="您的信息验证邮箱未填写，请尽快补全，方便您找回密码！" action="addEmail"></h:commandLink>
+                    </c:if>
                 </h:form>
 
             </ui:define>

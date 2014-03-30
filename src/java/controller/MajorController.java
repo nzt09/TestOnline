@@ -3,6 +3,7 @@ package controller;
 import entities.Major;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
+import entities.Department;
 import sessionBean.MajorFacadeLocal;
 
 import java.io.Serializable;
@@ -18,9 +19,6 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
-import javax.inject.Inject;
-import sessionBean.DepartclassFacadeLocal;
-import sessionBean.StudentinfoFacadeLocal;
 
 @Named("majorController")
 @SessionScoped
@@ -106,14 +104,15 @@ public class MajorController implements Serializable {
         return "Create";
     }
 
-    public String create() {
+    public void create() {
         try {
+            Department d=new Department();
+            d.setId(department);
+            current.setDepartment(d);
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("MajorCreated"));
-            return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
         }
     }
 

@@ -3,6 +3,7 @@ package controller;
 import entities.Classinfo;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
+import entities.Major;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -39,8 +40,17 @@ public class ClassinfoController implements Serializable {
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private int majorId;
+    private String className;
 
     public ClassinfoController() {
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     public Classinfo getSelected() {
@@ -52,15 +62,14 @@ public class ClassinfoController implements Serializable {
     }
 
     public void majorTypeListener(ValueChangeEvent event) {
-        System.out.println( event.getNewValue()+"llllllllllllllllllllllll");
-        String hh=(String.valueOf(event.getNewValue())) ;
-        System.out.println(hh+"pppppppppppppppp");
-        majorId=Integer.parseInt(hh);
-        
-        
+        System.out.println(event.getNewValue() + "llllllllllllllllllllllll");
+        String hh = (String.valueOf(event.getNewValue()));
+        System.out.println(hh + "pppppppppppppppp");
+        majorId = Integer.parseInt(hh);
+
         courseCon.setMajorId(majorId);
     }
-    
+
     private ClassinfoFacadeLocal getFacade() {
         return ejbFacade;
     }
@@ -100,15 +109,14 @@ public class ClassinfoController implements Serializable {
         return "Create";
     }
 
-    public String create() {
-        try {
-            getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ClassinfoCreated"));
-            return prepareCreate();
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
-        }
+    public void create() {
+        System.out.println(className+"ooooooooooooooooooooo");
+        Classinfo cinfo=new Classinfo();
+        cinfo.setClassname(className);
+        Major mj=new Major();
+        mj.setId(majorId);
+        cinfo.setMajor(mj);
+        getFacade().create(cinfo);
     }
 
     public String prepareEdit() {
@@ -200,7 +208,7 @@ public class ClassinfoController implements Serializable {
         recreateModel();
         return "List";
     }
-    
+
     public SelectItem[] getItemsAvailableSelectByMajor() {
         SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByMajor(majorId), false);
         for (int i = 0; i < item.length; i++) {

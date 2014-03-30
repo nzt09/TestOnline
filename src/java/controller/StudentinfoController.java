@@ -47,7 +47,6 @@ public class StudentinfoController implements Serializable {
     private List<SelectItem> courseList;// 用于存放该学生的所有课程名
     private int departmentId;
     private int classId;
-    private String rpw;
     private boolean flag = false;
     private boolean flag1 = false;
 
@@ -59,14 +58,6 @@ public class StudentinfoController implements Serializable {
         this.rflag = rflag;
     }
     private boolean rflag = false;
-
-    public String getRpw() {
-        return rpw;
-    }
-
-    public void setRpw(String rpw) {
-        this.rpw = rpw;
-    }
 
     public boolean isFlag() {
         return flag;
@@ -200,23 +191,14 @@ public class StudentinfoController implements Serializable {
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "studentEdit";
     }
+    
+    public void updateEmail(){
+        getFacade().edit(current);
+        JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("StudentinfoEmailUpdated"));
+    }
 
     public void updateStu(Studentinfo stu) {
         getFacade().edit(stu);
-    }
-
-    //核对两遍新密码是否一致
-    public String checkNewPassword() {
-        if (rpw == null || rpw.isEmpty()) {
-
-            return "请输入密码";
-        } else if (rpw.equals(this.getSelected().getPassword())) {
-
-            return "密码正确";
-        } else {
-            return "密码不匹配";
-        }
-
     }
 
     public String update() {

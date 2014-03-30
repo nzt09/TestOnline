@@ -53,7 +53,7 @@
                                 #{testAction.bianhao}#{question.content}&nbsp;( #{question.score}分)<br />
                                 <h:selectOneRadio  id="a#{question.id}">
                                     <c:forEach var="selectCandiate" items="#{testAction.list1}" varStatus="status" begin="#{status+statusBig.index*4}" end="#{(status+3)+statusBig.index*4}">
-                                        <f:selectItem itemValue="#{selectCandiate.value}" itemLabel="#{selectCandiate.key}"/>                        
+                                        <f:selectItem itemValue="#{selectCandiate.value}" itemLabel="#{selectCandiate.key}"><br></br></f:selectItem>                        
                                     </c:forEach>
                                 </h:selectOneRadio>
                             </c:if>
