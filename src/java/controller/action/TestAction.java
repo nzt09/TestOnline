@@ -155,6 +155,15 @@ public class TestAction implements java.io.Serializable {
 
     private HashMap<String, String> list2;
 
+    public HashMap<String, String> getTlist() {
+        return tlist;
+    }
+
+    public void setTlist(HashMap<String, String> tlist) {
+        this.tlist = tlist;
+    }
+
+    private HashMap<String, String> tlist;
     private LinkedList list3;
 
     public HashMap<String, String> getList2() {
@@ -203,7 +212,7 @@ public class TestAction implements java.io.Serializable {
     }
 
     public int getBianhao() {
-        if (bianhao <biangao1) {
+        if (bianhao < biangao1) {
             bianhao++;
         } else {
             bianhao = 0;
@@ -218,6 +227,7 @@ public class TestAction implements java.io.Serializable {
         qutypeExsit = new int[questionTypeCount];
         list1 = new LinkedHashMap<>();
         list2 = new LinkedHashMap<>();
+        tlist = new LinkedHashMap<>();
         list3 = new LinkedList();
         //获取题目id
         if (questionId.size() == 0) {
@@ -246,6 +256,21 @@ public class TestAction implements java.io.Serializable {
                 }
                 System.out.println(trueAnswer);
                 System.out.println(testAnswer);
+                //判断题
+                if (qi.getQuestiontypeinfo().getId() == Publicfields.TrueorFalse) {
+                    List<Questionsinfo> tem;
+                    if (!allQues.containsKey(Publicfields.TrueorFalse)) {
+                        tem = new LinkedList<>();
+                        allQues.put(Publicfields.TrueorFalse, tem);
+                    } else {
+                        tem = allQues.get(Publicfields.TrueorFalse);
+                    }
+                    tem.add(qi);
+                    String[] s = qi.getSelections().split("#");
+                    for (int j = 0; j < s.length; j++) {
+                        tlist.put(selectionName[j] + ". " + s[j], selectionName[j]);
+                    }
+                }
                 //单项选择题
                 if (qi.getQuestiontypeinfo().getId() == Publicfields.SingleSelectType) {
                     List<Questionsinfo> tem;
@@ -481,6 +506,19 @@ question.getId() + "\"  value=\"" + fill + "\" type=text size=" + answer[i].leng
         if (this.getQuestionId().size() > 0) {
             for (int i = 0; i < questionId.size(); i++) {
                 Questionsinfo qi = questinfoEjb.find(questionId.get(i));
+                //判断题
+                if (qi.getQuestiontypeinfo().getId() == Publicfields.TrueorFalse) {
+                    List<Questionsinfo> tem;
+                    if (!allQues.containsKey(Publicfields.TrueorFalse)) {
+                        tem = new LinkedList<>();
+                        allQues.put(Publicfields.TrueorFalse, tem);
+                    } else {
+                        tem = allQues.get(Publicfields.TrueorFalse);
+                    }
+                    tem.add(qi);
+                    testAnswer.put(qi.getId(), request.getParameter("myform:a" + qi.getId()));
+                    testAnswer1.put(qi.getId(), request.getParameter("myform:a" + qi.getId()));
+                }
                 //单项选择题
                 if (qi.getQuestiontypeinfo().getId() == Publicfields.SingleSelectType) {
                     List<Questionsinfo> tem;
@@ -568,8 +606,8 @@ question.getId() + "\"  value=\"" + fill + "\" type=text size=" + answer[i].leng
                         }
                     }
                     if (qi.getInsequence() == 1) {
+                        trueAnswer.put(qi.getId(), qi.getAnswer() + "#2");
                         testAnswer1.put(qi.getId(), temAnswer);
-                        trueAnswer.put(qi.getId(), qi.getAnswer()+"#2");
                     } else {
                         disorderAnswer.put(qi.getId(), temAnswer);
                         disorderTrue.put(qi.getId(), qi.getAnswer());
@@ -616,10 +654,13 @@ question.getId() + "\"  value=\"" + fill + "\" type=text size=" + answer[i].leng
         }
         System.out.println("list="+list.length);
         String[] list1 = answers.split("#@!");
-        for (int i = 0; i < list1.length; i++) {
-            System.out.println(list1[i]);
+        for (int i = 0; i < list.length; i++) {
+            System.out.println(list[i] + "==========================");
         }
-        System.out.println("list1="+list1.length);
+        for (int i = 0; i < list1.length; i++) {
+            System.out.println(list1[i] + "==========================");
+        }
+        System.out.println(list.length);
         String wrong = "";
         String right = "";
         double score = 0;//存放成绩
@@ -640,7 +681,7 @@ question.getId() + "\"  value=\"" + fill + "\" type=text size=" + answer[i].leng
         int l = 0;
         Object[] obj1 = disorderAnswer.keySet().toArray();
         for (int y = 0; y < obj1.length; y++) {
-            l= 0;
+            l = 0;
             String[] s1 = disorderAnswer.get(obj1[y]).split("#");
             String[] s2 = disorderTrue.get(obj1[y]).split("#");
             for (int q = 0; q < s2.length; q++) {
@@ -654,7 +695,7 @@ question.getId() + "\"  value=\"" + fill + "\" type=text size=" + answer[i].leng
                     l++;
                     System.out.println(l + "-------");
                 }
-              
+
             }
             if (l != s2.length) {
                 wrong = wrong + obj1[y] + ",";
@@ -663,12 +704,12 @@ question.getId() + "\"  value=\"" + fill + "\" type=text size=" + answer[i].leng
             }
 
             Questionsinfo rqi = questinfoEjb.find(obj1[y]);
-            score = score + (float)l / s2.length * rqi.getScore();
-            System.out.println( ((float)l / s2.length) * rqi.getScore() );
+            score = score + (float) l / s2.length * rqi.getScore();
+            System.out.println(((float) l / s2.length) * rqi.getScore());
             System.out.println(rqi.getScore());
             System.out.println(rqi.getId());
             System.out.println(l);
-           
+
         }
 
         Studentinfo stu = stuCon.getCurrent();
@@ -678,9 +719,9 @@ question.getId() + "\"  value=\"" + fill + "\" type=text size=" + answer[i].leng
                 System.out.println(test.getId());
                 test.setAnswer(answers);
                 test.setWrongnum(wrong);
-                int r = (int)score;
-                if((score-(int)score) >=0.5){
-                   r++;
+                int r = (int) score;
+                if ((score - (int) score) >= 0.5) {
+                    r++;
                 }
                 test.setScore(r);
                 testpaperEJB.edit(test);
