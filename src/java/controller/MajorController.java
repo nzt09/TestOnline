@@ -7,6 +7,8 @@ import entities.Department;
 import sessionBean.MajorFacadeLocal;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -47,7 +49,6 @@ public class MajorController implements Serializable {
     public void setDepartment(int department) {
         this.department = department;
     }
-    
 
     public MajorController() {
     }
@@ -64,11 +65,10 @@ public class MajorController implements Serializable {
         return ejbFacade;
     }
 
-    
     public void departmentTypeListener(ValueChangeEvent event) {
-        department=Integer.parseInt((String) event.getNewValue());
+        department = Integer.parseInt((String) event.getNewValue());
     }
-    
+
     public PaginationHelper getPagination() {
         if (pagination == null) {
             pagination = new PaginationHelper(10) {
@@ -106,7 +106,7 @@ public class MajorController implements Serializable {
 
     public void create() {
         try {
-            Department d=new Department();
+            Department d = new Department();
             d.setId(department);
             current.setDepartment(d);
             getFacade().create(current);
@@ -207,19 +207,20 @@ public class MajorController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectByDepart() {
-        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByDepartmentId(department), false);
-        for (int i = 0; i < item.length; i++) {
-            item[i].setLabel(((Major) item[i].getValue()).getName());
-            item[i].setValue(((Major) item[i].getValue()).getId());
+        List<Major> majors=ejbFacade.findByDepartmentId(department);
+        SelectItem[] item = JsfUtil.getSelectItems(majors, false);
+        for (SelectItem item1 : item) {
+            item1.setLabel(((Major) item1.getValue()).getName());
+            item1.setValue(((Major) item1.getValue()).getId());
         }
         return item;
     }
-    
+
     public SelectItem[] getItemsAvailableSelectMany() {
         SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
-        for (int i = 0; i < item.length; i++) {
-            item[i].setLabel(((Major) item[i].getValue()).getName());
-            item[i].setValue(((Major) item[i].getValue()).getId());
+        for (SelectItem item1 : item) {
+            item1.setLabel(((Major) item1.getValue()).getName());
+            item1.setValue(((Major) item1.getValue()).getId());
         }
         return item;
     }

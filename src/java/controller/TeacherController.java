@@ -63,6 +63,22 @@ public class TeacherController implements Serializable {
 
     private String teanoFilter;
 
+    private char[] a=new char[12];
+
+    public char[] getA() {
+        for (int i = 0; i < 12; i++) {
+            a[i]=(char)i;
+        }
+        return a;
+    }
+
+    public void setA(char[] a) {
+        this.a = a;
+    }
+
+   
+    
+    
     public String getTeanoFilter() {
         return teanoFilter;
     }

@@ -22,8 +22,6 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import sessionBean.ChapterinfoFacadeLocal;
-import sessionBean.CourseinfoFacadeLocal;
-import sessionBean.MyKnowledgeFacade;
 import sessionBean.MyKnowledgeFacadeLocal;
 
 @Named("chapterinfoController")

@@ -15,15 +15,27 @@ $(document).ready(function() {
 
 function show_confirm()
 {
-    
+
     alert("试卷生成成功");
 }
-  
+
 function delete_Confirm()
 {
-    
+
     alert("确定要删除？");
 }
-  
-  
- 
+
+function show_info() {
+    alert("添加成功！")
+}
+
+$(function() {
+    var d1 = [];
+    var pictureData = document.getElementById('pictureData').value;
+    var data = pictureData.split("#");
+    for (var i = 0; i < data.length; i++) {
+        var str = data[i].split("@");
+        d1.push([i + 1, str[1]]);
+    }
+    $.plot($("#placeholder"), [d1]);
+});

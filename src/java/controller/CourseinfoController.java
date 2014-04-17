@@ -222,6 +222,15 @@ public class CourseinfoController implements Serializable {
         return item;
     }
     
+    public SelectItem[] getItemsAvailableSelectBySubjectId() {
+        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findBySubject(subjectTypeId), false);
+        for (int i = 0; i < item.length; i++) {
+            item[i].setLabel(((Courseinfo) item[i].getValue()).getName());
+            item[i].setValue(((Courseinfo) item[i].getValue()).getId());
+        }
+        return item;
+    }
+    
     public SelectItem[] getItemsAvailableSelectByMajor() {
         SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByMajor(MajorId), false);
         for (int i = 0; i < item.length; i++) {
