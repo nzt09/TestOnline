@@ -187,7 +187,7 @@ public class DepartclassController implements Serializable {
     //获得当前学院对应的专业
     public void requireMajor() {
         majorList = new ArrayList<SelectItem>();
-        List<Major> currentMaj = majorFacade.findByDepartment(departmentId);
+        List<Major> currentMaj = majorFacade.findByDepartmentId(departmentId);
         for (int i = 0; i < currentMaj.size(); i++) {
             SelectItem selectItem = new SelectItem();
             selectItem.setLabel(currentMaj.get(i).getName());

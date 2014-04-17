@@ -24,6 +24,11 @@
                 </body>
                 <h:form id="myform">
                     <c:forEach var="questionTypeEntity" items="#{testAction.allQues}"><!--题型-->
+                        <c:if test="#{questionTypeEntity.key==8}">
+                            <h2>
+                                #{bundle.TrueorFalse}
+                            </h2>
+                        </c:if>
                         <c:if test="#{questionTypeEntity.key==1}">
                             <h2>
                                 #{bundle.SingleSelectType}
@@ -49,7 +54,15 @@
                                 #{bundle.MultiFill}
                             </h2>
                         </c:if>
-                        <c:forEach var="question" items="#{questionTypeEntity.value}" varStatus="statusBig"><!--每种题型的题目，可能有多道题目-->                             
+                        <c:forEach var="question" items="#{questionTypeEntity.value}" varStatus="statusBig"><!--每种题型的题目，可能有多道题目-->  
+                             <c:if test="#{questionTypeEntity.key==8}">
+                                #{testAction.bianhao}#{question.content}&nbsp;( #{question.score}分)<br />
+                                <h:selectOneRadio  id="a#{question.id}">
+                                    <c:forEach var="selectCandiate" items="#{testAction.tlist}" varStatus="status" begin="#{status+statusBig.index*2}" end="#{(status+3)+statusBig.index*2}">
+                                        <f:selectItem itemValue="#{selectCandiate.value}" itemLabel="#{selectCandiate.key}"/>                        
+                                    </c:forEach>
+                                </h:selectOneRadio>
+                             </c:if>
                             <c:if test="#{questionTypeEntity.key==1}">
                                 #{testAction.bianhao}#{question.content}&nbsp;( #{question.score}分)<br />
                                 <h:selectOneRadio  id="a#{question.id}">
