@@ -155,15 +155,6 @@ public class TestAction implements java.io.Serializable {
 
     private HashMap<String, String> list2;
 
-    public HashMap<String, String> getTlist() {
-        return tlist;
-    }
-
-    public void setTlist(HashMap<String, String> tlist) {
-        this.tlist = tlist;
-    }
-
-    private HashMap<String, String> tlist;
     private LinkedList list3;
 
     public HashMap<String, String> getList2() {
@@ -209,13 +200,13 @@ public class TestAction implements java.io.Serializable {
     public String test() {
         this.getAllQues();
         return null;
-    }
+    } 
 
     public int getBianhao() {
         if (bianhao < biangao1) {
             bianhao++;
         } else {
-            bianhao = 0;
+            bianhao = biangao1;
         }
         return bianhao;
 
@@ -227,7 +218,6 @@ public class TestAction implements java.io.Serializable {
         qutypeExsit = new int[questionTypeCount];
         list1 = new LinkedHashMap<>();
         list2 = new LinkedHashMap<>();
-        tlist = new LinkedHashMap<>();
         list3 = new LinkedList();
         //获取题目id
         if (questionId.size() == 0) {
@@ -266,10 +256,7 @@ public class TestAction implements java.io.Serializable {
                         tem = allQues.get(Publicfields.TrueorFalse);
                     }
                     tem.add(qi);
-                    String[] s = qi.getSelections().split("#");
-                    for (int j = 0; j < s.length; j++) {
-                        tlist.put(selectionName[j] + ". " + s[j], selectionName[j]);
-                    }
+                    
                 }
                 //单项选择题
                 if (qi.getQuestiontypeinfo().getId() == Publicfields.SingleSelectType) {
@@ -284,6 +271,7 @@ public class TestAction implements java.io.Serializable {
                     String[] s = qi.getSelections().split("#");
                     for (int j = 0; j < s.length; j++) {
                         list1.put(selectionName[j] + ". " + s[j], selectionName[j]);
+                        System.out.println(list1.toString()+"++++++++++++++++++++++++++");
                     }
                 }
                 //多项选择题
@@ -497,7 +485,7 @@ public class TestAction implements java.io.Serializable {
 
     public void insert() {
         allQues.clear();
-        bianhao = 1;
+        bianhao = 0;
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         //获取题目列表
         if (this.getQuestionId().size() > 0) {
