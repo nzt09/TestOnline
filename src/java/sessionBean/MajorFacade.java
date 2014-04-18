@@ -30,8 +30,13 @@ public class MajorFacade extends AbstractFacade<Major> implements MajorFacadeLoc
         super(Major.class);
     }
 
+    @Override
     public List<Major> findByDepartmentId(int department) {
         List<Major> tem = em.createNativeQuery("select * from major where department=" + department + "", Major.class).getResultList();
-        return tem;
+        if (null == tem || tem.isEmpty()) {
+            return null;
+        } else {
+            return tem;
+        }
     }
 }
