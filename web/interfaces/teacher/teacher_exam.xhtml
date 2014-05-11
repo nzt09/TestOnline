@@ -15,9 +15,6 @@
                     </h:panelGroup>
                     <h:outputText escape="false" value="当前没有考试安排" rendered="#{testassigninfomController.items.rowCount == 0}"/>
                     <h:panelGroup rendered="#{testassigninfomController.items.rowCount > 0}">
-                        <h:outputLabel value="考试安排信息："></h:outputLabel>
-                        <h:outputLabel value="#{testassigninfomController.pagination.itemsCount}"></h:outputLabel>
-                        <h:outputLabel value="条"></h:outputLabel>
                         <rich:dataTable value="#{testassigninfomController.items}" var="item" rowClasses="jsfcrud_odd_row,jsfcrud_even_row"  style="border:solid 1px" rows="10">
                             <rich:column>
                                 <f:facet name="header">
@@ -30,12 +27,12 @@
                                     <h:outputText value="考试开始时间"/>
                                 </f:facet>
                                 <h:outputText value="#{item.testtime}">
-                                    <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                                    <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" />
                                 </h:outputText>
                             </rich:column>
                             <rich:column>
                                 <f:facet name="header">
-                                    <h:outputText value="考试时长"/>
+                                    <h:outputText value="考试分数"/>
                                 </f:facet>
                                 <h:outputText value="#{item.testinterval}"/>
                             </rich:column>

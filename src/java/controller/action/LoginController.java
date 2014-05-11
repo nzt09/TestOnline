@@ -23,7 +23,6 @@ import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import sessionBean.StudentinfoFacadeLocal;
 import sessionBean.TeacherFacadeLocal;
-import tools.Publicfields;
 
 /**
  *

@@ -74,7 +74,7 @@
                             </h:column>
                         </h:dataTable>
                     </h:panelGroup>
-                    <h:commandLink action="newTemplateClient"    value="开始考试" rendered="#{testassigninfomController.isReady1}"></h:commandLink>
+                    <h:commandLink action="newTemplateClient?faces-redirect=true"    value="开始考试" rendered="#{testassigninfomController.isReady1}"></h:commandLink>
                     <h:outputText value="不在考试时间" rendered="#{testassigninfomController.isReady}"/>
                 </h:form>
             </ui:define>

@@ -5,13 +5,25 @@ import entities.Studentinfo;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
 import entities.Classinfo;
+import entities.Courseinfo;
+import entities.Knowledge;
+import entities.Mistake;
+import entities.Questionsinfo;
 import entities.Teachercourseclass;
+import entities.Testpaper;
+import entities.TestpaperSimpleOfStudent;
+import entities.WrongRightNum;
+import java.io.IOException;
 import sessionBean.StudentinfoFacadeLocal;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -24,7 +36,16 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
+import sessionBean.CourseinfoFacadeLocal;
+import sessionBean.MyKnowledgeFacade;
+import sessionBean.MyKnowledgeFacadeLocal;
+import sessionBean.Question2knowledgeFacade;
+import sessionBean.Question2knowledgeFacadeLocal;
+import sessionBean.QuestionsinfoFacade;
+import sessionBean.QuestionsinfoFacadeLocal;
 import sessionBean.TeachercourseclassFacadeLocal;
+import sessionBean.TestpaperFacadeLocal;
+import tools.ConfigUtil;
 
 @Named("studentinfoController")
 @SessionScoped
@@ -40,16 +61,167 @@ public class StudentinfoController implements Serializable {
     private DataModel items = null;
     @EJB
     private sessionBean.StudentinfoFacadeLocal ejbFacade;
+    @EJB
+    private CourseinfoFacadeLocal courseinfoFacadeLocal;
+    @EJB
+    private StudentinfoFacadeLocal studentinfoFacadeLocal;
+    @EJB
+    private QuestionsinfoFacadeLocal questionsinfoFacadeLocal;
+    @EJB
+    private Question2knowledgeFacadeLocal question2knowledgeFacadeLocal;
+    @EJB
+    private MyKnowledgeFacadeLocal myKnowledgeFacadeLocal;
+    @EJB
+    private TestpaperFacadeLocal testpaperFacadeLocal;
+    
     private PaginationHelper pagination;
 
     private int selectedItemIndex;
 
+    private String pictureData;// 用于flot制图的数据
+    private List<Testpaper> templist= new ArrayList<Testpaper>();// 用于存放图片显示页面的试卷数据
+    private List<Testpaper> allTestpaper= new ArrayList<Testpaper>();// 存放该学生的所有试卷信息
+    private String courseName;// 课程名
     private List<SelectItem> courseList;// 用于存放该学生的所有课程名
+    private Map<String, List<Mistake>> courseMap= new HashMap<String, List<Mistake>>();// 用于存放<课程名,对应课程Mistake>的数据
+    private List<TestpaperSimpleOfStudent> tsosList= new ArrayList<TestpaperSimpleOfStudent>();// 处理后的学生试卷跟课程相关联的一个list集合
     private int departmentId;
     private int classId;
-    private String rpw;
     private boolean flag = false;
     private boolean flag1 = false;
+
+    public String getPictureData() throws IOException {
+        pictureData = new String();
+        templist.clear();
+        allTestpaper=testpaperFacadeLocal.findAll();
+        for (Testpaper t : allTestpaper) {
+            List<Courseinfo> cList = courseinfoFacadeLocal.findByCourseId(t.getCourseinfo().getId());
+            if (cList.get(0).getName().equals("Java程序设计")) {
+                templist.add(t);
+            }
+        }
+        System.out.println(templist.size()+"试卷长度");
+        String content = new String();
+        String wrongnum = new String();
+        for (Testpaper t : templist) {
+            content += t.getContent() + ",";
+            wrongnum += t.getWrongnum();
+            t.setContent(content);
+            t.setWrongnum(wrongnum);
+            TestpaperSimpleOfStudent tsos = dealWithList(t, "notAdd");
+            String time = tsos.getTestTime().split(" ")[0];
+            pictureData += time + "@" + tsos.getPassedNum() + "#";
+        }
+        System.out.println(pictureData+"?????????????????????????????????");
+        return pictureData;
+    }
+
+    public TestpaperSimpleOfStudent dealWithList(Testpaper t, String type)
+            throws IOException {
+        TestpaperSimpleOfStudent tsos = new TestpaperSimpleOfStudent();
+        Courseinfo cList = courseinfoFacadeLocal.find(t.getCourseinfo().getId());
+
+        tsos.setCourseName(cList.getName());
+        tsos.setScore(t.getScore());
+        Studentinfo sList = studentinfoFacadeLocal.find(t.getStudentinfo().getId());
+        tsos.setStudentNum(sList.getStuno());
+        tsos.setTestTime(t.getStarttime().toString().split(" ")[0]);
+        Map<Integer, WrongRightNum> map = new HashMap<Integer, WrongRightNum>();
+        String content = t.getContent();// 所有题目的ID
+        String wrongAnswer = t.getWrongnum();// 错误题目的ID（String类型）
+        String allData[] = content.split(",");// 所有题目的ID数组
+        Questionsinfo q = null;
+        for (String str : allData) {
+            if (str.isEmpty())// 数据库中有部分数据存在"9527,8938,,1234" 此类数据
+            {
+                continue;
+            }
+            q=questionsinfoFacadeLocal.find(Integer.parseInt(str));
+            
+            int id = question2knowledgeFacadeLocal.findByQusetionId(q.getId()).getKnowledge().getId();
+            WrongRightNum qrn = new WrongRightNum();
+            if (map.containsKey(id)) { // 已包含
+                qrn = map.get(id);
+            }
+            if (!wrongAnswer.contains(str)) {// 表示正确
+                qrn.setRightNum(qrn.getRightNum() + 1);
+            } else { // 不正确
+                qrn.setWrongNum(qrn.getWrongNum() + 1);
+				// 该题目错误时，将该题目拿到courseMap中对应的课程中去
+                // start
+                // 只显示错误的选择题
+                if (q.getQuestiontypeinfo().getId() == 1 || q.getQuestiontypeinfo().getId()== 2) {
+                    Mistake wq = new Mistake();
+                    wq.setContext(q.getContent());
+                    wq.setCourseName(cList.getName());
+                    Knowledge knowledge =myKnowledgeFacadeLocal.find(id);
+                    wq.setKnowledgeName(knowledge.getName());
+                    wq.setScore(q.getScore());
+                    String[] selections = q.getSelections().split("#");
+                    String selects = new String();
+                    for (int i = 0; i < selections.length; i++) {
+                        selects += (char) ('A' + i) + selections[i] + "<br>";
+                    }
+                    wq.setSelections(selects);
+                    wq.setSystemAnswer(q.getAnswer());
+                    wq.setTime(t.getStarttime().toString().split(" ")[0]);
+                    String allAnswer = t.getAnswer();
+                    String questionId = q.getId() + "";
+                    if (allAnswer.contains(questionId)) {
+                        String temp = allAnswer.split(questionId)[1];
+                        String data[] = temp.substring(1, temp.indexOf("@!"))
+                                .split("#");
+                        String userAnswer = new String();
+                        for (String s : data) {
+                            userAnswer += s;
+                        }
+                        wq.setUserAnswer(userAnswer);
+                        wq.setAnalysis(q.getAnalysis());
+                        if (courseMap.containsKey(wq.getCourseName())) {
+                            List<Mistake> list = (List<Mistake>) courseMap
+                                    .get(wq.getCourseName());
+                            list.add(wq);
+                            courseMap.put(wq.getCourseName(), list);
+                        } else {
+                            ArrayList<Mistake> list = new ArrayList<Mistake>();
+                            list.add(wq);
+                            courseMap.put(wq.getCourseName(), list);
+                        }
+                    }
+                }
+                // end
+            }
+            map.put(id, qrn);
+        }
+        Set<Integer> keytest = map.keySet();
+        Iterator<Integer> it1 = keytest.iterator();
+        int passedNum = 0, unpassedNum = 0;
+        String advice = new String();
+        while (it1.hasNext()) {
+            int id1 = it1.next();
+            WrongRightNum wrongRightNum = map.get(id1);
+            int r = wrongRightNum.getRightNum(), w = wrongRightNum
+                    .getWrongNum();
+            double d = new ConfigUtil().getStudentRadio();
+            if (((r * 1.0) / (r + w)) > d) {
+                passedNum++;
+            } else {
+                unpassedNum++;
+                advice +=myKnowledgeFacadeLocal.find(id1).getName()+",";
+            }
+        }
+        tsos.setAdvice(advice);
+        tsos.setPassedNum(passedNum);
+        tsos.setUnpassedNum(unpassedNum);
+        if (type.equals("add")) {
+            tsosList.add(tsos);
+        }
+        return tsos;
+    }
+
+    public void setPictureData(String pictureData) {
+        this.pictureData = pictureData;
+    }
 
     public boolean isRflag() {
         return rflag;
@@ -59,14 +231,6 @@ public class StudentinfoController implements Serializable {
         this.rflag = rflag;
     }
     private boolean rflag = false;
-
-    public String getRpw() {
-        return rpw;
-    }
-
-    public void setRpw(String rpw) {
-        this.rpw = rpw;
-    }
 
     public boolean isFlag() {
         return flag;
@@ -182,7 +346,7 @@ public class StudentinfoController implements Serializable {
 
     public String create() {
         try {
-            Classinfo c=new Classinfo();
+            Classinfo c = new Classinfo();
             c.setId(classId);
             current.setClassinfo(c);
             getFacade().create(current);
@@ -201,22 +365,13 @@ public class StudentinfoController implements Serializable {
         return "studentEdit";
     }
 
-    public void updateStu(Studentinfo stu) {
-        getFacade().edit(stu);
+    public void updateEmail() {
+        getFacade().edit(current);
+        JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("StudentinfoEmailUpdated"));
     }
 
-    //核对两遍新密码是否一致
-    public String checkNewPassword() {
-        if (rpw == null || rpw.isEmpty()) {
-
-            return "请输入密码";
-        } else if (rpw.equals(this.getSelected().getPassword())) {
-
-            return "密码正确";
-        } else {
-            return "密码不匹配";
-        }
-
+    public void updateStu(Studentinfo stu) {
+        getFacade().edit(stu);
     }
 
     public String update() {

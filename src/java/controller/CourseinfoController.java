@@ -222,6 +222,15 @@ public class CourseinfoController implements Serializable {
         return item;
     }
     
+    public SelectItem[] getItemsAvailableSelectBySubjectId() {
+        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findBySubject(subjectTypeId), false);
+        for (int i = 0; i < item.length; i++) {
+            item[i].setLabel(((Courseinfo) item[i].getValue()).getName());
+            item[i].setValue(((Courseinfo) item[i].getValue()).getId());
+        }
+        return item;
+    }
+    
     public SelectItem[] getItemsAvailableSelectByMajor() {
         SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByMajor(MajorId), false);
         for (int i = 0; i < item.length; i++) {
@@ -241,6 +250,7 @@ public class CourseinfoController implements Serializable {
     public SelectItem[] getItemsAvailableSelectA() {
         classId = stuCon.getCurrent().getClassinfo().getId();
         MajorId = stuCon.getCurrent().getClassinfo().getMajor().getId();
+        System.out.println(MajorId+"majorId");
         SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByMajor(MajorId), false);
 //        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
         for (int i = 0; i < item.length; i++) {

@@ -1,17 +1,15 @@
 package controller;
 
+import controller.action.LoginController;
 import entities.Teachercourseclass;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
 import sessionBean.TeachercourseclassFacadeLocal;
-import tools.Publicfields;
 
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Set;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -23,6 +21,7 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
 
 @Named("teachercourseclassController")
 @SessionScoped
@@ -30,14 +29,35 @@ public class TeachercourseclassController implements Serializable {
 
     private Teachercourseclass current;
     private DataModel items = null;
+
+    @Inject
+    private LoginController loginCon;
     @EJB
     private sessionBean.TeachercourseclassFacadeLocal ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
-    private int page=1;
-    
+    private int page = 1;
+
     private int clientRows;
     private int CLIENT_ROWS_IN_AJAX_MODE;
+    private List<SelectItem> teacherClassList;
+
+    public List getTeacherClassList() {
+        teacherClassList = new ArrayList<>();
+        for (int i = 0; i < ejbFacade.findByPersonId(loginCon.getUserId()).size(); i++) {
+            System.out.println("111111111111");
+            SelectItem selectItem = new SelectItem();
+            System.out.println("222222222222222");
+            selectItem.setLabel(ejbFacade.findAll().get(i).getClassinfo().getClassname());
+            System.out.println("3333333333333");
+            teacherClassList.add(selectItem);
+        }
+        return teacherClassList;
+    }
+
+    public void setTeacherClassList(List teacherClassList) {
+        this.teacherClassList = teacherClassList;
+    }
 
     public void switchAjaxLoading(ValueChangeEvent event) {
         this.clientRows = (Boolean) event.getNewValue() ? CLIENT_ROWS_IN_AJAX_MODE : 0;
@@ -144,9 +164,8 @@ public class TeachercourseclassController implements Serializable {
         recreatePagination();
         recreateModel();
         return "teacher_lesson";
-      
+
     }
-   
 
     public String destroyAndView() {
         performDestroy();
@@ -219,18 +238,18 @@ public class TeachercourseclassController implements Serializable {
     public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
-    
-     public SelectItem[] getItemsAvailableSelectTerm() {
-      SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+
+    public SelectItem[] getItemsAvailableSelectTerm() {
+        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
         for (int i = 0; i < item.length; i++) {
             item[i].setLabel(((Teachercourseclass) item[i].getValue()).getTerm());
             item[i].setValue(((Teachercourseclass) item[i].getValue()).getTerm());
-        
+
         }
-     return item;
-     
+        return item;
+
     }
-     
+
     public Teachercourseclass getTeachercourseclass(java.lang.Integer id) {
         return ejbFacade.find(id);
     }

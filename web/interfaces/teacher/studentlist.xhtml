@@ -65,7 +65,7 @@
                         <a4j:jsFunction name="remove" action="#{departclassController.deleted()}"
                                         render="table hintPane" execute="@this"
                                         oncomplete="#{rich:component('confirmPane')}.hide();#{rich:component('hintPane')}.show();" />
-                        <h:commandLink action="#{studentinfoController.prepareCreate()}" value="添加"/>
+                        
                     </h:panelGroup>
                     <rich:popupPanel id="confirmPane" autosized="true"> 
                         确定删除该条信息？
@@ -81,6 +81,7 @@
                                            onclick="#{rich:component('hintPane')}.hide();
                                                                    return false;" />
                     </rich:popupPanel>
+                    <h:commandLink action="#{studentinfoController.prepareCreate()}" value="添加"/>
                 </h:form>
             </ui:define>
         </ui:composition>

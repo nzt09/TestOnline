@@ -29,7 +29,7 @@
                         </h:outputLabel>
                         <h:selectOneMenu id="courseName" required="true" requiredMessage="请选择课程" valueChangeListener="#{chapterinfoController.typeCourseListener}" style="font-size:10px;font-family: Arial, Hel,Microsoft YaHei;width: 150px">
                             <f:selectItem itemLabel="--请选择课程--" ></f:selectItem>
-                            <f:selectItems value="#{courseinfoController.itemsAvailableSelectBySubject}"></f:selectItems>
+                            <f:selectItems value="#{courseinfoController.itemsAvailableSelectBySubjectId}"></f:selectItems>
                             <f:ajax event="change" render="courseMessage chapterName"></f:ajax>
                         </h:selectOneMenu>
                         <rich:messages for="courseName" id="courseMessage"></rich:messages>
@@ -234,7 +234,7 @@
                                         <h:outputText value="题目预览"></h:outputText>
                                     </h:outputLabel>
                                     <h:inputTextarea id="preContent"  cols="30" rows="5"  value="#{questionsinfoController.preContent}"></h:inputTextarea>
-                                    <a4j:commandButton value="添加" action="#{questionsinfoController.addquestion()}" oncomplete="show_confirm()">
+                                    <a4j:commandButton value="添加" action="#{questionsinfoController.addquestion()}" oncomplete="show_info()">
                                     </a4j:commandButton>
                                 </h:panelGrid>
                                 <h:panelGrid  style="align:center;margin-left: 300px">
