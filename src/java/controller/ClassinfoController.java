@@ -40,6 +40,30 @@ public class ClassinfoController implements Serializable {
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private int majorId;
+    private Major currentMajor;
+
+    public void test() {
+        System.out.println("lllllllllllllllllllllllllllllllllllllllllllll");
+        className = null;
+        System.out.println(className);
+    }
+
+    public Major getCurrentMajor() {
+        return currentMajor;
+    }
+
+    public void setCurrentMajor(Major currentMajor) {
+        this.currentMajor = currentMajor;
+    }
+
+    public int getMajorId() {
+        return majorId;
+    }
+
+    public void setMajorId(int majorId) {
+        this.majorId = majorId;
+    }
+
     private String className;
 
     public ClassinfoController() {
@@ -110,12 +134,10 @@ public class ClassinfoController implements Serializable {
     }
 
     public void create() {
-        System.out.println(className+"ooooooooooooooooooooo");
-        Classinfo cinfo=new Classinfo();
+        System.out.println(className + "ooooooooooooooooooooo");
+        Classinfo cinfo = new Classinfo();
         cinfo.setClassname(className);
-        Major mj=new Major();
-        mj.setId(majorId);
-        cinfo.setMajor(mj);
+        cinfo.setMajor(currentMajor);
         getFacade().create(cinfo);
     }
 

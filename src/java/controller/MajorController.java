@@ -41,7 +41,20 @@ public class MajorController implements Serializable {
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private int department;
+    private List<Major> majorList;
+    
 
+    public List<Major> getMajorList() {
+        majorList=ejbFacade.findByDepartmentId(department);
+        return majorList;
+    }
+
+    public void setMajorList(List<Major> majorList) {
+        this.majorList = majorList;
+    }
+    
+    
+    
     public int getDepartment() {
         return department;
     }

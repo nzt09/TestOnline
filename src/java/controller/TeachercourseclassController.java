@@ -41,6 +41,8 @@ public class TeachercourseclassController implements Serializable {
     private int clientRows;
     private int CLIENT_ROWS_IN_AJAX_MODE;
     private List<SelectItem> teacherClassList;
+    private int courseId;
+    
 
     public List getTeacherClassList() {
         teacherClassList = new ArrayList<>();
@@ -233,6 +235,31 @@ public class TeachercourseclassController implements Serializable {
 
     public SelectItem[] getItemsAvailableSelectMany() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+    }
+    
+    
+    public SelectItem[] getItemsAvailableSelectByCourseTeacherId(){
+        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        for (int i = 0; i < item.length; i++) {
+            item[i].setLabel(((Teachercourseclass) item[i].getValue()).getTerm());
+            item[i].setValue(((Teachercourseclass) item[i].getValue()).getTerm());
+
+        }
+        return item;
+    }
+    
+    public void typeCourseListener(ValueChangeEvent event) {
+        courseId = Integer.parseInt((String) event.getNewValue());
+    }
+    
+    public SelectItem[] getItemsAvailableSelectByCourseId(){
+        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByCouseIdTeaId(courseId, loginCon.getUserId()), false);
+        for (int i = 0; i < item.length; i++) {
+            item[i].setLabel(((Teachercourseclass) item[i].getValue()).getClassinfo().getClassname());
+            item[i].setValue(((Teachercourseclass) item[i].getValue()).getClassinfo().getId());
+
+        }
+        return item;
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {

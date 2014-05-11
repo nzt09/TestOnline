@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.Set;
 import javax.ejb.EJB;
@@ -73,34 +74,62 @@ public class StudentinfoController implements Serializable {
     private MyKnowledgeFacadeLocal myKnowledgeFacadeLocal;
     @EJB
     private TestpaperFacadeLocal testpaperFacadeLocal;
-    
+
     private PaginationHelper pagination;
 
     private int selectedItemIndex;
 
     private String pictureData;// 用于flot制图的数据
-    private List<Testpaper> templist= new ArrayList<Testpaper>();// 用于存放图片显示页面的试卷数据
-    private List<Testpaper> allTestpaper= new ArrayList<Testpaper>();// 存放该学生的所有试卷信息
+    private List<Testpaper> templist = new ArrayList<Testpaper>();// 用于存放图片显示页面的试卷数据
+    private List<Testpaper> allTestpaper = new ArrayList<Testpaper>();// 存放该学生的所有试卷信息
     private String courseName;// 课程名
     private List<SelectItem> courseList;// 用于存放该学生的所有课程名
-    private Map<String, List<Mistake>> courseMap= new HashMap<String, List<Mistake>>();// 用于存放<课程名,对应课程Mistake>的数据
-    private List<TestpaperSimpleOfStudent> tsosList= new ArrayList<TestpaperSimpleOfStudent>();// 处理后的学生试卷跟课程相关联的一个list集合
+    private Map<String, List<Mistake>> courseMap = new HashMap<String, List<Mistake>>();// 用于存放<课程名,对应课程Mistake>的数据
+    private List<TestpaperSimpleOfStudent> tsosList = new ArrayList<TestpaperSimpleOfStudent>();// 处理后的学生试卷跟课程相关联的一个list集合
     private int departmentId;
     private int classId;
     private boolean flag = false;
     private boolean flag1 = false;
+    private int courseId;
+
+    //用于存放学生成绩分类的个数
+    private String scoreLevelNum;
+
+    public String getScoreLevelNum() {
+        return scoreLevelNum;
+    }
+
+    public void setScoreLevelNum(String scoreLevelNum) {
+        this.scoreLevelNum = scoreLevelNum;
+    }
+
+    //学生成绩的归类
+    public void getScoreData() {
+        scoreLevelNum = "";
+        Random r = new Random();
+
+        for (int i = 0; i < 4; i++) {
+            int a = r.nextInt(100);
+            scoreLevelNum = scoreLevelNum + "," + a;
+        }
+        System.out.println(scoreLevelNum);
+    }
+
+    public void typeCourseListener(ValueChangeEvent event) {
+        courseId = Integer.parseInt((String) event.getNewValue());
+    }
 
     public String getPictureData() throws IOException {
         pictureData = new String();
         templist.clear();
-        allTestpaper=testpaperFacadeLocal.findAll();
+        allTestpaper = testpaperFacadeLocal.findAll();
         for (Testpaper t : allTestpaper) {
             List<Courseinfo> cList = courseinfoFacadeLocal.findByCourseId(t.getCourseinfo().getId());
             if (cList.get(0).getName().equals("Java程序设计")) {
                 templist.add(t);
             }
         }
-        System.out.println(templist.size()+"试卷长度");
+        System.out.println(templist.size() + "试卷长度");
         String content = new String();
         String wrongnum = new String();
         for (Testpaper t : templist) {
@@ -110,9 +139,9 @@ public class StudentinfoController implements Serializable {
             t.setWrongnum(wrongnum);
             TestpaperSimpleOfStudent tsos = dealWithList(t, "notAdd");
             String time = tsos.getTestTime().split(" ")[0];
+            System.out.println("time=" + time);
             pictureData += time + "@" + tsos.getPassedNum() + "#";
         }
-        System.out.println(pictureData+"?????????????????????????????????");
         return pictureData;
     }
 
@@ -126,6 +155,7 @@ public class StudentinfoController implements Serializable {
         Studentinfo sList = studentinfoFacadeLocal.find(t.getStudentinfo().getId());
         tsos.setStudentNum(sList.getStuno());
         tsos.setTestTime(t.getStarttime().toString().split(" ")[0]);
+        System.out.println(t.getStarttime().toString() + "//////////////////////////////");
         Map<Integer, WrongRightNum> map = new HashMap<Integer, WrongRightNum>();
         String content = t.getContent();// 所有题目的ID
         String wrongAnswer = t.getWrongnum();// 错误题目的ID（String类型）
@@ -136,8 +166,8 @@ public class StudentinfoController implements Serializable {
             {
                 continue;
             }
-            q=questionsinfoFacadeLocal.find(Integer.parseInt(str));
-            
+            q = questionsinfoFacadeLocal.find(Integer.parseInt(str));
+
             int id = question2knowledgeFacadeLocal.findByQusetionId(q.getId()).getKnowledge().getId();
             WrongRightNum qrn = new WrongRightNum();
             if (map.containsKey(id)) { // 已包含
@@ -147,14 +177,14 @@ public class StudentinfoController implements Serializable {
                 qrn.setRightNum(qrn.getRightNum() + 1);
             } else { // 不正确
                 qrn.setWrongNum(qrn.getWrongNum() + 1);
-				// 该题目错误时，将该题目拿到courseMap中对应的课程中去
+                // 该题目错误时，将该题目拿到courseMap中对应的课程中去
                 // start
                 // 只显示错误的选择题
-                if (q.getQuestiontypeinfo().getId() == 1 || q.getQuestiontypeinfo().getId()== 2) {
+                if (q.getQuestiontypeinfo().getId() == 1 || q.getQuestiontypeinfo().getId() == 2) {
                     Mistake wq = new Mistake();
                     wq.setContext(q.getContent());
                     wq.setCourseName(cList.getName());
-                    Knowledge knowledge =myKnowledgeFacadeLocal.find(id);
+                    Knowledge knowledge = myKnowledgeFacadeLocal.find(id);
                     wq.setKnowledgeName(knowledge.getName());
                     wq.setScore(q.getScore());
                     String[] selections = q.getSelections().split("#");
@@ -207,7 +237,7 @@ public class StudentinfoController implements Serializable {
                 passedNum++;
             } else {
                 unpassedNum++;
-                advice +=myKnowledgeFacadeLocal.find(id1).getName()+",";
+                advice += myKnowledgeFacadeLocal.find(id1).getName() + ",";
             }
         }
         tsos.setAdvice(advice);

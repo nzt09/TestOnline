@@ -4,24 +4,64 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:rich="http://richfaces.org/rich"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a4j="http://richfaces.org/a4j">
+
     <body>
 
         <ui:composition template="./../../stylemodel.xhtml">
 
             <ui:define name="content">
-                <h:form>
-                    <div id="placeholder" style="width: 400px; height: 200px;"></div>
-                    <h:inputHidden id="pictureData" value="#{studentinfoController.pictureData}" />
-                    <rich:panel title="查看班级考试情况" style="margin-left: 200px">
-                        <h:outputLabel value="班级："></h:outputLabel>
-                        <h:selectOneMenu>
-                            <f:selectItems value="#{teachercourseclassController.teacherClassList}"></f:selectItems>
-                        </h:selectOneMenu>
-                        <div id="basicGChart">
 
-                        </div>
+                <style type="text/css">
+                    #basicGChart { width: 450px; height: 300px }
+                </style>
+
+                <script type="text/javascript" src="../../resources/javascript/jquery.gchart.js"></script>       
+
+                <h:form onclick="#{teacherController.showTeachercourseclass()}" id="mynewForm">
+
+                    <h:inputHidden id="username" value="#{studentinfoController.scoreLevelNum}"></h:inputHidden>
+
+                    所教课程：
+                    <h:selectOneMenu  id="course" valueChangeListener="#{teachercourseclassController.typeCourseListener}" >
+                        <f:selectItem itemLabel="----请选择课程----" itemValue="0"></f:selectItem>
+                        <f:selectItems value="#{teacherController.teacherCourseList}"></f:selectItems>
+                        <f:ajax event="change" render="classId"></f:ajax>
+                    </h:selectOneMenu>
+                    所教班级：
+                    <h:selectOneMenu id="classId">
+                        <f:selectItem itemLabel="----请选择班级----" itemValue="0"></f:selectItem>
+                        <f:selectItems value="#{teachercourseclassController.itemsAvailableSelectByCourseId}"></f:selectItems>
+                    </h:selectOneMenu>
+                    <rich:panel title="查看班级考试情况" style="margin-left: 200px" id="myPanel">
+                        <div id="basicGChart">
+                        </div>         
                     </rich:panel>
+                    <a4j:commandButton value="ok" oncomplete="show_scorePic()"  execute="username" render="username myPanel" action="#{studentinfoController.getScoreData()}"></a4j:commandButton>
+                    <script>
+                        function show_scorePic() {
+                            var scoreData = document.getElementById("mynewForm:username").value;
+                            var array = scoreData.split(",");
+                            //下载量
+                            var array1 = array;
+                            //日期数组
+                            var array2 = ['0~59', '60~69', '70~79', '80~89', '90~100'];
+                            $('#basicGChart').gchart({
+                                type: 'line', //图表类型
+                                title: '2009年阿一电影下载量折线图', //图表标题
+                                series: [
+                                    $.gchart.series(array1, 'red')//图表数据
+                                ],
+                                axes: [//图表坐标轴
+                                    $.gchart.axis('left', 0, 100, 'blue'),
+                                    $.gchart.axis('bottom', array2, '008000')
+                                ],
+                                legend: 'top'});
+                        }
+
+                    </script>
+
                 </h:form>
             </ui:define>
         </ui:composition>
