@@ -33,4 +33,6 @@ public interface ClassinfoFacadeLocal {
     List<Classinfo> findByMajor(int id);
 
     List<Classinfo> findById(int classId);
+    
+    List<Classinfo> findByName(String className);
 }

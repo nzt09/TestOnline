@@ -33,5 +33,7 @@ public interface TeachercourseclassFacadeLocal {
     List<Teachercourseclass> findById(int id);
     
     List<Teachercourseclass> findByPersonId(String id);
+    
+    List<Teachercourseclass> findByCouseIdTeaId(int courseId,String teacherID);
 
 }
