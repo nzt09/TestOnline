@@ -17,11 +17,12 @@
                     #basicGChart { width: 450px; height: 300px }
                 </style>
 
-                <script type="text/javascript" src="../../resources/javascript/jquery.gchart.js"></script>       
+                <script type="text/javascript" src="../../resources/javascript/highcharts.js"></script>
+                <script type="text/javascript" src="../../resources/javascript/exporting.js"></script>       
 
                 <h:form onclick="#{teacherController.showTeachercourseclass()}" id="mynewForm">
 
-                    <h:inputHidden id="username" value="#{studentinfoController.scoreLevelNum}"></h:inputHidden>
+                    <h:inputHidden id="picData" value="#{studentinfoController.scoreLevelNum}"></h:inputHidden>
 
                     所教课程：
                     <h:selectOneMenu  id="course" valueChangeListener="#{teachercourseclassController.typeCourseListener}" >
@@ -30,34 +31,65 @@
                         <f:ajax event="change" render="classId"></f:ajax>
                     </h:selectOneMenu>
                     所教班级：
-                    <h:selectOneMenu id="classId">
+                    <h:selectOneMenu id="classId" valueChangeListener="#{studentinfoController.typeClassListener}">
                         <f:selectItem itemLabel="----请选择班级----" itemValue="0"></f:selectItem>
                         <f:selectItems value="#{teachercourseclassController.itemsAvailableSelectByCourseId}"></f:selectItems>
+                        <f:ajax event="change"></f:ajax>
                     </h:selectOneMenu>
-                    <rich:panel title="查看班级考试情况" style="margin-left: 200px" id="myPanel">
-                        <div id="basicGChart">
+                     <a4j:commandButton value="查看" oncomplete="show_scorePic()"  execute="picData" render="username myPanel" action="#{studentinfoController.getScoreData()}"></a4j:commandButton>
+                     <rich:panel title="查看班级考试情况" style="margin-left: 200px" id="myPanel">
+                        <div id="container1">
                         </div>         
                     </rich:panel>
-                    <a4j:commandButton value="ok" oncomplete="show_scorePic()"  execute="username" render="username myPanel" action="#{studentinfoController.getScoreData()}"></a4j:commandButton>
+                   
                     <script>
                         function show_scorePic() {
-                            var scoreData = document.getElementById("mynewForm:username").value;
+                            var scoreData = document.getElementById("mynewForm:picData").value;
+                            
                             var array = scoreData.split(",");
-                            //下载量
-                            var array1 = array;
-                            //日期数组
-                            var array2 = ['0~59', '60~69', '70~79', '80~89', '90~100'];
-                            $('#basicGChart').gchart({
-                                type: 'line', //图表类型
-                                title: '2009年阿一电影下载量折线图', //图表标题
-                                series: [
-                                    $.gchart.series(array1, 'red')//图表数据
-                                ],
-                                axes: [//图表坐标轴
-                                    $.gchart.axis('left', 0, 100, 'blue'),
-                                    $.gchart.axis('bottom', array2, '008000')
-                                ],
-                                legend: 'top'});
+                            alert("1");
+                            var arr=eval(array[0]);         
+                            var arr2=eval(array[1]);
+                            var arr3=eval(array[2]);
+                            var arr4=eval(array[3]);
+                            var arr5=eval(array[4]);
+                            $('#container1').highcharts({
+                                title: {
+                                    text: '学生成绩反馈表',
+                                    x: -20 //center
+                                },
+                                subtitle: {
+                                    text: '来自数据库',
+                                    x: -20
+                                },
+                                xAxis: {
+                                    categories: ['0~59分', '60~69分', '70~79分', '80~89分', '90~100分']
+                                },
+                                yAxis: {
+                                    title: {
+                                        text: '人数 (人)'
+                                    },
+                                    plotLines: [{
+                                            value: 0,
+                                            width: 1,
+                                            color: '#808080'
+                                        }]
+                                },
+                                tooltip: {
+                                    valueSuffix: '人'
+                                },
+                                legend: {
+                                    layout: 'vertical',
+                                    align: 'right',
+                                    verticalAlign: 'middle',
+                                    borderWidth: 0
+                                },
+                                series: [{
+                                        name: '学生成绩曲线',
+                                        data: [arr,arr2,arr3,arr4,arr5]
+                                    }]
+                            });
+
                         }
 
                     </script>

@@ -253,7 +253,7 @@ public class MajorController implements Serializable {
         return ejbFacade.find(id);
     }
 
-    @FacesConverter(forClass = Major.class)
+    @FacesConverter(forClass = Major.class,value ="majorControllerConverter")
     public static class MajorControllerConverter implements Converter {
 
         @Override

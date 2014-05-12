@@ -41,6 +41,16 @@ public class ClassinfoController implements Serializable {
     private int selectedItemIndex;
     private int majorId;
     private Major currentMajor;
+    //显示添加是否成功标志位
+    private int result;
+
+    public int getResult() {
+        return result;
+    }
+
+    public void setResult(int result) {
+        this.result = result;
+    }
 
     public void test() {
         System.out.println("lllllllllllllllllllllllllllllllllllllllllllll");
@@ -86,9 +96,8 @@ public class ClassinfoController implements Serializable {
     }
 
     public void majorTypeListener(ValueChangeEvent event) {
-        System.out.println(event.getNewValue() + "llllllllllllllllllllllll");
+
         String hh = (String.valueOf(event.getNewValue()));
-        System.out.println(hh + "pppppppppppppppp");
         majorId = Integer.parseInt(hh);
 
         courseCon.setMajorId(majorId);
@@ -134,11 +143,17 @@ public class ClassinfoController implements Serializable {
     }
 
     public void create() {
-        System.out.println(className + "ooooooooooooooooooooo");
-        Classinfo cinfo = new Classinfo();
-        cinfo.setClassname(className);
-        cinfo.setMajor(currentMajor);
-        getFacade().create(cinfo);
+        result = 0;
+        if (getFacade().findByName(className) == null || getFacade().findByName(className).isEmpty()) {
+            Classinfo cinfo = new Classinfo();
+            cinfo.setClassname(className);
+            cinfo.setMajor(currentMajor);
+            getFacade().create(cinfo);
+            result = 1;
+        } else {
+            result = 2;
+        }
+        className = null;
     }
 
     public String prepareEdit() {

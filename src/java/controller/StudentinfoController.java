@@ -105,14 +105,33 @@ public class StudentinfoController implements Serializable {
 
     //学生成绩的归类
     public void getScoreData() {
-        scoreLevelNum = "";
-        Random r = new Random();
 
-        for (int i = 0; i < 4; i++) {
-            int a = r.nextInt(100);
-            scoreLevelNum = scoreLevelNum + "," + a;
+        scoreLevelNum = "";
+        if (classId != 0) {
+            List<Testpaper> t = testpaperFacadeLocal.findByCourseBystuid(6, classId);
+            int a = 0, b = 0, c = 0, d = 0, e = 0;
+            for (int i = 0; i < t.size(); i++) {
+                int scoreLevel = t.get(i).getScore() / 10;
+                if (scoreLevel < 6) {
+                    a++;
+                } else if (scoreLevel == 6) {
+                    b++;
+                } else if (scoreLevel == 7) {
+                    c++;
+                } else if (scoreLevel == 8) {
+                    d++;
+                } else {
+                    e++;
+                }
+            }
+            scoreLevelNum = scoreLevelNum + a + "," + b + "," + c + "," + d + "," + e;
         }
-        System.out.println(scoreLevelNum);
+
+    }
+
+    public void typeClassListener(ValueChangeEvent event) {
+        classId = Integer.parseInt((String) event.getNewValue());
+        System.out.println(classId + "ttttttttttttttttttttttt");
     }
 
     public void typeCourseListener(ValueChangeEvent event) {

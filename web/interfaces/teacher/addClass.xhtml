@@ -9,20 +9,27 @@
     <body>
         <ui:composition template="./../../stylemodel.xhtml">
             <ui:define name="content">
-                <h:form>
+                <h:form id="myForm">
                     <rich:panel style="margin-left: 200px">
                         <h:panelGrid columns="2">
-
+                            专业名称：
                             <h:selectOneMenu id="majorId" value="#{classinfoController.currentMajor}">
-                                <f:selectItems value="#{majorController.majorList}" var="major1" itemLabel="#{major1.name}" ></f:selectItems>
+                                <f:converter converterId="majorControllerConverter"></f:converter>
+                                <f:selectItems value="#{majorController.majorList}" var="major1" itemLabel="#{major1.name}"></f:selectItems>
                             </h:selectOneMenu>
                             班级名称：
                             <h:inputText value="#{classinfoController.className}" id="className"></h:inputText>
-                            <a4j:commandButton value="添加" action="#{classinfoController.create()}" oncomplete="myfunction()"></a4j:commandButton>
+                            <h:inputHidden value="#{classinfoController.result}" id="flag" ></h:inputHidden>
+                            <a4j:commandButton value="添加" action="#{classinfoController.create()}" oncomplete="myfunction()" render="className flag"></a4j:commandButton>
                             <script>
                                 function myfunction() {
-                                    alert("成功");
-                                    #{classinfoController.test()};
+                                   var sf=document.getElementById("myForm:flag").value;
+                                   if(sf==="1"){
+                                       alert("添加成功");
+                                   }
+                                   if(sf==="2"){
+                                       alert("该班级名称已被使用，请重新输入！");
+                                   }
                                 }
                             </script>
                         </h:panelGrid>            
