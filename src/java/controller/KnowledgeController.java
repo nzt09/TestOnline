@@ -50,7 +50,18 @@ public class KnowledgeController implements Serializable {
     private boolean chapterIdSelected = false;
 
     private int chapterNumId;
-    
+
+    private List<Knowledge> klList;
+
+    public List<Knowledge> getKlList() {
+        klList = ejbFacade.findByChapterId(chapterNumId);
+        return klList;
+    }
+
+    public void setKlList(List<Knowledge> klList) {
+        this.klList = klList;
+    }
+
     public String getNewPname() {
         return newPname;
     }
@@ -75,7 +86,7 @@ public class KnowledgeController implements Serializable {
         this.chapterId = chapterId;
 
     }
-    
+
     public void typeChapterListenner(ValueChangeEvent event) {
         chapterNumId = Integer.parseInt((String) event.getNewValue());
     }
@@ -276,12 +287,7 @@ public class KnowledgeController implements Serializable {
 
     public SelectItem[] getItemsAvailableSelectByChapter() {
         SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByChapterId(chapterNumId), false);
-        for (int i = 0; i < item.length; i++) {
-            item[i].setLabel(((Knowledge) item[i].getValue()).getName());
-            item[i].setValue(((Knowledge) item[i].getValue()).getId());
-        }
         return item;
-
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
@@ -299,7 +305,6 @@ public class KnowledgeController implements Serializable {
 //树形结构的遍历（1）
     public List<WrappedKnowledge> getKnowledgeRoot() {
         if (chapterId == null) {
-            System.out.println("kkkkkkkkkkkkkkk");
             return new LinkedList<WrappedKnowledge>();
         } else {
             this.knowledgeRoot = new LinkedList<>();
@@ -372,7 +377,7 @@ public class KnowledgeController implements Serializable {
         this.chapterIdSelected = chapterIdSelected;
     }
 
-    @FacesConverter(forClass = Knowledge.class)
+    @FacesConverter(forClass = Knowledge.class, value = "knowledgeConverter")
     public static class KnowledgeControllerConverter implements Converter {
 
         @Override

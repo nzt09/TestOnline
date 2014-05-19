@@ -34,6 +34,8 @@ public class TeachercourseclassController implements Serializable {
     private LoginController loginCon;
     @EJB
     private sessionBean.TeachercourseclassFacadeLocal ejbFacade;
+    @Inject
+    private StudentinfoController stuCon;
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private int page = 1;
@@ -42,7 +44,15 @@ public class TeachercourseclassController implements Serializable {
     private int CLIENT_ROWS_IN_AJAX_MODE;
     private List<SelectItem> teacherClassList;
     private int courseId;
-    
+    private Teachercourseclass teacherCourseclass;
+
+    public Teachercourseclass getTeacherCourseclass() {
+        return teacherCourseclass;
+    }
+
+    public void setTeacherCourseclass(Teachercourseclass teacherCourseclass) {
+        this.teacherCourseclass = teacherCourseclass;
+    }
 
     public List getTeacherClassList() {
         teacherClassList = new ArrayList<>();
@@ -236,9 +246,8 @@ public class TeachercourseclassController implements Serializable {
     public SelectItem[] getItemsAvailableSelectMany() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
     }
-    
-    
-    public SelectItem[] getItemsAvailableSelectByCourseTeacherId(){
+
+    public SelectItem[] getItemsAvailableSelectByCourseTeacherId() {
         SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
         for (int i = 0; i < item.length; i++) {
             item[i].setLabel(((Teachercourseclass) item[i].getValue()).getTerm());
@@ -247,19 +256,23 @@ public class TeachercourseclassController implements Serializable {
         }
         return item;
     }
-    
+
     public void typeCourseListener(ValueChangeEvent event) {
         courseId = Integer.parseInt((String) event.getNewValue());
     }
-    
-    public SelectItem[] getItemsAvailableSelectByCourseId(){
-        SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByCouseIdTeaId(courseId, loginCon.getUserId()), false);
-        for (int i = 0; i < item.length; i++) {
-            item[i].setLabel(((Teachercourseclass) item[i].getValue()).getClassinfo().getClassname());
-            item[i].setValue(((Teachercourseclass) item[i].getValue()).getClassinfo().getId());
 
+    public SelectItem[] getItemsAvailableSelectByCourseId() {
+        if (teacherCourseclass != null) {
+            System.out.println(teacherCourseclass.getCourseinfo().getId()+"这是课程标号");
+            stuCon.setCourseId(teacherCourseclass.getCourseinfo().getId());
+            SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findByCouseIdTeaId(teacherCourseclass.getCourseinfo().getId(), loginCon.getUserId()), false);
+            for (int i = 0; i < item.length; i++) {
+                item[i].setLabel(((Teachercourseclass) item[i].getValue()).getClassinfo().getClassname());
+                item[i].setValue(((Teachercourseclass) item[i].getValue()).getClassinfo().getId());
+            }
+            return item;
         }
-        return item;
+        return null;
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {

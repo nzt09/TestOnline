@@ -136,14 +136,14 @@ public class GenerateAction implements java.io.Serializable {
 //                                    // 找到这门程题目的分数类别
                                     String sql = "select distinct(questionsinfo.score)"
                                             + " from questionsinfo,knowledge,chapterinfo,Question2knowledge where "
-                                            + "Question2knowledge.knowid=knowledge.id and knowledge.chapter=chapterinfo.id "
+                                            + "Question2knowledge.knowid=knowledge.id and Question2knowledge.QUESTIONID=QUESTIONSINFO.ID and knowledge.chapter=chapterinfo.id "
                                             + "and chapterinfo.course="
                                             + test.getCourseinfo().getId();
                                     scoreType = questionFacade.executQuery(sql);
                                     System.out.println(test.getCourseinfo().getId() + "题目类型数量");
                                     scoreTypeNum = new int[scoreType.size()];
                                     for (int i = 0; i < scoreType.size(); i++) {
-                                        String sql2 = "select distinct(questionsinfo.id) from questionsinfo,knowledge,chapterinfo,Question2knowledge where Question2knowledge.knowid=knowledge.id and knowledge.chapter=chapterinfo.id and chapterinfo.course="
+                                        String sql2 = "select distinct(questionsinfo.id) from questionsinfo,knowledge,chapterinfo,Question2knowledge where Question2knowledge.knowid=knowledge.id and knowledge.chapter=chapterinfo.id and Question2knowledge.QuestionId=Questionsinfo.id and chapterinfo.course="
                                                 + test.getCourseinfo().getId()
                                                 + " and score="
                                                 + scoreType.get(i);
@@ -190,7 +190,7 @@ public class GenerateAction implements java.io.Serializable {
                                     
                                     questionScoreMap = new HashMap<Integer, List<Questionsinfo>>();// 里层list存放与分值对应的题目，如分值为5的题目、分值10的题目，所有这些，又存放在外层的map中
                                     for (int j = 0; j < scoreType.size(); j++) {
-                                        String temsql = "select  distinct(questionsinfo.id),questionsinfo.content,questionsinfo.score,questionsinfo.difficulty,selections,questionsinfo.questiontype,questionsinfo.answer,questionsinfo.averagetime,questionsinfo.code,questionsinfo.insequence,questionsinfo.count,questionsinfo.testcaseresult,questionsinfo.testcaseresult,questionsinfo.analysis from questionsinfo,knowledge,chapterinfo,Question2knowledge where Question2knowledge.knowid=knowledge.id and knowledge.chapter=chapterinfo.id and chapterinfo.course="
+                                        String temsql = "select  distinct(questionsinfo.id),questionsinfo.content,questionsinfo.score,questionsinfo.difficulty,selections,questionsinfo.questiontype,questionsinfo.answer,questionsinfo.averagetime,questionsinfo.code,questionsinfo.insequence,questionsinfo.count,questionsinfo.testcaseresult,questionsinfo.testcaseresult,questionsinfo.analysis from questionsinfo,knowledge,chapterinfo,Question2knowledge where Question2knowledge.knowid=knowledge.id and knowledge.chapter=chapterinfo.id and Question2knowledge.QuestionId=Questionsinfo.id and chapterinfo.course="
                                                 + test.getCourseinfo().getId()
                                                 + " and score="
                                                 + scoreType.get(j);

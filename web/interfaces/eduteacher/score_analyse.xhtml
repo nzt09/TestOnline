@@ -12,22 +12,18 @@
         <ui:composition template="./../../stylemodel.xhtml">
 
             <ui:define name="content">
-
-                <style type="text/css">
-                    #basicGChart { width: 450px; height: 300px }
-                </style>
-
                 <script type="text/javascript" src="../../resources/javascript/highcharts.js"></script>
                 <script type="text/javascript" src="../../resources/javascript/exporting.js"></script>       
 
-                <h:form onclick="#{teacherController.showTeachercourseclass()}" id="mynewForm">
-
+                <h:form id="mynewForm">
+                    <h:inputHidden id="passLu" value="#{studentinfoController.zhengquelv}"></h:inputHidden>
+                    <h:inputHidden id="knowledgeName" value="#{studentinfoController.knowlegeNameList}"></h:inputHidden>
                     <h:inputHidden id="picData" value="#{studentinfoController.scoreLevelNum}"></h:inputHidden>
 
                     所教课程：
-                    <h:selectOneMenu  id="course" valueChangeListener="#{teachercourseclassController.typeCourseListener}" >
+                    <h:selectOneMenu  id="course" value="#{teachercourseclassController.teacherCourseclass}">
                         <f:selectItem itemLabel="----请选择课程----" itemValue="0"></f:selectItem>
-                        <f:selectItems value="#{teacherController.teacherCourseList}"></f:selectItems>
+                        <f:selectItems value="#{teacherController.teacherCourseClassList}" var="cour" itemLabel="#{cour.courseinfo.name}"></f:selectItems>
                         <f:ajax event="change" render="classId"></f:ajax>
                     </h:selectOneMenu>
                     所教班级：
@@ -36,63 +32,16 @@
                         <f:selectItems value="#{teachercourseclassController.itemsAvailableSelectByCourseId}"></f:selectItems>
                         <f:ajax event="change"></f:ajax>
                     </h:selectOneMenu>
-                     <a4j:commandButton value="查看" oncomplete="show_scorePic()"  execute="picData" render="username myPanel" action="#{studentinfoController.getScoreData()}"></a4j:commandButton>
-                     <rich:panel title="查看班级考试情况" style="margin-left: 200px" id="myPanel">
+                    <a4j:commandButton value="查看成绩情况" oncomplete="show_scorePic()"  execute="picData" render="myPanel picData" action="#{studentinfoController.getScoreData()}"></a4j:commandButton>
+                    <a4j:commandButton value="查看知识点" oncomplete="show_knowledgePic()"  execute="passLu knowledgeName" render="myPanel1 passLu knowledgeName" action="#{studentinfoController.getPictureData()}"></a4j:commandButton>
+                    <rich:panel title="查看班级考试情况" style="margin-left: 200px" id="myPanel">
                         <div id="container1">
                         </div>         
                     </rich:panel>
-                   
-                    <script>
-                        function show_scorePic() {
-                            var scoreData = document.getElementById("mynewForm:picData").value;
-                            
-                            var array = scoreData.split(",");
-                            alert("1");
-                            var arr=eval(array[0]);         
-                            var arr2=eval(array[1]);
-                            var arr3=eval(array[2]);
-                            var arr4=eval(array[3]);
-                            var arr5=eval(array[4]);
-                            $('#container1').highcharts({
-                                title: {
-                                    text: '学生成绩反馈表',
-                                    x: -20 //center
-                                },
-                                subtitle: {
-                                    text: '来自数据库',
-                                    x: -20
-                                },
-                                xAxis: {
-                                    categories: ['0~59分', '60~69分', '70~79分', '80~89分', '90~100分']
-                                },
-                                yAxis: {
-                                    title: {
-                                        text: '人数 (人)'
-                                    },
-                                    plotLines: [{
-                                            value: 0,
-                                            width: 1,
-                                            color: '#808080'
-                                        }]
-                                },
-                                tooltip: {
-                                    valueSuffix: '人'
-                                },
-                                legend: {
-                                    layout: 'vertical',
-                                    align: 'right',
-                                    verticalAlign: 'middle',
-                                    borderWidth: 0
-                                },
-                                series: [{
-                                        name: '学生成绩曲线',
-                                        data: [arr,arr2,arr3,arr4,arr5]
-                                    }]
-                            });
-
-                        }
-
-                    </script>
+                    <rich:panel title="查看知识点题目的错误率情况" style="margin-left: 200px" id="myPanel1">
+                        <div id="container2">
+                        </div>         
+                    </rich:panel>
 
                 </h:form>
             </ui:define>

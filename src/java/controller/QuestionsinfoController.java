@@ -1,6 +1,7 @@
 package controller;
 
-import com.gkm.entity.StringAndBox;
+
+import controller.action.StringAndBox;
 import entities.Questionsinfo;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
@@ -59,6 +60,17 @@ public class QuestionsinfoController implements Serializable {
     private List answerList;
     //单项填空、多项填空答案
     private List<StringAndBox> pagecontent = new ArrayList<StringAndBox>(); 
+    
+    private Knowledge currentKl;
+
+    public Knowledge getCurrentKl() {
+        return currentKl;
+    }
+
+    public void setCurrentKl(Knowledge currentKl) {
+        this.currentKl = currentKl;
+    }
+    
     public Questionsinfo getCurrent() {
         return current;
     }
@@ -241,10 +253,8 @@ public class QuestionsinfoController implements Serializable {
             Question2knowledge  q2k=new Question2knowledge();
             Questionsinfo qs=new Questionsinfo();
             qs.setId(current.getId());
-            Knowledge kl=new Knowledge();
-            kl.setId(knowid);
             q2k.setId(q2kFacade.findLast().getId()+1);
-            q2k.setKnowledge(kl);
+            q2k.setKnowledge(currentKl);
             q2k.setQuestionsinfo(qs);
             q2kFacade.create(q2k);
             current = null;

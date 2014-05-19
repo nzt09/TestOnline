@@ -10,18 +10,27 @@
     <body>
         <ui:composition template="./../../template.xhtml">
             <ui:define name="title">
-
+                <body onload="serverCurrTime()">   
+                    
+                    <div align="right">
+                        剩余时间：<h:outputLabel id="currTime"></h:outputLabel>     
+                    </div>
+                    <h:form>
+                        <h:inputHidden value="#{testAction.insertStarttime()}"></h:inputHidden>
+                        <rich:panel style="margin-left: 100px;margin-right: 100px">
+                            <h:panelGrid columns="2">
+                                <h:outputLabel value="姓名:"></h:outputLabel>
+                                <h:outputLabel value="#{loginController.name}"></h:outputLabel>
+                                <h:outputLabel value="班级："></h:outputLabel>
+                                <h:outputLabel value="#{loginController.className}"></h:outputLabel>   
+                            </h:panelGrid>
+                        </rich:panel>
+                    </h:form>
+                </body>
             </ui:define>
             <ui:define name="body">
-                <rich:panel>
-                    <body onload="serverCurrTime()">                   
-                        <div align="right">
-                            剩余时间：<h:outputLabel id="currTime"></h:outputLabel>     
-                        </div>
-                        <div>
-                            姓名： #{loginController.name} 班级：#{loginController.className}
-                        </div>
-                    </body>
+                <rich:panel style="margin-left: 100px;margin-right: 100px">
+
                     <h:form id="myform">
                         <c:forEach var="questionTypeEntity" items="#{testAction.allQues}"><!--题型-->
                             <c:if test="#{questionTypeEntity.key==8}">
@@ -57,9 +66,9 @@
                             <c:forEach var="question" items="#{questionTypeEntity.value}" varStatus="statusBig"><!--每种题型的题目，可能有多道题目-->  
                                 <c:if test="#{questionTypeEntity.key==8}">
                                     #{testAction.bianhao}#{question.content}&nbsp;( #{question.score}分)<br />
-                                    <h:selectOneRadio  id="a#{question.id}">
-                                        <f:selectItem itemValue="A." itemLabel="对"/>
-                                        <f:selectItem itemValue="B." itemLabel="错"/>
+                                    <h:selectOneRadio  id="a#{question.id}">                                 
+                                        <f:selectItem itemValue="A" itemLabel="对"/>  
+                                        <f:selectItem itemValue="B" itemLabel="错"/>      
                                     </h:selectOneRadio>
                                 </c:if>
                                 <c:if test="#{questionTypeEntity.key==1}">

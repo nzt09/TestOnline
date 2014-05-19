@@ -1,4 +1,4 @@
-package com.gkm.entity;
+package controller.action;
 
 public class StringAndBox {
 	private String contentstring;
