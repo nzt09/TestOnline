@@ -1,14 +1,14 @@
 package entities;
 public class Mistake {
-	private String CourseName;//���Կ�Ŀ
-	private String time;//����ʱ��
-	private String knowledgeName;//����֪ʶ��
-	private String context;//��Ŀ
-	private String selections;//ѡ��
-	private int Score;//��ֵ
-	private String userAnswer;//�û���
-	private String systemAnswer;//ϵͳ��
-	private String analysis;//��Ŀ����
+	private String CourseName;
+	private String time;
+	private String knowledgeName;
+	private String context;
+	private String selections;
+	private int Score;
+	private String userAnswer;
+	private String systemAnswer;
+	private String analysis;
 	
 	public String getCourseName() {
 		return CourseName;

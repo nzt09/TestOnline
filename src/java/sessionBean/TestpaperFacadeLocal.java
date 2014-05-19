@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package sessionBean;
 
 import entities.Testpaper;
@@ -30,11 +29,11 @@ public interface TestpaperFacadeLocal {
     List<Testpaper> findRange(int[] range);
 
     int count();
-    
+
     List<Testpaper> findByStuId(int stuId);
-    
-    List<Testpaper> findByCourseBystuid(int courseId,int classId );
-    
-List<Testpaper> findByTestAssignId(int testAssignid);
-    
+
+    List<Testpaper> findByCourseBystuid(int courseId, int classId);
+
+    List<Testpaper> findByTestAssignId(int testAssignid);
+
 }
