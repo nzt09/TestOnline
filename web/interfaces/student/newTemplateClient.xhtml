@@ -11,11 +11,11 @@
         <ui:composition template="./../../template.xhtml">
             <ui:define name="title">
                 <body onload="serverCurrTime()">   
-                    
-                    <div align="right">
+                    <div align="right">    
                         剩余时间：<h:outputLabel id="currTime"></h:outputLabel>     
                     </div>
-                    <h:form>
+                    <h:form id="myForm">
+                        <h:inputHidden value="#{testAction.require()}" id="timeSecond"></h:inputHidden>
                         <h:inputHidden value="#{testAction.insertStarttime()}"></h:inputHidden>
                         <rich:panel style="margin-left: 100px;margin-right: 100px">
                             <h:panelGrid columns="2">

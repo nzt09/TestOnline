@@ -5,7 +5,8 @@
       xmlns:rich="http://richfaces.org/rich"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:a4j="http://richfaces.org/a4j">
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 
     <body>
 
@@ -35,6 +36,46 @@
                     <a4j:commandButton value="查看成绩情况" oncomplete="show_scorePic()"  execute="picData" render="myPanel picData" action="#{studentinfoController.getScoreData()}"></a4j:commandButton>
                     <a4j:commandButton value="查看知识点" oncomplete="show_knowledgePic()"  execute="passLu knowledgeName" render="myPanel1 passLu knowledgeName" action="#{studentinfoController.getPictureData()}"></a4j:commandButton>
                     <rich:panel title="查看班级考试情况" style="margin-left: 200px" id="myPanel">
+                        <rich:dataTable value="#{testpaperController.requirePaper()}" var="paper" iterationStatusVar="it" rows="5" id="table">
+                            <f:facet name="noData">
+                                无满足条件的记录，请重新搜索！
+                            </f:facet>
+                            <rich:column style="width: 60px;column-width: 60px">
+                                <f:facet name="header" >#</f:facet>
+                                    #{it.index}
+                            </rich:column>
+                            <rich:column filterValue="#{departclassController.stunoFilter}" style="width: 200px"
+                                         filterExpression="#{fn:containsIgnoreCase(paper.studentinfo.stuno, departclassController.stunoFilter)}">
+                                <f:facet name="header">                          
+                                    <h:outputText value="学号："/>
+                                    <h:inputText value="#{departclassController.stunoFilter}" >
+                                        <a4j:ajax render="table" execute="@this" event="mouseout" />
+                                    </h:inputText>
+                                </f:facet>
+                                <h:outputText value="#{paper.studentinfo.stuno}"/>
+                            </rich:column>
+                            <rich:column filterValue="#{departclassController.nameFilter}" style="width: 200px"
+                                         filterExpression="#{fn:containsIgnoreCase(paper.studentinfo.name, departclassController.nameFilter)}">
+                                <f:facet name="header">
+                                    <h:outputText value="姓名："/>
+                                    <h:inputText value="#{departclassController.nameFilter}" >
+                                        <a4j:ajax render="table" execute="@this" event="mouseout" />
+                                    </h:inputText>
+                                </f:facet>
+                                <h:outputText value="#{paper.studentinfo.name}"/>
+                            </rich:column>
+     
+                            
+                            <rich:column >
+                                <f:facet name="header">
+                                    <h:outputText value="分数"/>
+                                </f:facet>
+                                <h:outputText value="#{paper.score}"/>
+                            </rich:column>
+                            <f:facet name="footer">
+                                <rich:dataScroller style="width: 490px" render="table"/>
+                            </f:facet>
+                        </rich:dataTable>
                         <div id="container1">
                         </div>         
                     </rich:panel>

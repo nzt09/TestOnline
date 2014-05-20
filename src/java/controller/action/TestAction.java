@@ -494,6 +494,15 @@ public class TestAction implements java.io.Serializable {
         return "test";
     }
 
+    //考试过程中再次登录的时间
+    public long require(){
+        Date now = new Date();
+        List<Testpaper> testtemp = testpaperEJB.findByStuId(studentFacade.findByStuno(loginCon.getUserId()).getId());
+        testtemp.get(0).getStarttime();
+        return (now.getTime()-testtemp.get(0).getStarttime().getTime())/60000;
+  
+    }
+    
     //插入考生开始考试的时间
     public void insertStarttime() {
         List<Testpaper> testtemp = testpaperEJB.findByStuId(studentFacade.findByStuno(loginCon.getUserId()).getId());
