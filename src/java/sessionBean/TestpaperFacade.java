@@ -40,7 +40,7 @@ public class TestpaperFacade extends AbstractFacade<Testpaper> implements Testpa
     }
 
     public List<Testpaper> findByCourseBystuid(int courseId, int classId) {
-        List<Testpaper> tem = em.createNativeQuery("select * from testpaper where course=" + courseId + " and stuid in(select id from studentinfo where classid=" + classId + ")", Testpaper.class).getResultList();
+        List<Testpaper> tem = em.createNativeQuery("select * from testpaper where course=" + courseId + " and stuid in(select id from studentinfo where classid=" + classId + ") order by score ", Testpaper.class).getResultList();
         System.out.println("select * from testpaper where course=" + courseId + "and stuid in(select id from studentinfo where classid=" + classId + ")");
         System.out.println(tem.size());
         if (tem == null || tem.isEmpty()) {
