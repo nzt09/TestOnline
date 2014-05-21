@@ -256,7 +256,6 @@ public class TestAction implements java.io.Serializable {
                         tem = allQues.get(Publicfields.TrueorFalse);
                     }
                     tem.add(qi);
-                    
                 }
                 //单项选择题
                 if (qi.getQuestiontypeinfo().getId() == Publicfields.SingleSelectType) {
@@ -497,14 +496,14 @@ question.getId() + "\"  value=\"" + fill + "\" type=text size=" + answer[i].leng
                 Questionsinfo qi = questinfoEjb.find(questionId.get(i));
                 //判断题
                 if (qi.getQuestiontypeinfo().getId() == Publicfields.TrueorFalse) {
-                    List<Questionsinfo> tem;
+                    List<Questionsinfo> tem3;
                     if (!allQues.containsKey(Publicfields.TrueorFalse)) {
-                        tem = new LinkedList<>();
-                        allQues.put(Publicfields.TrueorFalse, tem);
+                        tem3 = new LinkedList<>();
+                        allQues.put(Publicfields.TrueorFalse, tem3);
                     } else {
-                        tem = allQues.get(Publicfields.TrueorFalse);
+                        tem3 = allQues.get(Publicfields.TrueorFalse);
                     }
-                    tem.add(qi);
+                    tem3.add(qi);
                     testAnswer.put(qi.getId(), request.getParameter("myform:a" + qi.getId()));
                     testAnswer1.put(qi.getId(), request.getParameter("myform:a" + qi.getId()));
                 }
@@ -599,6 +598,7 @@ question.getId() + "\"  value=\"" + fill + "\" type=text size=" + answer[i].leng
                         testAnswer1.put(qi.getId(), temAnswer);
                     } else {
                         disorderAnswer.put(qi.getId(), temAnswer);
+                        System.out.println(disorderAnswer.toString()+"===============");
                         disorderTrue.put(qi.getId(), qi.getAnswer());
                     }
                     testAnswer.put(qi.getId(), temAnswer);
@@ -622,12 +622,21 @@ question.getId() + "\"  value=\"" + fill + "\" type=text size=" + answer[i].leng
         }
         String answers = "";//学生的答案
         String answer = "";//正确答案
+        String danswers = "";
         Set set = testAnswer1.entrySet();
         Iterator it = set.iterator();
         while (it.hasNext()) {
             Map.Entry me = (Map.Entry) it.next();
             answers = answers + me.getKey() + "-" + me.getValue() + "#@!";
+            danswers = answers + me.getKey() + "-" + me.getValue() + "#@!";
         }
+         Set set2 = disorderAnswer.entrySet();
+        Iterator it2 = set2.iterator();
+        while (it2.hasNext()) {
+            Map.Entry me = (Map.Entry) it2.next();
+            danswers = danswers + me.getKey() + "-" + me.getValue() + "#@!";
+        }
+        System.out.println(danswers + "------------------------------------------------");
         Set set1 = trueAnswer.entrySet();
         Iterator it1 = set1.iterator();
         while (it1.hasNext()) {
@@ -688,8 +697,10 @@ question.getId() + "\"  value=\"" + fill + "\" type=text size=" + answer[i].leng
             }
             if (l != s2.length) {
                 wrong = wrong + obj1[y] + ",";
+               
             } else {
                 right = right + obj1[y] + ",";
+               
             }
 
             Questionsinfo rqi = questinfoEjb.find(obj1[y]);
@@ -706,7 +717,7 @@ question.getId() + "\"  value=\"" + fill + "\" type=text size=" + answer[i].leng
         for (Testpaper test : testPaperList) {
             if (test.getCourseinfo().getId() == testInfom.getCourseId()) {
                 System.out.println(test.getId());
-                test.setAnswer(answers);
+                test.setAnswer(danswers);
                 test.setWrongnum(wrong);
                 int r = (int) score;
                 if ((score - (int) score) >= 0.5) {

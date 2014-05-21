@@ -55,14 +55,14 @@
                             </h2>
                         </c:if>
                         <c:forEach var="question" items="#{questionTypeEntity.value}" varStatus="statusBig"><!--每种题型的题目，可能有多道题目-->  
-                             <c:if test="#{questionTypeEntity.key==8}">
+                              <c:if test="#{questionTypeEntity.key==8}"><!--判断题-->  
                                 #{testAction.bianhao}#{question.content}&nbsp;( #{question.score}分)<br />
                                 <h:selectOneRadio  id="a#{question.id}">                                 
                                         <f:selectItem itemValue="A" itemLabel="对"/>  
                                             <f:selectItem itemValue="B" itemLabel="错"/>      
                                 </h:selectOneRadio>
                              </c:if>
-                            <c:if test="#{questionTypeEntity.key==1}">
+                            <c:if test="#{questionTypeEntity.key==1}"><!--单选题-->  
                                 #{testAction.bianhao}#{question.content}&nbsp;( #{question.score}分)<br />
                                 <h:selectOneRadio  id="a#{question.id}">
                                     <c:forEach var="selectCandiate" items="#{testAction.list1}" varStatus="status" begin="#{status+statusBig.index*4}" end="#{(status+3)+statusBig.index*4}">
@@ -70,7 +70,7 @@
                                     </c:forEach>
                                 </h:selectOneRadio>
                             </c:if>
-                            <c:if test="#{questionTypeEntity.key==2}">
+                            <c:if test="#{questionTypeEntity.key==2}"><!--多选题-->  
                                 #{testAction.bianhao} #{question.content}&nbsp;( #{question.score}分)<br />
                                 <h:selectManyCheckbox id="a#{question.id}" >
                                     <c:forEach var="selectCandiate" items="#{testAction.list2}" varStatus="status" begin="#{status+statusBig.index*5}" end="#{(status+4)+statusBig.index*5}">
@@ -78,15 +78,15 @@
                                     </c:forEach>
                                 </h:selectManyCheckbox>
                             </c:if>
-                            <c:if test="#{questionTypeEntity.key==3}">
+                            <c:if test="#{questionTypeEntity.key==3}"><!--单项填空题-->  
                                 <h:outputLabel escape="false" value=" #{testAction.bianhao}#{testAction.convertFill(question)}"/><br/>&nbsp;( #{question.score}分)<br />
                             </c:if>
-                            <c:if test="#{questionTypeEntity.key==6}">
+                            <c:if test="#{questionTypeEntity.key==6}"><!--简答题-->  
                                 <h:outputLabel value="#{testAction.bianhao}#{question.content}"  /><br/>&nbsp;( #{question.score}分)<br />
                                 <h:inputTextarea rows="10" cols="150" id="a#{question.id}"
                                                  /><br/>
                             </c:if>
-                            <c:if test="#{questionTypeEntity.key==7}">
+                            <c:if test="#{questionTypeEntity.key==7}"><!--多项填空题-->  
                                 <h:outputText escape="false" value=" #{testAction.bianhao}#{testAction.convertFills(question)}"/>&nbsp;( #{question.score}分)<br />
                             </c:if>
                         </c:forEach>
