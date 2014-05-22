@@ -49,6 +49,7 @@ import tools.Publicfields;
 @Named
 @SessionScoped
 public class TestAction implements java.io.Serializable {
+
     @EJB
     private TestassigninfomFacadeLocal testinfomEjb;
     @EJB
@@ -75,7 +76,7 @@ public class TestAction implements java.io.Serializable {
     private List<Testpaper> tp;// 试卷列表
     private Testpaper testPaper;// 考卷
     private int leftMinute1;
-    private int k = 0;                       
+    private int k = 0;
     private int questionNum = 0;
     List<Questiontypeinfo> listQuestionType;// 题目类型
     private List<Questionsinfo> questioninfo = new ArrayList<Questionsinfo>();// 考试题目
@@ -89,6 +90,8 @@ public class TestAction implements java.io.Serializable {
     private HashMap<Integer, String> testAnswer1 = new LinkedHashMap<Integer, String>();//储存除无序多项填空题的答案
     private HashMap<Integer, String> disorderAnswer = new LinkedHashMap<Integer, String>();//存储无序多项填空题的答案
     private HashMap<Integer, String> disorderTrue = new LinkedHashMap<Integer, String>();//存储无序多项填空题的正确答案
+    private HashMap<Integer, String> selectAnswer = new LinkedHashMap<Integer, String>();
+    private HashMap<Integer, String> selectSAnswer = new LinkedHashMap<Integer, String>();
     Set<String> setStr = new HashSet<>();
     Set<String> setStr1 = new HashSet<>();
     private String[] testPaperAnswer;
@@ -166,6 +169,16 @@ public class TestAction implements java.io.Serializable {
     private HashMap<String, String> list2;
 
     private LinkedList list3;
+
+    public List getList() {
+        return list;
+    }
+
+    public void setList(List list) {
+        this.list = list;
+    }
+
+    List list = null;
 
     public HashMap<String, String> getList2() {
         return list2;
@@ -280,7 +293,8 @@ public class TestAction implements java.io.Serializable {
                     String[] s = qi.getSelections().split("#");
                     for (int j = 0; j < s.length; j++) {
                         k = k + 1;
-                        list1.put(selectionName[j] + ". " + s[j]+k, selectionName[j]+k);
+                        list1.put(selectionName[j] + k, selectionName[j] + ". " + s[j]);
+
                         System.out.println(list1.toString() + "++++++++++++++++++++++++++");
                     }
                 }
@@ -297,8 +311,9 @@ public class TestAction implements java.io.Serializable {
                     }
                     tem1.add(qi);
                     String[] s1 = qi.getSelections().split("#");
-                    for (int k = 0; k < s1.length; k++) {
-                        list2.put(selectionName[k] + ". " + s1[k], selectionName[k]);
+                    for (int p = 0; p < s1.length; p++) {
+                           k = k + 1;
+                        list2.put(selectionName[p]+k,selectionName[p] + ". " + s1[p] );
 
                     }
                 }
@@ -498,14 +513,14 @@ public class TestAction implements java.io.Serializable {
     }
 
     //考试过程中再次登录的时间
-    public long require(){
+    public long require() {
         Date now = new Date();
         List<Testpaper> testtemp = testpaperEJB.findByStuId(studentFacade.findByStuno(loginCon.getUserId()).getId());
         testtemp.get(0).getStarttime();
-        return (now.getTime()-testtemp.get(0).getStarttime().getTime())/60000;
-  
+        return (now.getTime() - testtemp.get(0).getStarttime().getTime()) / 60000;
+
     }
-    
+
     //插入考生开始考试的时间
     public void insertStarttime() {
         List<Testpaper> testtemp = testpaperEJB.findByStuId(studentFacade.findByStuno(loginCon.getUserId()).getId());
@@ -547,8 +562,14 @@ public class TestAction implements java.io.Serializable {
                         tem = allQues.get(Publicfields.SingleSelectType);
                     }
                     tem.add(qi);
-                    testAnswer.put(qi.getId(), request.getParameter("myform:a" + qi.getId()));
-                    testAnswer1.put(qi.getId(), request.getParameter("myform:a" + qi.getId()));
+                    String s1 = null;
+                    String s = request.getParameter("myform:a" + qi.getId());
+                    if( s != null){
+                        s = s.replaceAll("[0-9]", "");
+                    }
+                    System.out.println(s + "11111111111111111111111111");
+                    testAnswer.put(qi.getId(), s);
+                    testAnswer1.put(qi.getId(), s);
                 }
                 //多项选择题
                 if (qi.getQuestiontypeinfo().getId() == Publicfields.MultiSelectType) {
@@ -556,7 +577,6 @@ public class TestAction implements java.io.Serializable {
                     if (!allQues.containsKey(Publicfields.MultiSelectType)) {
                         tem1 = new LinkedList<>();
                         allQues.put(Publicfields.MultiSelectType, tem1);
-
                     } else {
                         tem1 = allQues.get(Publicfields.MultiSelectType);
                     }
@@ -578,8 +598,11 @@ public class TestAction implements java.io.Serializable {
                             multivalue = multivalue + value[l] + "#";
                         } else {
                             multivalue = multivalue + value[l];
+                           
                         }
-
+                    }
+                     if( multivalue != null){
+                        multivalue = multivalue.replaceAll("[0-9]", "");
                     }
                     testAnswer.put(qi.getId(), multivalue);
                     testAnswer1.put(qi.getId(), multivalue);
@@ -628,7 +651,7 @@ public class TestAction implements java.io.Serializable {
                         testAnswer1.put(qi.getId(), temAnswer);
                     } else {
                         disorderAnswer.put(qi.getId(), temAnswer);
-                        System.out.println(disorderAnswer.toString()+"===============");
+                        System.out.println(disorderAnswer.toString() + "===============");
                         disorderTrue.put(qi.getId(), qi.getAnswer());
                     }
                     testAnswer.put(qi.getId(), temAnswer);
@@ -660,7 +683,7 @@ public class TestAction implements java.io.Serializable {
             answers = answers + me.getKey() + "-" + me.getValue() + "#@!";
             danswers = answers + me.getKey() + "-" + me.getValue() + "#@!";
         }
-         Set set2 = disorderAnswer.entrySet();
+        Set set2 = disorderAnswer.entrySet();
         Iterator it2 = set2.iterator();
         while (it2.hasNext()) {
             Map.Entry me = (Map.Entry) it2.next();
@@ -727,10 +750,10 @@ public class TestAction implements java.io.Serializable {
             }
             if (l != s2.length) {
                 wrong = wrong + obj1[y] + ",";
-               
+
             } else {
                 right = right + obj1[y] + ",";
-               
+
             }
 
             Questionsinfo rqi = questinfoEjb.find(obj1[y]);
