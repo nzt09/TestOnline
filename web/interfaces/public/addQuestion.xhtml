@@ -45,14 +45,15 @@
                         <h:outputLabel>
                             <h:outputText value="知识点名称" style="font-size:15px;font-family: Arial, Hel,Microsoft YaHei;"></h:outputText>
                         </h:outputLabel>
-                        <h:selectOneMenu id="knowledgeName" required="true" requiredMessage="请选择知识点" valueChangeListener="#{questionsinfoController.typeKnowledgeListenner}" style="font-size:10px;font-family: Arial, Hel,Microsoft YaHei;width: 150px"> 
+                        <h:selectOneMenu id="knowledgeName" required="true" requiredMessage="请选择知识点" value="#{questionsinfoController.currentKl}" style="font-size:10px;font-family: Arial, Hel,Microsoft YaHei;width: 150px"> 
+                            <f:converter converterId="knowledgeConverter"></f:converter>
                             <f:selectItem itemLabel="--请选择知识点--" ></f:selectItem>
-                            <f:selectItems value="#{knowledgeController.itemsAvailableSelectByChapter}"></f:selectItems>
+                            <f:selectItems value="#{knowledgeController.klList}" var="kl" itemLabel="#{kl.name}"></f:selectItems>
                             <f:ajax event="change" render="knowledgeMessage"></f:ajax>
                         </h:selectOneMenu>
                         <rich:messages for="knowledgeName" id="knowledgeMessage"></rich:messages>
                         <h:outputLabel for="type">
-                            <h:outputText value="题目类型" style="font-size:15px;font-family: Arial, Hel,Microsoft YaHei"></h:outputText>
+                             <h:outputText value="题目类型" style="font-size:15px;font-family: Arial, Hel,Microsoft YaHei"></h:outputText>
                         </h:outputLabel>
                         <h:selectOneMenu  id="type" valueChangeListener="#{questionsinfoController.typeListener}" style="font-size:10px;font-family: Arial, Hel,Microsoft YaHei;width: 150px">
                             <f:selectItem itemLabel="--请选择题目类型--" itemValue="0"></f:selectItem>

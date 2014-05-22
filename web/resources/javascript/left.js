@@ -29,13 +29,14 @@ function show_info() {
     alert("添加成功！")
 }
 
-$(function() {
-    var d1 = [];
-    var pictureData = document.getElementById('pictureData').value;
-    var data = pictureData.split("#");
-    for (var i = 0; i < data.length; i++) {
-        var str = data[i].split("@");
-        d1.push([i + 1, str[1]]);
+
+function show_scorePic() {
+    var i = 0;
+    var scoreData = document.getElementById("mynewForm:picData").value;
+    var array = scoreData.split(",");
+    var arraynew = new Array();
+    for (; i < array.length; i++) {
+        arraynew[i] = eval(array[i]);
     }
     $.plot($("#placeholder"), [d1]);
-});
+}

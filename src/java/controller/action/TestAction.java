@@ -10,8 +10,10 @@ import entities.Questiontypeinfo;
 import entities.Studentinfo;
 import entities.Testassigninfom;
 import entities.Testpaper;
+import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -32,6 +34,8 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import sessionBean.QuestionsinfoFacadeLocal;
 import sessionBean.QuestiontypeinfoFacadeLocal;
+import sessionBean.StudentinfoFacadeLocal;
+import sessionBean.TestassigninfomFacadeLocal;
 import sessionBean.TestpaperFacadeLocal;
 import tools.Publicfields;
 
@@ -45,13 +49,18 @@ import tools.Publicfields;
 @Named
 @SessionScoped
 public class TestAction implements java.io.Serializable {
-
+    @EJB
+    private TestassigninfomFacadeLocal testinfomEjb;
     @EJB
     private QuestionsinfoFacadeLocal questinfoEjb;
     @EJB
     private QuestiontypeinfoFacadeLocal qtEJB;
     @EJB
     private TestpaperFacadeLocal testpaperEJB;
+    @EJB
+    private StudentinfoFacadeLocal studentFacade;
+    @Inject
+    private LoginController loginCon;
     @Inject
     private TestpaperController testP;
     @Inject
@@ -66,6 +75,7 @@ public class TestAction implements java.io.Serializable {
     private List<Testpaper> tp;// 试卷列表
     private Testpaper testPaper;// 考卷
     private int leftMinute1;
+    private int k = 0;                       
     private int questionNum = 0;
     List<Questiontypeinfo> listQuestionType;// 题目类型
     private List<Questionsinfo> questioninfo = new ArrayList<Questionsinfo>();// 考试题目
@@ -200,7 +210,7 @@ public class TestAction implements java.io.Serializable {
     public String test() {
         this.getAllQues();
         return null;
-    } 
+    }
 
     public int getBianhao() {
         if (bianhao < biangao1) {
@@ -269,11 +279,12 @@ public class TestAction implements java.io.Serializable {
                     tem.add(qi);
                     String[] s = qi.getSelections().split("#");
                     for (int j = 0; j < s.length; j++) {
-                        list1.put(selectionName[j] + ". " + s[j], selectionName[j]);
-                        System.out.println(list1.toString()+"++++++++++++++++++++++++++");
+                        k = k + 1;
+                        list1.put(selectionName[j] + ". " + s[j]+k, selectionName[j]+k);
+                        System.out.println(list1.toString() + "++++++++++++++++++++++++++");
                     }
                 }
-                
+
                 //多项选择题
                 if (qi.getQuestiontypeinfo().getId() == Publicfields.MultiSelectType) {
                     List<Questionsinfo> tem1;
@@ -351,8 +362,8 @@ public class TestAction implements java.io.Serializable {
             if (fill == null) {
                 fill = "";
             }
-            temContent += content[i] + "<input id=\"fill_" + i + "_" + question.getId() + "\" name=\"" + "fill_" + i + "_" + 
-question.getId() + "\"  value=\"" + fill + "\" type=text size=" + answer[i].length() + "/>";
+            temContent += content[i] + "<input id=\"fill_" + i + "_" + question.getId() + "\" name=\"" + "fill_" + i + "_"
+                    + question.getId() + "\"  value=\"" + fill + "\" type=text size=" + answer[i].length() + "/>";
         }
         temContent += content[i];
         return temContent;
@@ -367,15 +378,15 @@ question.getId() + "\"  value=\"" + fill + "\" type=text size=" + answer[i].leng
         if (fill == null) {
             fill = "";
             for (; i < content.length - 1; i++) {
-                temContent += content[i] + "<input id=\"fill_" + i + "_" + question.getId() + "\" name=\"" + "fill_" + i + "_" 
-+ question.getId() + "\"  value=\"" + fill + "\" type=text size=" + answer[i].length() + "/>";
+                temContent += content[i] + "<input id=\"fill_" + i + "_" + question.getId() + "\" name=\"" + "fill_" + i + "_"
+                        + question.getId() + "\"  value=\"" + fill + "\" type=text size=" + answer[i].length() + "/>";
             }
         } else {
             System.out.println(fill + "====================");
             String[] fills = fill.split("#");
             for (; i < content.length - 1; i++) {
-                temContent += content[i] + "<input id=\"fill_" + i + "_" + question.getId() + "\" name=\"" + "fill_" + i + "_" 
-+ question.getId() + "\"  value=\"" + fills[i] + "\" type=text size=" + answer[i].length() + "/>";
+                temContent += content[i] + "<input id=\"fill_" + i + "_" + question.getId() + "\" name=\"" + "fill_" + i + "_"
+                        + question.getId() + "\"  value=\"" + fills[i] + "\" type=text size=" + answer[i].length() + "/>";
             }
         }
         temContent += content[i];
@@ -484,6 +495,25 @@ question.getId() + "\"  value=\"" + fill + "\" type=text size=" + answer[i].leng
     // 是否在考试时间
     public String isInTesting() {
         return "test";
+    }
+
+    //考试过程中再次登录的时间
+    public long require(){
+        Date now = new Date();
+        List<Testpaper> testtemp = testpaperEJB.findByStuId(studentFacade.findByStuno(loginCon.getUserId()).getId());
+        testtemp.get(0).getStarttime();
+        return (now.getTime()-testtemp.get(0).getStarttime().getTime())/60000;
+  
+    }
+    
+    //插入考生开始考试的时间
+    public void insertStarttime() {
+        List<Testpaper> testtemp = testpaperEJB.findByStuId(studentFacade.findByStuno(loginCon.getUserId()).getId());
+        if (testtemp.get(0).getStarttime() == null) {
+            Date now = new Date();
+            testtemp.get(0).setStarttime(now);
+            testpaperEJB.edit(testtemp.get(0));
+        }
     }
 
     public void insert() {
@@ -646,11 +676,11 @@ question.getId() + "\"  value=\"" + fill + "\" type=text size=" + answer[i].leng
         System.out.println(answer);
         System.out.println(answers);
         String[] list = answer.split("#@!");
-        
+
         for (int i = 0; i < list.length; i++) {
             System.out.println(list[i]);
         }
-        System.out.println("list="+list.length);
+        System.out.println("list=" + list.length);
         String[] list1 = answers.split("#@!");
         for (int i = 0; i < list.length; i++) {
             System.out.println(list[i] + "==========================");
@@ -720,6 +750,7 @@ question.getId() + "\"  value=\"" + fill + "\" type=text size=" + answer[i].leng
                 test.setAnswer(danswers);
                 test.setWrongnum(wrong);
                 int r = (int) score;
+                r = r + 20;
                 if ((score - (int) score) >= 0.5) {
                     r++;
                 }

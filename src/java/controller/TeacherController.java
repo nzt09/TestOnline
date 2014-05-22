@@ -59,6 +59,19 @@ public class TeacherController implements Serializable {
     private List<SelectItem> classList;
     //显示该老师所交课程
     private List<SelectItem> teacherCourseList;
+    
+    private List<Teachercourseclass> teacherCourseClassList;
+
+    public List<Teachercourseclass> getTeacherCourseClassList() {
+        List<Teachercourseclass>  teacherCourseClassList= teachercourseclassFacade.findByPersonId(current.getPersonid());
+        return teacherCourseClassList;
+    }
+
+    public void setTeacherCourseClassList(List<Teachercourseclass> teacherCourseClassList) {
+        this.teacherCourseClassList = teacherCourseClassList;
+    }
+    
+    
     private int majorId;
 
     private String teanoFilter;

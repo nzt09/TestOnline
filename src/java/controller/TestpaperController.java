@@ -6,6 +6,7 @@ import controller.util.PaginationHelper;
 import sessionBean.TestpaperFacadeLocal;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -17,6 +18,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
 
 @Named("testpaperController")
 @SessionScoped
@@ -26,8 +28,23 @@ public class TestpaperController implements Serializable {
     private DataModel items = null;
     @EJB
     private sessionBean.TestpaperFacadeLocal ejbFacade;
+    @Inject
+    private StudentinfoController stuCon;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    //把某个班级对应学生的试卷取出
+    
+    public List<Testpaper> requirePaper(){
+        if(stuCon.getCourseId()!=0&&stuCon.getClassId()!=0){
+            return this.getFacade().findByCourseBystuid(stuCon.getCourseId(),stuCon.getClassId());
+        }
+        else{
+            return null;
+        }
+    }
+    
+    
+    
 
     public TestpaperController() {
     }

@@ -86,9 +86,8 @@ public class ClassinfoController implements Serializable {
     }
 
     public void majorTypeListener(ValueChangeEvent event) {
-        System.out.println(event.getNewValue() + "llllllllllllllllllllllll");
+
         String hh = (String.valueOf(event.getNewValue()));
-        System.out.println(hh + "pppppppppppppppp");
         majorId = Integer.parseInt(hh);
 
         courseCon.setMajorId(majorId);

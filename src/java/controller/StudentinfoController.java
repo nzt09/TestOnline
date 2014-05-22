@@ -17,12 +17,13 @@ import java.io.IOException;
 import sessionBean.StudentinfoFacadeLocal;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.Set;
 import javax.ejb.EJB;
@@ -38,11 +39,8 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import sessionBean.CourseinfoFacadeLocal;
-import sessionBean.MyKnowledgeFacade;
 import sessionBean.MyKnowledgeFacadeLocal;
-import sessionBean.Question2knowledgeFacade;
 import sessionBean.Question2knowledgeFacadeLocal;
-import sessionBean.QuestionsinfoFacade;
 import sessionBean.QuestionsinfoFacadeLocal;
 import sessionBean.TeachercourseclassFacadeLocal;
 import sessionBean.TestpaperFacadeLocal;
@@ -84,13 +82,42 @@ public class StudentinfoController implements Serializable {
     private List<Testpaper> allTestpaper = new ArrayList<Testpaper>();// 存放该学生的所有试卷信息
     private String courseName;// 课程名
     private List<SelectItem> courseList;// 用于存放该学生的所有课程名
-    private Map<String, List<Mistake>> courseMap = new HashMap<String, List<Mistake>>();// 用于存放<课程名,对应课程Mistake>的数据
+    private Map<String, List<Mistake>> courseMap;// 用于存放<课程名,对应课程Mistake>的数据
     private List<TestpaperSimpleOfStudent> tsosList = new ArrayList<TestpaperSimpleOfStudent>();// 处理后的学生试卷跟课程相关联的一个list集合
     private int departmentId;
     private int classId;
     private boolean flag = false;
     private boolean flag1 = false;
     private int courseId;
+
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
+
+    //知识点的名称
+    private String knowlegeNameList;
+    //每个知识点的通过率
+    private String zhengquelv;
+
+    public String getKnowlegeNameList() {
+        return knowlegeNameList;
+    }
+
+    public void setKnowlegeNameList(String knowlegeNameList) {
+        this.knowlegeNameList = knowlegeNameList;
+    }
+
+    public String getZhengquelv() {
+        return zhengquelv;
+    }
+
+    public void setZhengquelv(String zhengquelv) {
+        this.zhengquelv = zhengquelv;
+    }
 
     //用于存放学生成绩分类的个数
     private String scoreLevelNum;
@@ -106,13 +133,29 @@ public class StudentinfoController implements Serializable {
     //学生成绩的归类
     public void getScoreData() {
         scoreLevelNum = "";
-        Random r = new Random();
-
-        for (int i = 0; i < 4; i++) {
-            int a = r.nextInt(100);
-            scoreLevelNum = scoreLevelNum + "," + a;
+        if (classId != 0 && courseId != 0) {
+            List<Testpaper> t = testpaperFacadeLocal.findByCourseBystuid(courseId, classId);
+            int a = 0, b = 0, c = 0, d = 0, e = 0;
+            for (int i = 0; i < t.size(); i++) {
+                int scoreLevel = t.get(i).getScore() / 10;
+                if (scoreLevel < 6) {
+                    a++;
+                } else if (scoreLevel == 6) {
+                    b++;
+                } else if (scoreLevel == 7) {
+                    c++;
+                } else if (scoreLevel == 8) {
+                    d++;
+                } else {
+                    e++;
+                }
+            }
+            scoreLevelNum = scoreLevelNum + a + "," + b + "," + c + "," + d + "," + e;
         }
-        System.out.println(scoreLevelNum);
+    }
+
+    public void typeClassListener(ValueChangeEvent event) {
+        classId = Integer.parseInt((String) event.getNewValue());
     }
 
     public void typeCourseListener(ValueChangeEvent event) {
@@ -120,43 +163,56 @@ public class StudentinfoController implements Serializable {
     }
 
     public String getPictureData() throws IOException {
+        System.out.println("班级Id"+classId+"课程Id"+courseId);
+        courseMap = new HashMap<>();
         pictureData = new String();
         templist.clear();
-        allTestpaper = testpaperFacadeLocal.findAll();
-        for (Testpaper t : allTestpaper) {
-            List<Courseinfo> cList = courseinfoFacadeLocal.findByCourseId(t.getCourseinfo().getId());
-            if (cList.get(0).getName().equals("Java程序设计")) {
-                templist.add(t);
+        if (courseId != 0 && classId != 0) {
+            allTestpaper = testpaperFacadeLocal.findByCourseBystuid(courseId, classId);
+            for (Testpaper t : allTestpaper) {
+                List<Courseinfo> cList = courseinfoFacadeLocal.findByCourseId(t.getCourseinfo().getId());
+                if (cList.get(0).getName().equals("Java程序设计")) {
+                    templist.add(t);
+                }
             }
-        }
-        System.out.println(templist.size() + "试卷长度");
-        String content = new String();
-        String wrongnum = new String();
-        for (Testpaper t : templist) {
-            content += t.getContent() + ",";
-            wrongnum += t.getWrongnum();
-            t.setContent(content);
-            t.setWrongnum(wrongnum);
-            TestpaperSimpleOfStudent tsos = dealWithList(t, "notAdd");
-            String time = tsos.getTestTime().split(" ")[0];
-            System.out.println("time=" + time);
-            pictureData += time + "@" + tsos.getPassedNum() + "#";
+            String content = new String();
+            String wrongnum = new String();
+            for (Testpaper t : templist) {
+                content += t.getContent() + ",";
+                wrongnum += t.getWrongnum();
+                t.setContent(content);
+                t.setWrongnum(wrongnum);
+                TestpaperSimpleOfStudent tsos = dealWithList(t, "notAdd");
+                String time = tsos.getTestTime();
+                pictureData += time + "@" + tsos.getPassedNum() + "#";
+            }
+            Set st = courseMap.entrySet();
+            Iterator<Map.Entry<String, List<Mistake>>> it = st.iterator();
+            while (it.hasNext()) {
+                Map.Entry<String, List<Mistake>> m = it.next();
+            }
         }
         return pictureData;
     }
 
     public TestpaperSimpleOfStudent dealWithList(Testpaper t, String type)
             throws IOException {
+        knowlegeNameList = null;
+        zhengquelv = null;
         TestpaperSimpleOfStudent tsos = new TestpaperSimpleOfStudent();
         Courseinfo cList = courseinfoFacadeLocal.find(t.getCourseinfo().getId());
-
+        //获得试卷中的课程名称
         tsos.setCourseName(cList.getName());
+//        获得试卷中的分数
         tsos.setScore(t.getScore());
         Studentinfo sList = studentinfoFacadeLocal.find(t.getStudentinfo().getId());
+//        获得试卷中的学生的学号
         tsos.setStudentNum(sList.getStuno());
-        tsos.setTestTime(t.getStarttime().toString().split(" ")[0]);
-        System.out.println(t.getStarttime().toString() + "//////////////////////////////");
-        Map<Integer, WrongRightNum> map = new HashMap<Integer, WrongRightNum>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        dateFormat.format(t.getStarttime());
+//        获得试卷中的开始考试时间
+        tsos.setTestTime(dateFormat.format(t.getStarttime()).split(" ")[0]);
+        Map<Integer, WrongRightNum> map = new HashMap<Integer, WrongRightNum>();//知识点以及题目正确与错误的数量
         String content = t.getContent();// 所有题目的ID
         String wrongAnswer = t.getWrongnum();// 错误题目的ID（String类型）
         String allData[] = content.split(",");// 所有题目的ID数组
@@ -167,8 +223,8 @@ public class StudentinfoController implements Serializable {
                 continue;
             }
             q = questionsinfoFacadeLocal.find(Integer.parseInt(str));
-
-            int id = question2knowledgeFacadeLocal.findByQusetionId(q.getId()).getKnowledge().getId();
+            int id = question2knowledgeFacadeLocal.findByQusetionId(q.getId()).getKnowledge().getId();//得到题目对应的知识点的ID
+//            不正确的知识点
             WrongRightNum qrn = new WrongRightNum();
             if (map.containsKey(id)) { // 已包含
                 qrn = map.get(id);
@@ -223,16 +279,26 @@ public class StudentinfoController implements Serializable {
             }
             map.put(id, qrn);
         }
+
         Set<Integer> keytest = map.keySet();
         Iterator<Integer> it1 = keytest.iterator();
         int passedNum = 0, unpassedNum = 0;
         String advice = new String();
+
         while (it1.hasNext()) {
             int id1 = it1.next();
+
+            knowlegeNameList = myKnowledgeFacadeLocal.find(id1).getName() + "," + knowlegeNameList;
+
             WrongRightNum wrongRightNum = map.get(id1);
-            int r = wrongRightNum.getRightNum(), w = wrongRightNum
-                    .getWrongNum();
+            int r = wrongRightNum.getRightNum(), w = wrongRightNum.getWrongNum();
+//            当正确率大于d的时候知识点算通过。
             double d = new ConfigUtil().getStudentRadio();
+
+            //保留小数点后两位
+            BigDecimal bg = new BigDecimal((w * 1.0) *100/ (r + w));
+            double passPer = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            zhengquelv = passPer + "," + zhengquelv;
             if (((r * 1.0) / (r + w)) > d) {
                 passedNum++;
             } else {

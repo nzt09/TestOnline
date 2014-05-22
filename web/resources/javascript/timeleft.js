@@ -3,9 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-var count = 120;
-function serverCurrTime() {
 
+function serverCurrTime() {
+    
+    var secondTime=document.getElementById("myForm:timeSecond").value;
+    var count = 120-secondTime;
+  
+    
     var str = "";
 
     if (count % 60 !== 0) {

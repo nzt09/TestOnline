@@ -10,91 +10,100 @@
     <body>
         <ui:composition template="./../../template.xhtml">
             <ui:define name="title">
-
-            </ui:define>
-            <ui:define name="body">
-                <rich:panel>
-                <body onload="serverCurrTime()">                   
-                    <div align="right">
+                <body onload="serverCurrTime()">   
+                    <div align="right">    
                         剩余时间：<h:outputLabel id="currTime"></h:outputLabel>     
                     </div>
-                    <div>
-                        姓名： #{loginController.name} 班级：#{loginController.className}
-                    </div>
+                    <h:form id="myForm">
+                        <h:inputHidden value="#{testAction.insertStarttime()}" ></h:inputHidden>
+                        <h:inputHidden value="#{testAction.require()}" id="timeSecond"></h:inputHidden>
+                        <rich:panel style="margin-left: 100px;margin-right: 100px">
+                            <h:panelGrid columns="2">
+                                <h:outputLabel value="姓名:"></h:outputLabel>
+                                <h:outputLabel value="#{loginController.name}"></h:outputLabel>
+                                <h:outputLabel value="班级："></h:outputLabel>
+                                <h:outputLabel value="#{loginController.className}"></h:outputLabel>   
+                            </h:panelGrid>
+                        </rich:panel>
+                    </h:form>
                 </body>
-                <h:form id="myform">
-                    <c:forEach var="questionTypeEntity" items="#{testAction.allQues}"><!--题型-->
-                        <c:if test="#{questionTypeEntity.key==8}">
-                            <h2>
-                                #{bundle.TrueorFalse}
-                            </h2>
-                        </c:if>
-                        <c:if test="#{questionTypeEntity.key==1}">
-                            <h2>
-                                #{bundle.SingleSelectType}
-                            </h2>
-                        </c:if>
-                        <c:if test="#{questionTypeEntity.key==2}">
-                            <h2>
-                                #{bundle.MultiSelectType}
-                            </h2>
-                        </c:if>
-                        <c:if test="#{questionTypeEntity.key==3}">
-                            <h2>
-                                #{bundle.SingleFill}
-                            </h2>
-                        </c:if>
-                        <c:if test="#{questionTypeEntity.key==6}">
-                            <h2>
-                                #{bundle.SimpeAnaswer}
-                            </h2>
-                        </c:if>
-                        <c:if test="#{questionTypeEntity.key==7}">
-                            <h2>
-                                #{bundle.MultiFill}
-                            </h2>
-                        </c:if>
-                        <c:forEach var="question" items="#{questionTypeEntity.value}" varStatus="statusBig"><!--每种题型的题目，可能有多道题目-->  
-                              <c:if test="#{questionTypeEntity.key==8}"><!--判断题-->  
-                                #{testAction.bianhao}#{question.content}&nbsp;( #{question.score}分)<br />
-                                <h:selectOneRadio  id="a#{question.id}">                                 
+            </ui:define>
+            <ui:define name="body">
+                <rich:panel style="margin-left: 100px;margin-right: 100px">
+
+                    <h:form id="myform">
+                        <c:forEach var="questionTypeEntity" items="#{testAction.allQues}"><!--题型-->
+                            <c:if test="#{questionTypeEntity.key==8}">
+                                <h2>
+                                    #{bundle.TrueorFalse}
+                                </h2>
+                            </c:if>
+                            <c:if test="#{questionTypeEntity.key==1}">
+                                <h2>
+                                    #{bundle.SingleSelectType}
+                                </h2>
+                            </c:if>
+                            <c:if test="#{questionTypeEntity.key==2}">
+                                <h2>
+                                    #{bundle.MultiSelectType}
+                                </h2>
+                            </c:if>
+                            <c:if test="#{questionTypeEntity.key==3}">
+                                <h2>
+                                    #{bundle.SingleFill}
+                                </h2>
+                            </c:if>
+                            <c:if test="#{questionTypeEntity.key==6}">
+                                <h2>
+                                    #{bundle.SimpeAnaswer}
+                                </h2>
+                            </c:if>
+                            <c:if test="#{questionTypeEntity.key==7}">
+                                <h2>
+                                    #{bundle.MultiFill}
+                                </h2>
+                            </c:if>
+                            <c:forEach var="question" items="#{questionTypeEntity.value}" varStatus="statusBig"><!--每种题型的题目，可能有多道题目-->  
+                                <c:if test="#{questionTypeEntity.key==8}">
+                                    #{testAction.bianhao}#{question.content}&nbsp;( #{question.score}分)<br />
+                                    <h:selectOneRadio  id="a#{question.id}">                                 
                                         <f:selectItem itemValue="A" itemLabel="对"/>  
-                                            <f:selectItem itemValue="B" itemLabel="错"/>      
-                                </h:selectOneRadio>
-                             </c:if>
-                            <c:if test="#{questionTypeEntity.key==1}"><!--单选题-->  
-                                #{testAction.bianhao}#{question.content}&nbsp;( #{question.score}分)<br />
-                                <h:selectOneRadio  id="a#{question.id}">
-                                    <c:forEach var="selectCandiate" items="#{testAction.list1}" varStatus="status" begin="#{status+statusBig.index*4}" end="#{(status+3)+statusBig.index*4}">
-                                        <f:selectItem itemValue="#{selectCandiate.value}" itemLabel="#{selectCandiate.key}"/>                        
-                                    </c:forEach>
-                                </h:selectOneRadio>
-                            </c:if>
-                            <c:if test="#{questionTypeEntity.key==2}"><!--多选题-->  
-                                #{testAction.bianhao} #{question.content}&nbsp;( #{question.score}分)<br />
-                                <h:selectManyCheckbox id="a#{question.id}" >
-                                    <c:forEach var="selectCandiate" items="#{testAction.list2}" varStatus="status" begin="#{status+statusBig.index*5}" end="#{(status+4)+statusBig.index*5}">
-                                        <f:selectItem itemValue="#{selectCandiate.value}" itemLabel="#{selectCandiate.key}"/>
-                                    </c:forEach>
-                                </h:selectManyCheckbox>
-                            </c:if>
-                            <c:if test="#{questionTypeEntity.key==3}"><!--单项填空题-->  
-                                <h:outputLabel escape="false" value=" #{testAction.bianhao}#{testAction.convertFill(question)}"/><br/>&nbsp;( #{question.score}分)<br />
-                            </c:if>
-                            <c:if test="#{questionTypeEntity.key==6}"><!--简答题-->  
-                                <h:outputLabel value="#{testAction.bianhao}#{question.content}"  /><br/>&nbsp;( #{question.score}分)<br />
-                                <h:inputTextarea rows="10" cols="150" id="a#{question.id}"
-                                                 /><br/>
-                            </c:if>
-                            <c:if test="#{questionTypeEntity.key==7}"><!--多项填空题-->  
-                                <h:outputText escape="false" value=" #{testAction.bianhao}#{testAction.convertFills(question)}"/>&nbsp;( #{question.score}分)<br />
-                            </c:if>
+                                        <f:selectItem itemValue="B" itemLabel="错"/>      
+                                    </h:selectOneRadio>
+                                </c:if>
+                                <c:if test="#{questionTypeEntity.key==1}">
+                                    #{testAction.bianhao}#{question.content}&nbsp;( #{question.score}分)<br />
+                                    <h:selectOneRadio  id="a#{question.id}">
+                                        <c:forEach var="selectCandiate" items="#{testAction.list1}" varStatus="status" begin="#{status+statusBig.index*4}" end="#{(status+3)+statusBig.index*4}">
+                                            <f:selectItem itemValue="#{selectCandiate.value}" itemLabel="#{selectCandiate.key}"/>                        
+                                        </c:forEach>
+                                    </h:selectOneRadio>
+                                </c:if>
+                                <c:if test="#{questionTypeEntity.key==2}">
+                                    #{testAction.bianhao} #{question.content}&nbsp;( #{question.score}分)<br />
+                                    <h:selectManyCheckbox id="a#{question.id}" >
+                                        <c:forEach var="selectCandiate" items="#{testAction.list2}" varStatus="status" begin="#{status+statusBig.index*5}" end="#{(status+4)+statusBig.index*5}">
+                                            <f:selectItem itemValue="#{selectCandiate.value}" itemLabel="#{selectCandiate.key}"/>
+                                        </c:forEach>
+                                    </h:selectManyCheckbox>
+                                </c:if>
+                                <c:if test="#{questionTypeEntity.key==3}">
+                                    <h:outputLabel escape="false" value=" #{testAction.bianhao}#{testAction.convertFill(question)}"/><br/>&nbsp;( #{question.score}分)<br />
+                                </c:if>
+                                <c:if test="#{questionTypeEntity.key==6}">
+                                    <h:outputLabel value="#{testAction.bianhao}#{question.content}"  /><br/>&nbsp;( #{question.score}分)<br />
+                                    <h:inputTextarea rows="10" cols="150" id="a#{question.id}"
+                                                     /><br/>
+                                </c:if>
+                                <c:if test="#{questionTypeEntity.key==7}">
+                                    <h:outputText escape="false" value=" #{testAction.bianhao}#{testAction.convertFills(question)}"/>&nbsp;( #{question.score}分)<br />
+                                </c:if>
+                            </c:forEach>
                         </c:forEach>
-                    </c:forEach>
-                    <h:commandButton onclick="" value="保存"
-                                     action="#{testAction.insert()}"></h:commandButton>
-                                     <h:commandButton value="返回" action="testlist.xhtml"/>                
-                </h:form>
+                        <h:commandButton onclick="" value="保存"
+                                         action="#{testAction.insert()}"></h:commandButton>
+                        <h:commandButton value="返回" action="testlist.xhtml"/>                
+                    </h:form>
                 </rich:panel>
             </ui:define>
         </ui:composition>
