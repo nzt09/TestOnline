@@ -46,7 +46,7 @@ public class TestassigninfomFacade extends AbstractFacade<Testassigninfom> imple
         }
         return tem;
     }
-
+    
     public List<Testassigninfom> findRange(int[] range, int departmentId) {
         List<Testassigninfom> tem = em.createNativeQuery("select * from Testassigninfom where classId in(select distinct(classId) from departclass where department=" + departmentId+")", Testassigninfom.class).getResultList();
         if (tem.isEmpty()) {
