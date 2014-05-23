@@ -477,22 +477,73 @@ public class GenerateAction implements java.io.Serializable {
             try {
                 try {
                     if (courseId > 0) {
-                        // 生成试卷
-                        // 从表testpaper中删除已经存在的试卷8
-//                                    // 利用遗传算法生成试卷
-//                                    // 找到这门程题目的分数类别
-                        String sql = "select distinct(questionsinfo.score)"
-                                + " from questionsinfo,knowledge,chapterinfo,Question2knowledge where "
-                                + "Question2knowledge.knowid=knowledge.id and Question2knowledge.QUESTIONID=QUESTIONSINFO.ID and knowledge.chapter=chapterinfo.id "
-                                + "and chapterinfo.course="
-                                + courseId;
+
+                        List<Testpaper> papers = testPaperFacade.findByCourseByStuid(courseId, studentFacade.findByStuno(loginCon.getUserId()).getId());
+                        String sql = null;
+                        String sql1 = null;
+                        String sql3 = null;
+                        if (papers == null || papers.size() < 5) {
+                            sql = "select distinct(questionsinfo.score)"
+                                    + " from questionsinfo,knowledge,chapterinfo,Question2knowledge where "
+                                    + "Question2knowledge.knowid=knowledge.id and Question2knowledge.QUESTIONID=QUESTIONSINFO.ID and knowledge.chapter=chapterinfo.id "
+                                    + "and chapterinfo.course="
+                                    + courseId;
+                            sql1 = "select distinct(questionsinfo.id) from questionsinfo,knowledge,chapterinfo,Question2knowledge where Question2knowledge.knowid=knowledge.id and knowledge.chapter=chapterinfo.id and Question2knowledge.QuestionId=Questionsinfo.id and chapterinfo.course="
+                                    + courseId
+                                    + " and score=";
+                            sql3 = "select  distinct(questionsinfo.id),questionsinfo.content,questionsinfo.score,questionsinfo.difficulty,selections,questionsinfo.questiontype,questionsinfo.answer,questionsinfo.averagetime,questionsinfo.code,questionsinfo.insequence,questionsinfo.count,questionsinfo.testcaseresult,questionsinfo.testcaseresult,questionsinfo.analysis from questionsinfo,knowledge,chapterinfo,Question2knowledge where Question2knowledge.knowid=knowledge.id and knowledge.chapter=chapterinfo.id and Question2knowledge.QuestionId=Questionsinfo.id and chapterinfo.course="
+                                    + courseId
+                                    + " and score=";
+                        } else {
+                            Testpaper totalpaper = new Testpaper();
+
+                            System.out.println(papers.get(0).getContent());
+                            String content = null;
+                            String wrongnum = null;
+                            if (papers.size() > 0) {
+                                for (int i = 0; i < papers.size(); i++) {
+                                    content = papers.get(i).getContent() + "," + content;
+                                    wrongnum = papers.get(i).getWrongnum() + wrongnum;
+
+                                    totalpaper.setContent(content);
+                                    totalpaper.setWrongnum(wrongnum);
+                                }
+                                stuCon.calculateRight(totalpaper);
+                            }
+
+                            Set<Integer> keytest = stuCon.getMap1().keySet();
+                            Iterator<Integer> it1 = keytest.iterator();
+                            TreeMap<Integer, Double> knowledgepass = new TreeMap<>();
+
+                            while (it1.hasNext()) {
+                                int id1 = it1.next();
+                                WrongRightNum wrongRightNum = stuCon.getMap1().get(id1);
+                                knowledgepass.put(id1, (double) wrongRightNum.getWrongNum() / (wrongRightNum.getRightNum() + wrongRightNum.getWrongNum()));
+                            }
+
+                            Set<Integer> keytest1 = knowledgepass.keySet();
+                            Iterator<Integer> it2 = keytest1.iterator();
+                            //默认设置获取错误知识点的前六个知识点
+                            int[] unPassNum=new int[8];
+                            for (int i = 0; i < 8; i++) {
+                                unPassNum[i] = it2.next();
+                                System.out.println("我估计大概是这样" + unPassNum[i]);
+                            }
+
+                            
+                            sql = "select distinct(questionsinfo.score)"
+                                    + " from questionsinfo,knowledge,chapterinfo,Question2knowledge where "
+                                    + "Question2knowledge.knowid=knowledge.id and Question2knowledge.QUESTIONID=QUESTIONSINFO.ID and knowledge.id in ("+unPassNum[0]+","+unPassNum[1]+","+unPassNum[2]+","+unPassNum[3]+","+unPassNum[4]+","+unPassNum[5]+","+unPassNum[6]+","+unPassNum[7]+")";
+                            sql1 = "select distinct(questionsinfo.id) from questionsinfo,knowledge,chapterinfo,Question2knowledge where Question2knowledge.knowid=knowledge.id  and Question2knowledge.QuestionId=Questionsinfo.id and knowledge.id in ("+unPassNum[0]+","+unPassNum[1]+","+unPassNum[2]+","+unPassNum[3]+","+unPassNum[4]+","+unPassNum[5]+","+unPassNum[6]+","+unPassNum[7]+")"
+                                    + " and score=";
+                            sql3 = "select  distinct(questionsinfo.id),questionsinfo.content,questionsinfo.score,questionsinfo.difficulty,selections,questionsinfo.questiontype,questionsinfo.answer,questionsinfo.averagetime,questionsinfo.code,questionsinfo.insequence,questionsinfo.count,questionsinfo.testcaseresult,questionsinfo.testcaseresult,questionsinfo.analysis from questionsinfo,knowledge,chapterinfo,Question2knowledge where Question2knowledge.knowid=knowledge.id  and Question2knowledge.QuestionId=Questionsinfo.id and knowledge.id in ("+unPassNum[0]+","+unPassNum[1]+","+unPassNum[2]+","+unPassNum[3]+","+unPassNum[4]+","+unPassNum[5]+","+unPassNum[6]+","+unPassNum[7]+")"
+                                    + " and score=";
+                        }
+
                         scoreType = questionFacade.executQuery(sql);
                         scoreTypeNum = new int[scoreType.size()];
                         for (int i = 0; i < scoreType.size(); i++) {
-                            String sql2 = "select distinct(questionsinfo.id) from questionsinfo,knowledge,chapterinfo,Question2knowledge where Question2knowledge.knowid=knowledge.id and knowledge.chapter=chapterinfo.id and Question2knowledge.QuestionId=Questionsinfo.id and chapterinfo.course="
-                                    + courseId
-                                    + " and score="
-                                    + scoreType.get(i);
+                            String sql2 = sql1 + scoreType.get(i);
                             scoreTypeNum[i] = (int) questionFacade.executQuery2(sql2);
                         }
 
@@ -513,48 +564,10 @@ public class GenerateAction implements java.io.Serializable {
                             }
                         }
                         questionScoreMap = new HashMap<Integer, List<Questionsinfo>>();// 里层list存放与分值对应的题目，如分值为5的题目、分值10的题目，所有这些，又存放在外层的map中
-                        List<Testpaper> papers = testPaperFacade.findByCourseByStuid(courseId, studentFacade.findByStuno(loginCon.getUserId()).getId());
-                        Testpaper totalpaper = new Testpaper();
 
-                        System.out.println(papers.get(0).getContent());
-                        String content = null;
-                        String wrongnum = null;
-                        if (papers.size() > 0) {
-                            for (int i = 0; i < papers.size(); i++) {
-                                content = papers.get(i).getContent() + "," + content;
-                                wrongnum = papers.get(i).getWrongnum() + wrongnum;
-
-                                totalpaper.setContent(content);
-                                totalpaper.setWrongnum(wrongnum);
-                            }
-                            stuCon.calculateRight(totalpaper);
-                        }
-                       
-                        Set<Integer> keytest = stuCon.getMap1().keySet();
-                        Iterator<Integer> it1 = keytest.iterator();
-                        TreeMap<Integer,Double> knowledgepass=new TreeMap<>();
-        
-                        while (it1.hasNext()) {
-                            int id1 = it1.next();
-                            WrongRightNum wrongRightNum = stuCon.getMap1().get(id1);
-                            knowledgepass.put(id1,(double)wrongRightNum.getWrongNum()/(wrongRightNum.getRightNum()+wrongRightNum.getWrongNum())); 
-                        }
-                      
-                       
-                       Set<Integer> keytest1= knowledgepass.keySet();
-                       Iterator<Integer> it2 = keytest1.iterator();
-                       while (it2.hasNext()){
-                           int id2 = it2.next();
-                           System.out.println("知识点的Id;"+id2+"hhh:"+knowledgepass.get(id2));
-                       }
-                       
-                       
                         for (int j = 0; j < scoreType.size(); j++) {
 
-                            String temsql = "select  distinct(questionsinfo.id),questionsinfo.content,questionsinfo.score,questionsinfo.difficulty,selections,questionsinfo.questiontype,questionsinfo.answer,questionsinfo.averagetime,questionsinfo.code,questionsinfo.insequence,questionsinfo.count,questionsinfo.testcaseresult,questionsinfo.testcaseresult,questionsinfo.analysis from questionsinfo,knowledge,chapterinfo,Question2knowledge where Question2knowledge.knowid=knowledge.id and knowledge.chapter=chapterinfo.id and Question2knowledge.QuestionId=Questionsinfo.id and chapterinfo.course="
-                                    + courseId
-                                    + " and score="
-                                    + scoreType.get(j);
+                            String temsql = sql3 + scoreType.get(j);
                             questionScoreMap.put(scoreType.get(j), questionFacade.findByCourseId(temsql));
                         }
 

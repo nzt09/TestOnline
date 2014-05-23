@@ -172,7 +172,7 @@ public class StudentinfoController implements Serializable {
             allTestpaper = testpaperFacadeLocal.findByCourseBystuid(courseId, classId);
             for (Testpaper t : allTestpaper) {
                 List<Courseinfo> cList = courseinfoFacadeLocal.findByCourseId(t.getCourseinfo().getId());
-                if (cList.get(0).getName().equals("Java程序设计")) {
+                if (cList.get(0).getName().equals(courseinfoFacadeLocal.find(courseId).getName())) {
                     templist.add(t);
                 }
             }

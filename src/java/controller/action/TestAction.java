@@ -52,6 +52,8 @@ import tools.Publicfields;
 public class TestAction implements java.io.Serializable {
 
     @EJB
+    private TestassigninfomFacadeLocal testinfomEjb;
+    @EJB
     private QuestionsinfoFacadeLocal questinfoEjb;
     @EJB
     private QuestiontypeinfoFacadeLocal qtEJB;
@@ -77,6 +79,7 @@ public class TestAction implements java.io.Serializable {
     private List<Testpaper> tp;// 试卷列表
     private Testpaper testPaper;// 考卷
     private int leftMinute1;
+    private int k = 0;
     private int questionNum = 0;
     List<Questiontypeinfo> listQuestionType;// 题目类型
     private List<Questionsinfo> questioninfo = new ArrayList<Questionsinfo>();// 考试题目
@@ -90,6 +93,8 @@ public class TestAction implements java.io.Serializable {
     private HashMap<Integer, String> testAnswer1 = new LinkedHashMap<Integer, String>();//储存除无序多项填空题的答案
     private HashMap<Integer, String> disorderAnswer = new LinkedHashMap<Integer, String>();//存储无序多项填空题的答案
     private HashMap<Integer, String> disorderTrue = new LinkedHashMap<Integer, String>();//存储无序多项填空题的正确答案
+    private HashMap<Integer, String> selectAnswer = new LinkedHashMap<Integer, String>();
+    private HashMap<Integer, String> selectSAnswer = new LinkedHashMap<Integer, String>();
     Set<String> setStr = new HashSet<>();
     Set<String> setStr1 = new HashSet<>();
     private String[] testPaperAnswer;
@@ -178,6 +183,16 @@ public class TestAction implements java.io.Serializable {
 
     private LinkedList list3;
 
+    public List getList() {
+        return list;
+    }
+
+    public void setList(List list) {
+        this.list = list;
+    }
+
+    List list = null;
+
     public HashMap<String, String> getList2() {
         return list2;
     }
@@ -223,6 +238,11 @@ public class TestAction implements java.io.Serializable {
         return null;
     }
 
+    public String fanhui() {
+        tempTestpaper = null;
+        return "exercise.xhtml?faces-redirect=true";
+    }
+
     public int getBianhao() {
         if (bianhao < biangao1) {
             bianhao++;
@@ -233,31 +253,32 @@ public class TestAction implements java.io.Serializable {
 
     }
 
-    @PostConstruct
-    public void initilize() {
+    public String initilize() {
+        allQues.clear();
+
         questionTypeCount = qtEJB.findAll().size();
         qutypeExsit = new int[questionTypeCount];
         list1 = new LinkedHashMap<>();
         list2 = new LinkedHashMap<>();
         list3 = new LinkedList();
         //获取题目id
-        if (questionId.size() == 0) {
-            Studentinfo stu = stuCon.getCurrent();
-            List<Testpaper> testPaperList = stu.getTestpaperList();
-            for (Testpaper test : testPaperList) {
-                if (test.getCourseinfo().getId() == testInfom.getCourseId()) {
-                    String[] questionIds = test.getContent().split(",");
-                    biangao1 = questionIds.length;
-                    List<Integer> ques = new ArrayList<Integer>();
-                    for (int i = 0; i < questionIds.length; i++) {
-                        ques.add(Integer.parseInt(questionIds[i]));
 
-                    }
-                    questionId = ques;
-                    break;
+        Studentinfo stu = stuCon.getCurrent();
+        List<Testpaper> testPaperList = stu.getTestpaperList();
+        for (Testpaper test : testPaperList) {
+            if (test.getCourseinfo().getId() == testInfom.getCourseId() && test.getTestassigninfom().getId() > 0) {
+                String[] questionIds = test.getContent().split(",");
+                biangao1 = questionIds.length;
+                List<Integer> ques = new ArrayList<Integer>();
+                for (int i = 0; i < questionIds.length; i++) {
+                    ques.add(Integer.parseInt(questionIds[i]));
+
                 }
+                questionId = ques;
+                break;
             }
         }
+
         //获取题目列表
         if (this.getQuestionId().size() > 0) {
             for (int i = 0; i < questionId.size(); i++) {
@@ -277,7 +298,6 @@ public class TestAction implements java.io.Serializable {
                         tem = allQues.get(Publicfields.TrueorFalse);
                     }
                     tem.add(qi);
-
                 }
                 //单项选择题
                 if (qi.getQuestiontypeinfo().getId() == Publicfields.SingleSelectType) {
@@ -291,7 +311,9 @@ public class TestAction implements java.io.Serializable {
                     tem.add(qi);
                     String[] s = qi.getSelections().split("#");
                     for (int j = 0; j < s.length; j++) {
-                        list1.put(selectionName[j] + ". " + s[j], selectionName[j]);
+                        k = k + 1;
+                        list1.put(selectionName[j] + k, selectionName[j] + ". " + s[j]);
+
                         System.out.println(list1.toString() + "++++++++++++++++++++++++++");
                     }
                 }
@@ -308,8 +330,9 @@ public class TestAction implements java.io.Serializable {
                     }
                     tem1.add(qi);
                     String[] s1 = qi.getSelections().split("#");
-                    for (int k = 0; k < s1.length; k++) {
-                        list2.put(selectionName[k] + ". " + s1[k], selectionName[k]);
+                    for (int p = 0; p < s1.length; p++) {
+                        k = k + 1;
+                        list2.put(selectionName[p] + k, selectionName[p] + ". " + s1[p]);
 
                     }
                 }
@@ -358,6 +381,7 @@ public class TestAction implements java.io.Serializable {
             questCount += entry.getValue().size();
         }
         testPaperAnswer = new String[questCount];
+        return "newTemplateClient?faces-redirect=true";
 
     }
 
@@ -424,7 +448,6 @@ public class TestAction implements java.io.Serializable {
         questionId = ques;
 
         //获取题目列表
-     
         if (this.getQuestionId().size() > 0) {
             for (int i = 0; i < questionId.size(); i++) {
                 Questionsinfo qi = questinfoEjb.find(questionId.get(i));
@@ -522,6 +545,7 @@ public class TestAction implements java.io.Serializable {
             questCount += entry.getValue().size();
         }
         testPaperAnswer = new String[questCount];
+
     }
 
     public List<Integer> getQuestionId() {
@@ -656,14 +680,14 @@ public class TestAction implements java.io.Serializable {
                 Questionsinfo qi = questinfoEjb.find(questionId.get(i));
                 //判断题
                 if (qi.getQuestiontypeinfo().getId() == Publicfields.TrueorFalse) {
-                    List<Questionsinfo> tem;
+                    List<Questionsinfo> tem3;
                     if (!allQues.containsKey(Publicfields.TrueorFalse)) {
-                        tem = new LinkedList<>();
-                        allQues.put(Publicfields.TrueorFalse, tem);
+                        tem3 = new LinkedList<>();
+                        allQues.put(Publicfields.TrueorFalse, tem3);
                     } else {
-                        tem = allQues.get(Publicfields.TrueorFalse);
+                        tem3 = allQues.get(Publicfields.TrueorFalse);
                     }
-                    tem.add(qi);
+                    tem3.add(qi);
                     testAnswer.put(qi.getId(), request.getParameter("myform:a" + qi.getId()));
                     testAnswer1.put(qi.getId(), request.getParameter("myform:a" + qi.getId()));
                 }
@@ -677,8 +701,14 @@ public class TestAction implements java.io.Serializable {
                         tem = allQues.get(Publicfields.SingleSelectType);
                     }
                     tem.add(qi);
-                    testAnswer.put(qi.getId(), request.getParameter("myform:a" + qi.getId()));
-                    testAnswer1.put(qi.getId(), request.getParameter("myform:a" + qi.getId()));
+                    String s1 = null;
+                    String s = request.getParameter("myform:a" + qi.getId());
+                    if (s != null) {
+                        s = s.replaceAll("[0-9]", "");
+                    }
+                    System.out.println(s + "11111111111111111111111111");
+                    testAnswer.put(qi.getId(), s);
+                    testAnswer1.put(qi.getId(), s);
                 }
                 //多项选择题
                 if (qi.getQuestiontypeinfo().getId() == Publicfields.MultiSelectType) {
@@ -686,7 +716,6 @@ public class TestAction implements java.io.Serializable {
                     if (!allQues.containsKey(Publicfields.MultiSelectType)) {
                         tem1 = new LinkedList<>();
                         allQues.put(Publicfields.MultiSelectType, tem1);
-
                     } else {
                         tem1 = allQues.get(Publicfields.MultiSelectType);
                     }
@@ -704,12 +733,10 @@ public class TestAction implements java.io.Serializable {
                         }
                     }
                     for (int l = 0; l < k; l++) {
-                        if (l != k - 1) {
-                            multivalue = multivalue + value[l] + "#";
-                        } else {
-                            multivalue = multivalue + value[l];
-                        }
-
+                        multivalue = multivalue + value[l];
+                    }
+                    if (multivalue != null) {
+                        multivalue = multivalue.replaceAll("[0-9]", "");
                     }
                     testAnswer.put(qi.getId(), multivalue);
                     testAnswer1.put(qi.getId(), multivalue);
@@ -758,6 +785,7 @@ public class TestAction implements java.io.Serializable {
                         testAnswer1.put(qi.getId(), temAnswer);
                     } else {
                         disorderAnswer.put(qi.getId(), temAnswer);
+                        System.out.println(disorderAnswer.toString() + "===============");
                         disorderTrue.put(qi.getId(), qi.getAnswer());
                     }
                     testAnswer.put(qi.getId(), temAnswer);
@@ -781,12 +809,21 @@ public class TestAction implements java.io.Serializable {
         }
         String answers = "";//学生的答案
         String answer = "";//正确答案
+        String danswers = "";
         Set set = testAnswer1.entrySet();
         Iterator it = set.iterator();
         while (it.hasNext()) {
             Map.Entry me = (Map.Entry) it.next();
             answers = answers + me.getKey() + "-" + me.getValue() + "#@!";
+            danswers = answers + me.getKey() + "-" + me.getValue() + "#@!";
         }
+        Set set2 = disorderAnswer.entrySet();
+        Iterator it2 = set2.iterator();
+        while (it2.hasNext()) {
+            Map.Entry me = (Map.Entry) it2.next();
+            danswers = danswers + me.getKey() + "-" + me.getValue() + "#@!";
+        }
+        System.out.println(danswers + "------------------------------------------------");
         Set set1 = trueAnswer.entrySet();
         Iterator it1 = set1.iterator();
         while (it1.hasNext()) {
@@ -839,7 +876,7 @@ public class TestAction implements java.io.Serializable {
             Iterator itor = setStr.iterator();
             Iterator itor1 = setStr1.iterator();
             while (itor.hasNext()) {
-                if (setStr1.contains(itor.next())) {
+                if (setStr1.contains(itor.next().toString())) {
                     l++;
                     System.out.println(l + "-------");
                 }
@@ -847,8 +884,10 @@ public class TestAction implements java.io.Serializable {
             }
             if (l != s2.length) {
                 wrong = wrong + obj1[y] + ",";
+
             } else {
                 right = right + obj1[y] + ",";
+
             }
 
             Questionsinfo rqi = questinfoEjb.find(obj1[y]);
@@ -861,13 +900,15 @@ public class TestAction implements java.io.Serializable {
         }
 
         Studentinfo stu = stuCon.getCurrent();
+
         List<Testpaper> testPaperList = stu.getTestpaperList();
         for (Testpaper test : testPaperList) {
             if (test.getCourseinfo().getId() == testInfom.getCourseId()) {
                 System.out.println(test.getId());
-                test.setAnswer(answers);
+                test.setAnswer(danswers);
                 test.setWrongnum(wrong);
                 int r = (int) score;
+                r = r + 20;
                 if ((score - (int) score) >= 0.5) {
                     r++;
                 }
@@ -875,5 +916,247 @@ public class TestAction implements java.io.Serializable {
                 testpaperEJB.edit(test);
             }
         }
+
+        tempTestpaper = null;
+    }
+
+    public void insertTem() {
+        allQues.clear();
+        bianhao = 0;
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        //获取题目列表
+        if (this.getQuestionId().size() > 0) {
+            for (int i = 0; i < questionId.size(); i++) {
+                Questionsinfo qi = questinfoEjb.find(questionId.get(i));
+                //判断题
+                if (qi.getQuestiontypeinfo().getId() == Publicfields.TrueorFalse) {
+                    List<Questionsinfo> tem3;
+                    if (!allQues.containsKey(Publicfields.TrueorFalse)) {
+                        tem3 = new LinkedList<>();
+                        allQues.put(Publicfields.TrueorFalse, tem3);
+                    } else {
+                        tem3 = allQues.get(Publicfields.TrueorFalse);
+                    }
+                    tem3.add(qi);
+                    testAnswer.put(qi.getId(), request.getParameter("myform:a" + qi.getId()));
+                    testAnswer1.put(qi.getId(), request.getParameter("myform:a" + qi.getId()));
+                }
+                //单项选择题
+                if (qi.getQuestiontypeinfo().getId() == Publicfields.SingleSelectType) {
+                    List<Questionsinfo> tem;
+                    if (!allQues.containsKey(Publicfields.SingleSelectType)) {
+                        tem = new LinkedList<>();
+                        allQues.put(Publicfields.SingleSelectType, tem);
+                    } else {
+                        tem = allQues.get(Publicfields.SingleSelectType);
+                    }
+                    tem.add(qi);
+                    String s1 = null;
+                    String s = request.getParameter("myform:a" + qi.getId());
+                    if (s != null) {
+                        s = s.replaceAll("[0-9]", "");
+                    }
+                    System.out.println(s + "11111111111111111111111111");
+                    testAnswer.put(qi.getId(), s);
+                    testAnswer1.put(qi.getId(), s);
+                }
+                //多项选择题
+                if (qi.getQuestiontypeinfo().getId() == Publicfields.MultiSelectType) {
+                    List<Questionsinfo> tem1;
+                    if (!allQues.containsKey(Publicfields.MultiSelectType)) {
+                        tem1 = new LinkedList<>();
+                        allQues.put(Publicfields.MultiSelectType, tem1);
+                    } else {
+                        tem1 = allQues.get(Publicfields.MultiSelectType);
+                    }
+                    tem1.add(qi);
+                    int k = 0;
+                    String multivalue = "";
+                    String[] value = new String[5];
+                    String[] values = request.getParameterValues("myform:a" + qi.getId());
+                    if (values != null) {
+                        for (int j = 0; j < values.length; j++) {
+                            if (values[j] != null) {
+                                value[k] = values[j];
+                                k++;
+                            }
+                        }
+                    }
+                    for (int l = 0; l < k; l++) {
+                        multivalue = multivalue + value[l];
+                    }
+                    if (multivalue != null) {
+                        multivalue = multivalue.replaceAll("[0-9]", "");
+                    }
+                    testAnswer.put(qi.getId(), multivalue);
+                    testAnswer1.put(qi.getId(), multivalue);
+                }
+                //单项填空题
+                if (qi.getQuestiontypeinfo().getId() == Publicfields.SingleFill) {
+                    List<Questionsinfo> tem1;
+                    if (!allQues.containsKey(Publicfields.SingleFill)) {
+                        tem1 = new LinkedList<>();
+                        allQues.put(Publicfields.SingleFill, tem1);
+
+                    } else {
+                        tem1 = allQues.get(Publicfields.SingleFill);
+                    }
+                    tem1.add(qi);
+                    testAnswer.put(qi.getId(), request.getParameter("fill_0_" + qi.getId()));
+                    testAnswer1.put(qi.getId(), request.getParameter("fill_0_" + qi.getId()));
+                }
+                //多项填空题
+                if (qi.getQuestiontypeinfo().getId() == Publicfields.MultiFill) {
+                    List<Questionsinfo> tem;
+                    if (!allQues.containsKey(Publicfields.MultiFill)) {
+                        tem = new LinkedList<>();
+                        allQues.put(Publicfields.MultiFill, tem);
+                    } else {
+                        tem = allQues.get(Publicfields.MultiFill);
+                    }
+                    tem.add(qi);
+                    int k = 0;
+                    String temAnswer = "";
+                    String[] fill = qi.getAnswer().split("#");
+                    for (int t = 0; t < fill.length; t++) {
+                        if (fill[t] != null) {
+                            k++;
+                        }
+                    }
+                    for (int j = 0; j < k; j++) {
+                        if (j != k - 1) {
+                            temAnswer = temAnswer + request.getParameter("fill_" + j + "_" + qi.getId()) + "#";
+                        } else {
+                            temAnswer = temAnswer + request.getParameter("fill_" + j + "_" + qi.getId()) + "#2";
+                        }
+                    }
+                    if (qi.getInsequence() == 1) {
+                        trueAnswer.put(qi.getId(), qi.getAnswer() + "#2");
+                        testAnswer1.put(qi.getId(), temAnswer);
+                    } else {
+                        disorderAnswer.put(qi.getId(), temAnswer);
+                        System.out.println(disorderAnswer.toString() + "===============");
+                        disorderTrue.put(qi.getId(), qi.getAnswer());
+                    }
+                    testAnswer.put(qi.getId(), temAnswer);
+                    System.out.println(testAnswer);
+                }
+                //简答题
+                if (qi.getQuestiontypeinfo().getId() == Publicfields.ProgrammingProblem) {
+                    List<Questionsinfo> tem;
+                    if (!allQues.containsKey(Publicfields.ProgrammingProblem)) {
+                        tem = new LinkedList<>();
+                        allQues.put(Publicfields.ProgrammingProblem, tem);
+                    } else {
+                        tem = allQues.get(Publicfields.ProgrammingProblem);
+                    }
+                    tem.add(qi);
+                    testAnswer.put(qi.getId(), request.getParameter("myform:a" + qi.getId()));
+                    testAnswer1.put(qi.getId(), request.getParameter("myform:a" + qi.getId()));
+                    System.out.println(testAnswer.values());
+                }
+            }
+        }
+        String answers = "";//学生的答案
+        String answer = "";//正确答案
+        String danswers = "";
+        Set set = testAnswer1.entrySet();
+        Iterator it = set.iterator();
+        while (it.hasNext()) {
+            Map.Entry me = (Map.Entry) it.next();
+            answers = answers + me.getKey() + "-" + me.getValue() + "#@!";
+            danswers = answers + me.getKey() + "-" + me.getValue() + "#@!";
+        }
+        Set set2 = disorderAnswer.entrySet();
+        Iterator it2 = set2.iterator();
+        while (it2.hasNext()) {
+            Map.Entry me = (Map.Entry) it2.next();
+            danswers = danswers + me.getKey() + "-" + me.getValue() + "#@!";
+        }
+        System.out.println(danswers + "------------------------------------------------");
+        Set set1 = trueAnswer.entrySet();
+        Iterator it1 = set1.iterator();
+        while (it1.hasNext()) {
+            Map.Entry me = (Map.Entry) it1.next();
+            answer = answer + me.getKey() + "-" + me.getValue() + "#@!";
+        }
+        System.out.println(answer);
+        System.out.println(answers);
+        String[] list = answer.split("#@!");
+
+        for (int i = 0; i < list.length; i++) {
+            System.out.println(list[i]);
+        }
+        System.out.println("list=" + list.length);
+        String[] list1 = answers.split("#@!");
+        for (int i = 0; i < list.length; i++) {
+            System.out.println(list[i] + "==========================");
+        }
+        for (int i = 0; i < list1.length; i++) {
+            System.out.println(list1[i] + "==========================");
+        }
+        System.out.println(list.length);
+        String wrong = "";
+        String right = "";
+        double score = 0;//存放成绩
+        Object[] obj = trueAnswer.keySet().toArray();
+        //除无序多项填空题的客观题答案的比对
+        for (int k = 0; k < list1.length; k++) {
+            if (!list[k].equals(list1[k])) {
+                falseId.add(k);
+                wrong = wrong + obj[k] + ",";
+            } else {
+                right = right + obj[k] + ",";
+                Questionsinfo rqi = questinfoEjb.find(obj[k]);
+                score += rqi.getScore();
+                System.out.println(score);
+            }
+        }
+        //无序多项填空题的答案对比
+        int l = 0;
+        Object[] obj1 = disorderAnswer.keySet().toArray();
+        for (int y = 0; y < obj1.length; y++) {
+            l = 0;
+            String[] s1 = disorderAnswer.get(obj1[y]).split("#");
+            String[] s2 = disorderTrue.get(obj1[y]).split("#");
+            for (int q = 0; q < s2.length; q++) {
+                setStr.add(s1[q]);
+                setStr1.add(s2[q]);
+            }
+            Iterator itor = setStr.iterator();
+            Iterator itor1 = setStr1.iterator();
+            while (itor.hasNext()) {
+                if (setStr1.contains(itor.next().toString())) {
+                    l++;
+                    System.out.println(l + "-------");
+                }
+
+            }
+            if (l != s2.length) {
+                wrong = wrong + obj1[y] + ",";
+
+            } else {
+                right = right + obj1[y] + ",";
+
+            }
+
+            Questionsinfo rqi = questinfoEjb.find(obj1[y]);
+            score = score + (float) l / s2.length * rqi.getScore();
+            System.out.println(((float) l / s2.length) * rqi.getScore());
+            System.out.println(rqi.getScore());
+            System.out.println(rqi.getId());
+            System.out.println(l);
+
+        }
+
+        tempTestpaper.setAnswer(danswers);
+        tempTestpaper.setWrongnum(wrong);
+        int r = (int) score;
+        r = r + 20;
+        if ((score - (int) score) >= 0.5) {
+            r++;
+        }
+        tempTestpaper.setScore(r);
+        testpaperEJB.edit(tempTestpaper);
     }
 }

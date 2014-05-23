@@ -15,8 +15,8 @@
                         剩余时间：<h:outputLabel id="currTime"></h:outputLabel>     
                     </div>
                     <h:form id="myForm">
+                        <h:inputHidden value="#{testAction.insertStarttime()}" ></h:inputHidden>
                         <h:inputHidden value="#{testAction.require()}" id="timeSecond"></h:inputHidden>
-                        <h:inputHidden value="#{testAction.insertStarttime()}"></h:inputHidden>
                         <rich:panel style="margin-left: 100px;margin-right: 100px">
                             <h:panelGrid columns="2">
                                 <h:outputLabel value="姓名:"></h:outputLabel>
@@ -75,7 +75,7 @@
                                     #{testAction.bianhao}#{question.content}&nbsp;( #{question.score}分)<br />
                                     <h:selectOneRadio  id="a#{question.id}">
                                         <c:forEach var="selectCandiate" items="#{testAction.list1}" varStatus="status" begin="#{status+statusBig.index*4}" end="#{(status+3)+statusBig.index*4}">
-                                            <f:selectItem itemValue="#{selectCandiate.value}" itemLabel="#{selectCandiate.key}"/>                        
+                                            <f:selectItem itemValue="#{selectCandiate.key}" itemLabel="#{selectCandiate.value}"/>                        
                                         </c:forEach>
                                     </h:selectOneRadio>
                                 </c:if>
@@ -83,7 +83,7 @@
                                     #{testAction.bianhao} #{question.content}&nbsp;( #{question.score}分)<br />
                                     <h:selectManyCheckbox id="a#{question.id}" >
                                         <c:forEach var="selectCandiate" items="#{testAction.list2}" varStatus="status" begin="#{status+statusBig.index*5}" end="#{(status+4)+statusBig.index*5}">
-                                            <f:selectItem itemValue="#{selectCandiate.value}" itemLabel="#{selectCandiate.key}"/>
+                                            <f:selectItem itemValue="#{selectCandiate.key}" itemLabel="#{selectCandiate.value}"/>
                                         </c:forEach>
                                     </h:selectManyCheckbox>
                                 </c:if>

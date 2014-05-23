@@ -1,26 +1,38 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:rich="http://richfaces.org/rich">
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
 
         <ui:composition template="./../../stylemodel.xhtml">
-
-            <ui:define name="top">
-                top
-            </ui:define>
-
-            <ui:define name="left">
-                left
-            </ui:define>
-
             <ui:define name="content">
                 <h:form>
                     <rich:panel>
-                        
+                        <rich:dataTable value="#{testpaperController.requirePersonPaper()}" var="paper" iterationStatusVar="it">
+                            <rich:column style="width: 60px;column-width: 60px">
+                                <f:facet name="header" >#</f:facet>
+                                    #{it.index}
+                            </rich:column>
+                            <rich:column >
+                                <f:facet name="header" >练习开始时间</f:facet>
+                                <h:outputText value="#{paper.starttime}">
+                                    <f:convertDateTime pattern="yyyy年MM月dd日 HH:mm:ss" timeZone="GMT+8"/>
+                                </h:outputText>
+
+                            </rich:column>
+                            <rich:column >
+                                <f:facet name="header" >课程名称</f:facet>
+                                    #{paper.courseinfo.name}
+                            </rich:column>
+                            <rich:column >
+                                <f:facet name="header" >练习分数</f:facet>
+                                    #{paper.score}
+                            </rich:column>
+                        </rich:dataTable>
                     </rich:panel>
                 </h:form>
             </ui:define>

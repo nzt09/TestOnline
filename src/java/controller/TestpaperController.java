@@ -1,11 +1,13 @@
 package controller;
 
+import controller.action.LoginController;
 import entities.Testpaper;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
 import sessionBean.TestpaperFacadeLocal;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
@@ -19,6 +21,8 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
+import sessionBean.StudentinfoFacade;
+import sessionBean.StudentinfoFacadeLocal;
 
 @Named("testpaperController")
 @SessionScoped
@@ -30,6 +34,10 @@ public class TestpaperController implements Serializable {
     private sessionBean.TestpaperFacadeLocal ejbFacade;
     @Inject
     private StudentinfoController stuCon;
+    @EJB
+    private StudentinfoFacadeLocal studentFacade;
+    @Inject
+    private LoginController loginCon;
     private PaginationHelper pagination;
     private int selectedItemIndex;
     //把某个班级对应学生的试卷取出
@@ -43,8 +51,14 @@ public class TestpaperController implements Serializable {
         }
     }
     
-    
-    
+    //把单个学生的练习卷取出
+    public List<Testpaper> requirePersonPaper(){
+        return this.getFacade().findByStuId(studentFacade.findByStuno(loginCon.getUserId()).getId());
+    }
+    //把学生正式考试的试卷取出
+    public List<Testpaper> requireGradePaper(){
+        return this.getFacade().findByStuIdFormal(studentFacade.findByStuno(loginCon.getUserId()).getId());
+    }
 
     public TestpaperController() {
     }
