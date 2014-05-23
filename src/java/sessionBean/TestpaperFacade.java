@@ -38,11 +38,18 @@ public class TestpaperFacade extends AbstractFacade<Testpaper> implements Testpa
             return tem;
         }
     }
+    
+    public List<Testpaper> findByStuIdFormal(int stuId) {
+        List<Testpaper> tem = em.createNativeQuery("select * from testpaper where stuid=" + stuId + " and testassignid is not null", Testpaper.class).getResultList();
+        if (tem == null || tem.isEmpty()) {
+            return null;
+        } else {
+            return tem;
+        }
+    }
 
     public List<Testpaper> findByCourseBystuid(int courseId, int classId) {
-        List<Testpaper> tem = em.createNativeQuery("select * from testpaper where course=" + courseId + " and stuid in(select id from studentinfo where classid=" + classId + ") order by score ", Testpaper.class).getResultList();
-        System.out.println("select * from testpaper where course=" + courseId + "and stuid in(select id from studentinfo where classid=" + classId + ")");
-        System.out.println(tem.size());
+        List<Testpaper> tem = em.createNativeQuery("select * from testpaper where course=" + courseId + " and stuid in(select id from studentinfo where classid=" + classId + ") and testassignid is not null order by score ", Testpaper.class).getResultList();
         if (tem == null || tem.isEmpty()) {
             return null;
         } else {
@@ -52,6 +59,26 @@ public class TestpaperFacade extends AbstractFacade<Testpaper> implements Testpa
 
     public List<Testpaper> findByTestAssignId(int testAssignid) {
         List<Testpaper> tem = em.createNativeQuery("select * from testpaper where testassignid=" + testAssignid, Testpaper.class).getResultList();
+        if (tem == null || tem.isEmpty()) {
+            return null;
+        } else {
+            return tem;
+        }
+    }
+    
+    public List<Testpaper> findByCourseByClassID(int courseId, int classId) {
+        List<Testpaper> tem = em.createNativeQuery("select * from testpaper where course=" + courseId + " and stuid in(select id from studentinfo where classid=" + classId + ")and testassignid is not null order by score  ", Testpaper.class).getResultList();
+        System.out.println("select * from testpaper where course=" + courseId + "and stuid in(select id from studentinfo where classid=" + classId + ")");
+        System.out.println(tem.size());
+        if (tem == null || tem.isEmpty()) {
+            return null;
+        } else {
+            return tem;
+        }
+    }
+    
+    public List<Testpaper> findByCourseByStuid(int courseId, int stuId) {
+        List<Testpaper> tem = em.createNativeQuery("select * from testpaper where course=" + courseId + " and stuid =" + stuId + " and testassignid is null order by score  ", Testpaper.class).getResultList();
         if (tem == null || tem.isEmpty()) {
             return null;
         } else {
