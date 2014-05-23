@@ -11,6 +11,7 @@ import GA.Population.FactoryPopulationInitiation;
 import GA.Population.Individuals.Function.F1;
 import GA.Population.Individuals.Function.F2;
 import GA.RandomGenerator;
+import controller.StudentinfoController;
 import entities.Classinfo;
 import entities.Courseinfo;
 import entities.Department;
@@ -20,16 +21,24 @@ import entities.School;
 import entities.Studentinfo;
 import entities.Testassigninfom;
 import entities.Testpaper;
+import entities.WrongRightNum;
+import java.util.AbstractList;
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.Vector;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import sessionBean.QuestionsinfoFacadeLocal;
 import sessionBean.SchoolFacadeLocal;
@@ -56,6 +65,12 @@ public class GenerateAction implements java.io.Serializable {
     private StudentinfoFacadeLocal studentFacade;
     @EJB
     private QuestionsinfoFacadeLocal questionFacade;
+    @Inject
+    private LoginController loginCon;
+    @Inject
+    private TestAction testAct;
+    @Inject
+    private StudentinfoController stuCon;
     // 学校id
     private int schoolId;
     // 院系id
@@ -103,8 +118,6 @@ public class GenerateAction implements java.io.Serializable {
         synchronized (this) {// 由于进化计算中ControlParameters中参数是public
             // static,所以不能异步进行
             try {
-                FacesContext fc = FacesContext.getCurrentInstance();
-                Map requestMap = fc.getExternalContext().getRequestParameterMap();
                 if (classId > 0 && courseId > 0) {
                     try {
                         testAssigninfo = testAssignFacade.findCourseClass(courseId, classId).get(0);
@@ -116,7 +129,7 @@ public class GenerateAction implements java.io.Serializable {
                                 // requestMap.get("optype");
                                 String type = "1";
                                 Testassigninfom test = testAssignFacade.find(testassignid);
-                                
+
                                 // 如果该场考试安排中有其它notice及noticeScore不为0的话，则要同时读取averageTime出来，以便于在生成试卷时，只生成100-noticeScore和interval-averageTime的试卷
                                 int noticeScroe = (null == test.getNoticescore() ? 0 : test.getNoticescore());
                                 scoreSum = scoreSum - noticeScroe;
@@ -125,7 +138,7 @@ public class GenerateAction implements java.io.Serializable {
                                     // 修改考试安排
                                 } else if (type.equals("1")) {// 生成试卷
                                     // 从表testpaper中删除已经存在的试卷8
-                                    List<Testpaper> tem=testPaperFacade.findByCourseBystuid(test.getCourseinfo().getId(), test.getClassinfo().getId());
+                                    List<Testpaper> tem = testPaperFacade.findByCourseBystuid(test.getCourseinfo().getId(), test.getClassinfo().getId());
                                     System.out.println("第一步");
                                     if (tem != null) {
                                         for (int i = 0; i < tem.size(); i++) {
@@ -147,9 +160,9 @@ public class GenerateAction implements java.io.Serializable {
                                                 + test.getCourseinfo().getId()
                                                 + " and score="
                                                 + scoreType.get(i);
-                                        scoreTypeNum[i] = (int)questionFacade.executQuery2(sql2);
+                                        scoreTypeNum[i] = (int) questionFacade.executQuery2(sql2);
                                     }
-                                    
+
                                     F1.scoreType = scoreType;
                                     F1.sumScore = scoreSum;
                                     System.out.println("youmuyoudaozheli");
@@ -187,7 +200,7 @@ public class GenerateAction implements java.io.Serializable {
                                     // 这一行对应于第二次优化时的基因编码长度
                                     // maxNumScore: |83
                                     // 首先把所有该课程的试题按分值不同拿来
-                                    
+
                                     questionScoreMap = new HashMap<Integer, List<Questionsinfo>>();// 里层list存放与分值对应的题目，如分值为5的题目、分值10的题目，所有这些，又存放在外层的map中
                                     for (int j = 0; j < scoreType.size(); j++) {
                                         String temsql = "select  distinct(questionsinfo.id),questionsinfo.content,questionsinfo.score,questionsinfo.difficulty,selections,questionsinfo.questiontype,questionsinfo.answer,questionsinfo.averagetime,questionsinfo.code,questionsinfo.insequence,questionsinfo.count,questionsinfo.testcaseresult,questionsinfo.testcaseresult,questionsinfo.analysis from questionsinfo,knowledge,chapterinfo,Question2knowledge where Question2knowledge.knowid=knowledge.id and knowledge.chapter=chapterinfo.id and Question2knowledge.QuestionId=Questionsinfo.id and chapterinfo.course="
@@ -197,11 +210,11 @@ public class GenerateAction implements java.io.Serializable {
                                         questionScoreMap.put(scoreType.get(j), questionFacade.findByCourseId(temsql));
                                     }
                                     F2.questionScoreMap = questionScoreMap;
-                                    
+
                                     System.out.println("现在有没有到这个地方");
                                     // 需要注意的是questionScoreMap中的排序不一定是按5，10，15，20顺序排列的
                                     List<Studentinfo> students = studentFacade.findByClassId(test.getClassinfo().getId());
-                                    
+
                                     Iterator it = students.iterator();
                                     F2.paperDiffulty = test.getTestdifficulty();// 试题难度
                                     F2.testInterval = test.getTestinterval()
@@ -454,6 +467,163 @@ public class GenerateAction implements java.io.Serializable {
             }
             break;
         }
+    }
+
+    //生成单人试卷,模拟考试
+    public String doOnePaper() {
+        testAct.setTempTestpaper(null);
+        synchronized (this) {// 由于进化计算中ControlParameters中参数是public
+            // static,所以不能异步进行
+            try {
+                try {
+                    if (courseId > 0) {
+                        // 生成试卷
+                        // 从表testpaper中删除已经存在的试卷8
+//                                    // 利用遗传算法生成试卷
+//                                    // 找到这门程题目的分数类别
+                        String sql = "select distinct(questionsinfo.score)"
+                                + " from questionsinfo,knowledge,chapterinfo,Question2knowledge where "
+                                + "Question2knowledge.knowid=knowledge.id and Question2knowledge.QUESTIONID=QUESTIONSINFO.ID and knowledge.chapter=chapterinfo.id "
+                                + "and chapterinfo.course="
+                                + courseId;
+                        scoreType = questionFacade.executQuery(sql);
+                        scoreTypeNum = new int[scoreType.size()];
+                        for (int i = 0; i < scoreType.size(); i++) {
+                            String sql2 = "select distinct(questionsinfo.id) from questionsinfo,knowledge,chapterinfo,Question2knowledge where Question2knowledge.knowid=knowledge.id and knowledge.chapter=chapterinfo.id and Question2knowledge.QuestionId=Questionsinfo.id and chapterinfo.course="
+                                    + courseId
+                                    + " and score="
+                                    + scoreType.get(i);
+                            scoreTypeNum[i] = (int) questionFacade.executQuery2(sql2);
+                        }
+
+                        F1.scoreType = scoreType;
+                        F1.sumScore = scoreSum;
+                        if (scoreType.isEmpty()) {
+                        } else {
+                            for (int i = 0; i < 10; i++) {// 至少生成10种方案
+                                try {
+                                    setNumofQuestionType(
+                                            ControlParameters.F1,
+                                            scoreType.size());
+                                } catch (CloneNotSupportedException e) {
+                                    // TODO Auto-generated catch
+                                    // block
+                                    e.printStackTrace();
+                                }// 基因编码是各分值类型题目的个数
+                            }
+                        }
+                        questionScoreMap = new HashMap<Integer, List<Questionsinfo>>();// 里层list存放与分值对应的题目，如分值为5的题目、分值10的题目，所有这些，又存放在外层的map中
+                        List<Testpaper> papers = testPaperFacade.findByCourseByStuid(courseId, studentFacade.findByStuno(loginCon.getUserId()).getId());
+                        Testpaper totalpaper = new Testpaper();
+
+                        System.out.println(papers.get(0).getContent());
+                        String content = null;
+                        String wrongnum = null;
+                        if (papers.size() > 0) {
+                            for (int i = 0; i < papers.size(); i++) {
+                                content = papers.get(i).getContent() + "," + content;
+                                wrongnum = papers.get(i).getWrongnum() + wrongnum;
+
+                                totalpaper.setContent(content);
+                                totalpaper.setWrongnum(wrongnum);
+                            }
+                            stuCon.calculateRight(totalpaper);
+                        }
+                       
+                        Set<Integer> keytest = stuCon.getMap1().keySet();
+                        Iterator<Integer> it1 = keytest.iterator();
+                        TreeMap<Integer,Double> knowledgepass=new TreeMap<>();
+        
+                        while (it1.hasNext()) {
+                            int id1 = it1.next();
+                            WrongRightNum wrongRightNum = stuCon.getMap1().get(id1);
+                            knowledgepass.put(id1,(double)wrongRightNum.getWrongNum()/(wrongRightNum.getRightNum()+wrongRightNum.getWrongNum())); 
+                        }
+                      
+                       
+                       Set<Integer> keytest1= knowledgepass.keySet();
+                       Iterator<Integer> it2 = keytest1.iterator();
+                       while (it2.hasNext()){
+                           int id2 = it2.next();
+                           System.out.println("知识点的Id;"+id2+"hhh:"+knowledgepass.get(id2));
+                       }
+                       
+                       
+                        for (int j = 0; j < scoreType.size(); j++) {
+
+                            String temsql = "select  distinct(questionsinfo.id),questionsinfo.content,questionsinfo.score,questionsinfo.difficulty,selections,questionsinfo.questiontype,questionsinfo.answer,questionsinfo.averagetime,questionsinfo.code,questionsinfo.insequence,questionsinfo.count,questionsinfo.testcaseresult,questionsinfo.testcaseresult,questionsinfo.analysis from questionsinfo,knowledge,chapterinfo,Question2knowledge where Question2knowledge.knowid=knowledge.id and knowledge.chapter=chapterinfo.id and Question2knowledge.QuestionId=Questionsinfo.id and chapterinfo.course="
+                                    + courseId
+                                    + " and score="
+                                    + scoreType.get(j);
+                            questionScoreMap.put(scoreType.get(j), questionFacade.findByCourseId(temsql));
+                        }
+
+                        F2.questionScoreMap = questionScoreMap;
+
+                        // 需要注意的是questionScoreMap中的排序不一定是按5，10，15，20顺序排列的
+                        //获取考试难度
+                        F2.paperDiffulty = 0.1;// 试题难度
+                        F2.testInterval = 100;// 考试时长
+                        // 生成每个同学的试卷
+                        try {
+                            Studentinfo student = studentFacade.findByStuno(loginCon.getUserId());
+                            boolean need2Repeat = true;// 再次用来检查是否有重复题目，这是一个权宜之计，因为在F2中就应该杜绝这种重复现象了
+                            while (need2Repeat) {
+                                selectedPlan = RandomGenerator
+                                        .getRandom(0,
+                                                numScoreSet
+                                                .size());// 随机取一个第一次优化得到的方案
+                                setNumofQuestionType(
+                                        ControlParameters.F2,
+                                        scoreType.size());// 基因编码是题目在scoreType中的下标，按题目的分值分类
+                                HashSet<String> temSet = new HashSet<String>();
+                                String[] temCont = questionContent
+                                        .split(",");
+                                int i = 0;
+                                for (; i < temCont.length; i++) {
+                                    if (!temSet.add(temCont[i])) {
+                                        need2Repeat = true;
+                                        break;
+                                    }
+                                }
+                                if (i == temCont.length) {// 全部放入集合中了，不用再重复了
+                                    need2Repeat = false;
+                                } else {
+                                    need2Repeat = true;
+                                }
+                            }
+                            Testpaper testPaper = new Testpaper();
+                            testPaper.setContent(questionContent);
+                            testPaper.setStudentinfo(student);
+                            testPaper.setSuminterval(sumTimeCost);
+                            Date now = new Date();
+                            testPaper.setStarttime(now);
+                            Courseinfo sour = new Courseinfo();
+                            sour.setId(courseId);
+                            testPaper.setCourseinfo(sour);
+
+                            testPaperFacade.create(testPaper);
+                            testAct.setTempTestpaper(testPaper);
+                            System.out.println("第3步");
+                            result = 1;
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+
+                        }
+                    }
+
+                } catch (Exception e) {
+                }
+
+            } finally {
+                // out.close();
+            }
+        }
+
+        testAct.show_paper();
+
+        return "exercise_paper.xhtml?faces-redirect=true";
     }
 
     public int getSchoolId() {

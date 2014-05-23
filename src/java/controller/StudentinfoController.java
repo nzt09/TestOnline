@@ -80,6 +80,7 @@ public class StudentinfoController implements Serializable {
     private String pictureData;// 用于flot制图的数据
     private List<Testpaper> templist = new ArrayList<Testpaper>();// 用于存放图片显示页面的试卷数据
     private List<Testpaper> allTestpaper = new ArrayList<Testpaper>();// 存放该学生的所有试卷信息
+    private Map<Integer, WrongRightNum> map1;
     private String courseName;// 课程名
     private List<SelectItem> courseList;// 用于存放该学生的所有课程名
     private Map<String, List<Mistake>> courseMap;// 用于存放<课程名,对应课程Mistake>的数据
@@ -163,7 +164,7 @@ public class StudentinfoController implements Serializable {
     }
 
     public String getPictureData() throws IOException {
-        System.out.println("班级Id"+classId+"课程Id"+courseId);
+        System.out.println("班级Id" + classId + "课程Id" + courseId);
         courseMap = new HashMap<>();
         pictureData = new String();
         templist.clear();
@@ -296,7 +297,7 @@ public class StudentinfoController implements Serializable {
             double d = new ConfigUtil().getStudentRadio();
 
             //保留小数点后两位
-            BigDecimal bg = new BigDecimal((w * 1.0) *100/ (r + w));
+            BigDecimal bg = new BigDecimal((w * 1.0) * 100 / (r + w));
             double passPer = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
             zhengquelv = passPer + "," + zhengquelv;
             if (((r * 1.0) / (r + w)) > d) {
@@ -315,6 +316,76 @@ public class StudentinfoController implements Serializable {
         return tsos;
     }
 
+    //处理试卷，知识点的正确率
+    public void calculateRight(Testpaper t) {
+        map1 = new HashMap<Integer, WrongRightNum>();//知识点以及题目正确与错误的数量
+        String content = t.getContent();// 所有题目的ID
+        String wrongAnswer = t.getWrongnum();// 错误题目的ID（String类型）
+
+        String allData[] = content.split(",");// 所有题目的ID数组
+        for (int i = 0; i < allData.length; i++) {
+            if (allData[i].equals("null")) {
+                System.out.println("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+            }
+
+            System.out.println(allData[i]);
+
+        }
+        Questionsinfo q = null;
+        for (int i = 0; i < allData.length; i++) {
+            if (allData[i].equals("null")) {
+                System.out.println("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+            } else {
+                q = questionsinfoFacadeLocal.find(Integer.parseInt(allData[i]));
+                int id = question2knowledgeFacadeLocal.findByQusetionId(q.getId()).getKnowledge().getId();//得到题目对应的知识点的ID
+//            不正确的知识点
+                WrongRightNum qrn = new WrongRightNum();
+                if (map1.containsKey(id)) { // 已包含
+                    qrn = map1.get(id);
+                }
+                if (!wrongAnswer.contains(allData[i])) {// 表示正确
+                    qrn.setRightNum(qrn.getRightNum() + 1);
+                } else { // 不正确
+                    qrn.setWrongNum(qrn.getWrongNum() + 1);
+                // 该题目错误时，将该题目拿到courseMap中对应的课程中去
+                    // start
+                    // 只显示错误的选择题
+
+                    // end
+                }
+                map1.put(id, qrn);
+            }
+
+        }
+
+        Set<Integer> keytest = map1.keySet();
+        Iterator<Integer> it1 = keytest.iterator();
+        System.out.println("ppppppppppppppppppppppppppppppppppppppp");
+        while (it1.hasNext()) {
+            int id1 = it1.next();
+            knowlegeNameList = myKnowledgeFacadeLocal.find(id1).getName() + "," + knowlegeNameList;
+
+            WrongRightNum wrongRightNum = map1.get(id1);
+            System.out.println(wrongRightNum.getKnowledgeName() + "正确的数量：" + wrongRightNum.getRightNum() + "错误的数量" + wrongRightNum.getWrongNum());
+            int r = wrongRightNum.getRightNum(), w = wrongRightNum.getWrongNum();
+            //保留小数点后两位
+            BigDecimal bg = new BigDecimal((w * 1.0) * 100 / (r + w));
+            double passPer = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            zhengquelv = passPer + "," + zhengquelv;
+        }
+        allData = null;
+    }
+
+    public Map<Integer, WrongRightNum> getMap1() {
+        return map1;
+    }
+
+    public void setMap1(Map<Integer, WrongRightNum> map1) {
+        this.map1 = map1;
+    }
+
+    
+    
     public void setPictureData(String pictureData) {
         this.pictureData = pictureData;
     }

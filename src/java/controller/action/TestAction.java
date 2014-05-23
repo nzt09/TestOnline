@@ -35,6 +35,8 @@ import javax.servlet.http.HttpServletRequest;
 import sessionBean.QuestionsinfoFacadeLocal;
 import sessionBean.QuestiontypeinfoFacadeLocal;
 import sessionBean.StudentinfoFacadeLocal;
+import sessionBean.TestassigninfomFacade;
+import sessionBean.TestassigninfomFacadeLocal;
 import sessionBean.TestpaperFacadeLocal;
 import tools.Publicfields;
 
@@ -57,6 +59,8 @@ public class TestAction implements java.io.Serializable {
     private TestpaperFacadeLocal testpaperEJB;
     @EJB
     private StudentinfoFacadeLocal studentFacade;
+    @EJB
+    private TestassigninfomFacadeLocal assignFacade;
     @Inject
     private LoginController loginCon;
     @Inject
@@ -89,6 +93,16 @@ public class TestAction implements java.io.Serializable {
     Set<String> setStr = new HashSet<>();
     Set<String> setStr1 = new HashSet<>();
     private String[] testPaperAnswer;
+    //刚生成试卷的信息
+    private Testpaper tempTestpaper;
+
+    public Testpaper getTempTestpaper() {
+        return tempTestpaper;
+    }
+
+    public void setTempTestpaper(Testpaper tempTestpaper) {
+        this.tempTestpaper = tempTestpaper;
+    }
 
     public Set getSetStr() {
         return setStr;
@@ -391,6 +405,125 @@ public class TestAction implements java.io.Serializable {
 
     }
 
+    public void show_paper() {
+        allQues.clear();
+        questionTypeCount = qtEJB.findAll().size();
+        qutypeExsit = new int[questionTypeCount];
+        list1 = new LinkedHashMap<>();
+        list2 = new LinkedHashMap<>();
+        list3 = new LinkedList();
+        //获取题目id
+        questionId = null;
+
+        String[] questionIds = tempTestpaper.getContent().split(",");
+        biangao1 = questionIds.length;
+        List<Integer> ques = new ArrayList<Integer>();
+        for (int i = 0; i < questionIds.length; i++) {
+            ques.add(Integer.parseInt(questionIds[i]));
+        }
+        questionId = ques;
+
+        //获取题目列表
+     
+        if (this.getQuestionId().size() > 0) {
+            for (int i = 0; i < questionId.size(); i++) {
+                Questionsinfo qi = questinfoEjb.find(questionId.get(i));
+                if (qi.getQuestiontypeinfo().getId() != Publicfields.MultiFill) {
+                    trueAnswer.put(qi.getId(), qi.getAnswer());
+                }
+                //判断题
+                if (qi.getQuestiontypeinfo().getId() == Publicfields.TrueorFalse) {
+                    List<Questionsinfo> tem;
+                    if (!allQues.containsKey(Publicfields.TrueorFalse)) {
+                        tem = new LinkedList<>();
+                        allQues.put(Publicfields.TrueorFalse, tem);
+                    } else {
+                        tem = allQues.get(Publicfields.TrueorFalse);
+                    }
+                    tem.add(qi);
+
+                }
+                //单项选择题
+                if (qi.getQuestiontypeinfo().getId() == Publicfields.SingleSelectType) {
+                    List<Questionsinfo> tem;
+                    if (!allQues.containsKey(Publicfields.SingleSelectType)) {
+                        tem = new LinkedList<>();
+                        allQues.put(Publicfields.SingleSelectType, tem);
+                    } else {
+                        tem = allQues.get(Publicfields.SingleSelectType);
+                    }
+                    tem.add(qi);
+                    String[] s = qi.getSelections().split("#");
+                    for (int j = 0; j < s.length; j++) {
+                        list1.put(selectionName[j] + ". " + s[j], selectionName[j]);
+                        System.out.println(list1.toString() + "++++++++++++++++++++++++++");
+                    }
+                }
+
+                //多项选择题
+                if (qi.getQuestiontypeinfo().getId() == Publicfields.MultiSelectType) {
+                    List<Questionsinfo> tem1;
+                    if (!allQues.containsKey(Publicfields.MultiSelectType)) {
+                        tem1 = new LinkedList<>();
+                        allQues.put(Publicfields.MultiSelectType, tem1);
+
+                    } else {
+                        tem1 = allQues.get(Publicfields.MultiSelectType);
+                    }
+                    tem1.add(qi);
+                    String[] s1 = qi.getSelections().split("#");
+                    for (int k = 0; k < s1.length; k++) {
+                        list2.put(selectionName[k] + ". " + s1[k], selectionName[k]);
+
+                    }
+                }
+                //单项填空题
+                if (qi.getQuestiontypeinfo().getId() == Publicfields.SingleFill) {
+                    List<Questionsinfo> tem1;
+                    if (!allQues.containsKey(Publicfields.SingleFill)) {
+                        tem1 = new LinkedList<>();
+                        allQues.put(Publicfields.SingleFill, tem1);
+
+                    } else {
+                        tem1 = allQues.get(Publicfields.SingleFill);
+                    }
+                    tem1.add(qi);
+
+                }
+                //多项填空题
+                if (qi.getQuestiontypeinfo().getId() == Publicfields.MultiFill) {
+                    List<Questionsinfo> tem;
+                    if (!allQues.containsKey(Publicfields.MultiFill)) {
+                        tem = new LinkedList<>();
+                        allQues.put(Publicfields.MultiFill, tem);
+                    } else {
+                        tem = allQues.get(Publicfields.MultiFill);
+                    }
+                    tem.add(qi);
+                }
+                //简答题
+                if (qi.getQuestiontypeinfo().getId() == Publicfields.ProgrammingProblem) {
+                    List<Questionsinfo> tem;
+                    if (!allQues.containsKey(Publicfields.ProgrammingProblem)) {
+                        tem = new LinkedList<>();
+                        allQues.put(Publicfields.ProgrammingProblem, tem);
+                    } else {
+                        tem = allQues.get(Publicfields.ProgrammingProblem);
+                    }
+                    tem.add(qi);
+                }
+
+            }
+        }
+        int questCount = 0;
+        Iterator it = allQues.entrySet().iterator();
+        while (it.hasNext()) {
+            Entry<Integer, List<Questionsinfo>> entry = (Entry<Integer, List<Questionsinfo>>) it.next();
+            questCount += entry.getValue().size();
+        }
+        testPaperAnswer = new String[questCount];
+    }
+
     public List<Integer> getQuestionId() {
 
         return questionId;
@@ -495,14 +628,14 @@ public class TestAction implements java.io.Serializable {
     }
 
     //考试过程中再次登录的时间
-    public long require(){
+    public long require() {
         Date now = new Date();
         List<Testpaper> testtemp = testpaperEJB.findByStuId(studentFacade.findByStuno(loginCon.getUserId()).getId());
         testtemp.get(0).getStarttime();
-        return (now.getTime()-testtemp.get(0).getStarttime().getTime())/60000;
-  
+        return assignFacade.find(testtemp.get(0).getTestassigninfom().getId()).getAveragetime() - (now.getTime() - testtemp.get(0).getStarttime().getTime()) / 60000;
+
     }
-    
+
     //插入考生开始考试的时间
     public void insertStarttime() {
         List<Testpaper> testtemp = testpaperEJB.findByStuId(studentFacade.findByStuno(loginCon.getUserId()).getId());

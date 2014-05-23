@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <body>
+        <ui:composition template="./../../stylemodel.xhtml">
+            <ui:define name="content">
+                <h:form
+                    <rich:panel style="margin-left: 200px">
+                        
+                        <h:selectOneMenu value="#{generateAction.courseId}">
+                            <f:selectItems value="#{courseinfoController.findAllCourses()}" var="cour"  itemValue="#{cour.id}" itemLabel="#{cour.name}"></f:selectItems>
+                        </h:selectOneMenu>
+                    </rich:panel>
+                    <h:commandButton value="开始练习" action="#{generateAction.doOnePaper()}"></h:commandButton>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

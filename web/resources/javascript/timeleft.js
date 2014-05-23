@@ -7,9 +7,7 @@
 function serverCurrTime() {
     
     var secondTime=document.getElementById("myForm:timeSecond").value;
-    var count = 120-secondTime;
-    alert(secondTime);
-    
+    var count = secondTime;
     var str = "";
 
     if (count % 60 !== 0) {

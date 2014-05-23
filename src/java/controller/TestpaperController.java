@@ -36,7 +36,7 @@ public class TestpaperController implements Serializable {
     
     public List<Testpaper> requirePaper(){
         if(stuCon.getCourseId()!=0&&stuCon.getClassId()!=0){
-            return this.getFacade().findByCourseBystuid(stuCon.getCourseId(),stuCon.getClassId());
+            return this.getFacade().findByCourseByClassID(stuCon.getCourseId(),stuCon.getClassId());
         }
         else{
             return null;

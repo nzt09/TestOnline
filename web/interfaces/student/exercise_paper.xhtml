@@ -2,32 +2,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:rich="http://richfaces.org/rich"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:rich="http://richfaces.org/rich">
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
+
         <ui:composition template="./../../template.xhtml">
-            <ui:define name="title">
-                <body onload="serverCurrTime()">   
-                    <div align="right">    
-                        剩余时间：<h:outputLabel id="currTime"></h:outputLabel>     
-                    </div>
-                    <h:form id="myForm">
-                        <h:inputHidden value="#{testAction.require()}" id="timeSecond"></h:inputHidden>
-                        <h:inputHidden value="#{testAction.insertStarttime()}"></h:inputHidden>
-                        <rich:panel style="margin-left: 100px;margin-right: 100px">
-                            <h:panelGrid columns="2">
-                                <h:outputLabel value="姓名:"></h:outputLabel>
-                                <h:outputLabel value="#{loginController.name}"></h:outputLabel>
-                                <h:outputLabel value="班级："></h:outputLabel>
-                                <h:outputLabel value="#{loginController.className}"></h:outputLabel>   
-                            </h:panelGrid>
-                        </rich:panel>
-                    </h:form>
-                </body>
+             <ui:define name="title">
             </ui:define>
+
             <ui:define name="body">
                 <rich:panel style="margin-left: 100px;margin-right: 100px">
 
@@ -102,10 +87,14 @@
                         </c:forEach>
                         <h:commandButton onclick="" value="保存"
                                          action="#{testAction.insert()}"></h:commandButton>
-                        <h:commandButton value="返回" action="testlist.xhtml"/>                
+                        <h:commandButton value="返回" action="exercise.xhtml"/>                
                     </h:form>
                 </rich:panel>
             </ui:define>
+
+            
+
         </ui:composition>
+
     </body>
 </html>

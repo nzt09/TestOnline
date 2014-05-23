@@ -6,6 +6,7 @@ import controller.util.PaginationHelper;
 import sessionBean.CourseinfoFacadeLocal;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -260,6 +261,12 @@ public class CourseinfoController implements Serializable {
         return item;
     }
 
+    
+    //获取所有的课程
+    public List<Courseinfo> findAllCourses(){
+        return ejbFacade.findAll();
+    }
+    
     public SelectItem[] getItemsAvailableSelectM() {
         SelectItem[] item = JsfUtil.getSelectItems(ejbFacade.findAll(), false);
         for (int i = 0; i < item.length; i++) {
