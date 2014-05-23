@@ -594,16 +594,12 @@ public class TestAction implements java.io.Serializable {
                         }
                     }
                     for (int l = 0; l < k; l++) {
-                        if (l != k - 1) {
-                            multivalue = multivalue + value[l] + "#";
-                        } else {
                             multivalue = multivalue + value[l];
-                           
                         }
-                    }
                      if( multivalue != null){
                         multivalue = multivalue.replaceAll("[0-9]", "");
                     }
+                    
                     testAnswer.put(qi.getId(), multivalue);
                     testAnswer1.put(qi.getId(), multivalue);
                 }
@@ -742,7 +738,7 @@ public class TestAction implements java.io.Serializable {
             Iterator itor = setStr.iterator();
             Iterator itor1 = setStr1.iterator();
             while (itor.hasNext()) {
-                if (setStr1.contains(itor.next())) {
+                if (setStr1.contains(itor.next().toString())) {
                     l++;
                     System.out.println(l + "-------");
                 }
